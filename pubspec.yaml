@@ -45,7 +45,8 @@ dependencies:
   google_fonts: ^2.1.0
   http: ^0.13.4
   flutter_geofire: ^2.0.1
-
+  toggle_switch: ^1.4.0
+  font_awesome_flutter:
 dev_dependencies:
   flutter_test:
     sdk: flutter
