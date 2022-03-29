@@ -93,7 +93,7 @@ class _ClientsDataState extends State<ViewRequests> {
                     alignment: Alignment.centerRight,
                   margin: const EdgeInsets.only(left: 10.0,bottom:10.0),
                   child:Row(
-                children: <Widget>[
+                  children: <Widget>[
                   FloatingActionButton.small(
                     backgroundColor: Colors.greenAccent[700],
                     elevation: 3.0,
@@ -190,6 +190,8 @@ class _ClientsDataState extends State<ViewRequests> {
 
       body: Center(
         child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           children:
           Clients.map((p) {
               return personDetailCard(p);
