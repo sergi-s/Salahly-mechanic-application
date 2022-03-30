@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import '../../main.dart';
 
@@ -17,23 +18,25 @@ class NearbyLocations {
   static addNearbyMechanicsAndProviders() async {
     _initializeGeoFireOnAvailable();
     CustomLocation loc_1 = CustomLocation(
-      latitude: 35.207877,
+      latitude: 31.207877,
       longitude: 28.918180,
-      name: "mego",
+      name: FirebaseAuth.instance.currentUser!.uid
+      //"mego",
       // name: "mech 1",
     );
-    CustomLocation loc_2 = CustomLocation(
-      latitude: 33.207545,
-      longitude: 20.919915,
-      name: "meca",
-      // name: "mech 2",
-    );
-    CustomLocation loc_3 = CustomLocation(
-      latitude: 32.206866,
-      longitude: 24.918298,
-      name: "mogo",
-    );
-    var locs = [loc_1, loc_2, loc_3];
+    // CustomLocation loc_2 = CustomLocation(
+    //   latitude: 33.207545,
+    //   longitude: 20.919915,
+    //   name: "meca",
+    //   // name: "mech 2",
+    // );
+    // CustomLocation loc_3 = CustomLocation(
+    //   latitude: 32.206866,
+    //   longitude: 24.918298,
+    //   name: "mogo",
+    // );
+    // var locs = [loc_1, loc_2, loc_3];
+    var locs = [loc_1];
     //31.207545, 29.919915
     for (CustomLocation lolo in locs) {
       await _addLocToDB(lolo);
@@ -67,21 +70,21 @@ class NearbyLocations {
     CustomLocation loc_1 = CustomLocation(
       latitude: 35.207877,
       longitude: 28.918180,
-      name: "mego",
+      name: FirebaseAuth.instance.currentUser!.uid//"mego",
       // name: "mech 1",
     );
-    CustomLocation loc_2 = CustomLocation(
-      latitude: 33.207545,
-      longitude: 20.919915,
-      name: "meca",
-      // name: "mech 2",
-    );
-    CustomLocation loc_3 = CustomLocation(
-      latitude: 32.206866,
-      longitude: 24.918298,
-      name: "mogo",
-    );
-    var locs = [loc_1, loc_2, loc_3];
+    // CustomLocation loc_2 = CustomLocation(
+    //   latitude: 33.207545,
+    //   longitude: 20.919915,
+    //   name: "meca",
+    //   // name: "mech 2",
+    // );
+    // CustomLocation loc_3 = CustomLocation(
+    //   latitude: 32.206866,
+    //   longitude: 24.918298,
+    //   name: "mogo",
+    // );
+    var locs = [loc_1];
     //31.207545, 29.919915
     for (CustomLocation lolo in locs) {
       await _deleteLocToDB(lolo);

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salahly_mechanic/MyApp.dart';
 
-DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("user");
+DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("users");
 DatabaseReference dbRef = FirebaseDatabase.instance.ref();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
