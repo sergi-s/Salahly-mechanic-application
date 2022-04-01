@@ -1,11 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/Requests/OnGoingRequests.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
 import 'package:salahly_mechanic/screens/homepage/homescreen.dart';
 import 'package:salahly_mechanic/screens/Requests/ViewRequests.dart';
 class Routing {
   get router => GoRouter(
 
-    initialLocation: ViewRequests.routeName,
+    initialLocation: RoadsideAssistantFullData.routeName,
 
     routes: <GoRoute> [
       GoRoute(
@@ -19,6 +20,10 @@ class Routing {
       GoRoute(
         path: OnGoingRequests.routeName,
         builder: (context, state) => OnGoingRequests(),
+      ),
+      GoRoute(
+        path: RoadsideAssistantFullData.routeName,
+        builder: (context, state) => RoadsideAssistantFullData(),
       ),
     ],
   );
