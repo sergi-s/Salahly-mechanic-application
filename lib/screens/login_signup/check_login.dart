@@ -17,6 +17,6 @@ class CheckLogin extends StatelessWidget {
       // context.go(HomeScreen.routeName);
       context.go(TestScreenFoula.routeName);
     }
-    return const Scaffold(body: Text("Checking logged in user error"));
+    return const Scaffold(body: SafeArea(child: Text("Checking logged in user error")));
   }
 }
