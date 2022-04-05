@@ -7,8 +7,9 @@ import 'package:salahly_mechanic/MyApp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("user");
+DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("users");
 DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();

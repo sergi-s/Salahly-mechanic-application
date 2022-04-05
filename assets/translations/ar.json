@@ -21,6 +21,7 @@
   "my_car_is_broke_and_doesnt_work":"سيارتي معطلة ولا تعمل",
   "send": "إرسال",
   "cancel": "إِلغاء",
-  "problem":"مشكلة"
-
+  "problem":"مشكلة",
+  "received_a_new_request" : "تلقيت طلب جديد",
+  "go_to_request": "اذهب الى الطلب"
 }
