@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salahly_mechanic/MyApp.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("users");
 DatabaseReference dbRef = FirebaseDatabase.instance.ref();
@@ -20,5 +22,10 @@ void main() async {
       fallbackLocale: Locale('en'),
       child: ProviderScope(child: MyApp(),),
     ),
+
   );
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }
