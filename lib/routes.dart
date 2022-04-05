@@ -4,6 +4,7 @@ import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
+import 'package:salahly_mechanic/screens/requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 
 class Routing {
@@ -34,6 +35,10 @@ class Routing {
             path: CheckLogin.routeName,
             builder: (context, state) => CheckLogin(),
           ),
+          GoRoute(
+            path: OngoingScreenDummy.routeName,
+            builder: (context,state) => OngoingScreenDummy()
+          )
         ],
       );
 }

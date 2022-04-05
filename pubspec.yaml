@@ -50,7 +50,7 @@ dependencies:
   overlay_support: ^1.2.1
   firebase_messaging: ^11.2.11
   firebase_analytics: ^9.1.2
-  salahly_models: ^0.0.2
+  salahly_models: ^0.0.3
   shared_preferences: ^2.0.13
 
 dev_dependencies:
