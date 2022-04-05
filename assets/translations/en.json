@@ -21,5 +21,7 @@
   "my_car_is_broke_and_doesnt_work": "My car is broke and doesn't work",
   "send": "Send",
   "cancel": "Cancel",
-  "problem":"Problem"
+  "problem":"Problem",
+  "received_a_new_request": "Received a new request",
+  "go_to_request": "Go to request"
 }
