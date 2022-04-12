@@ -23,6 +23,7 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
   ];
 
   Widget personDetailCard(Client) {
+    DateTime now = DateTime.now();
     final String name = Client.name;
     final String carnumber = Client.carnumber;
     final String mobilenumber = Client.mobilenumber;
@@ -32,79 +33,80 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
     final String subscribtionlevel = Client.subscribtionlevel;
     return Container(
       alignment: Alignment.center,
+      child: Center(
+      child:Card(
+      color: Colors.grey[100],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      margin:const EdgeInsets.symmetric(vertical:6,horizontal:25 ),
           child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           children:[
-            Row(
-            children: <Widget>[
-              Column(
-          children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 6.0,right: 8.0),
-                child: Image.asset('assets/images/name.png', fit: BoxFit.fill ,scale: 2),),
-              ],),
-              Column(
-              children: [
-               Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: Text(name, textScaleFactor: 2, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.right).tr(),),
-              ],),
-              ],),
-            Row(
-
-              children: <Widget>[
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0,right: 8.0),
-                      child: Image.asset('assets/images/car2.png', fit: BoxFit.fill ,scale: 1.5),),
-                  ],),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:Text(carnumber,textScaleFactor: 1.5, style: const TextStyle(color: Color(0xff97a7c3)),textAlign: TextAlign.right).tr(),),
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:Text(carmodel,textScaleFactor: 1.5, style: const TextStyle(color: Color(0xff97a7c3)),textAlign: TextAlign.right).tr(),),
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:Text(color,textScaleFactor: 1.5, style: const TextStyle(color: Color(0xff97a7c3)),textAlign: TextAlign.right).tr(),),
-                  ],),
-              ],),
-            Row(
-              children: <Widget>[
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0,right: 8.0),
-                      child:
-                      Image.asset('assets/images/phone.png', fit: BoxFit.fill ,scale: 2 ),),
-                  ],),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:Text(mobilenumber,textScaleFactor: 1.5, style: const TextStyle(color: Color(0xff97a7c3)),textAlign: TextAlign.right).tr(),),
-                  ],),
-              ],),
-            Row(
-              children: <Widget>[
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0,right: 8.0),
-                      child:
-                      Image.asset('assets/images/subscription.png', fit: BoxFit.fill ,scale: 2 ),),
-                  ],),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:Text(subscribtionlevel,textScaleFactor: 1.5, style: const TextStyle(color: Color(0xff97a7c3)),textAlign: TextAlign.right).tr(),),
-                  ],),
-              ],),
+            ListTile(
+              leading:Padding(
+                padding: const EdgeInsets.only(top:10.0,bottom: 6.0,right: 10.0),
+                child: Icon(CupertinoIcons.profile_circled,color:Color(0xff97a7c3),size: 45)),
+              title: Padding(
+                padding: const EdgeInsets.only(top:10.0,bottom: 6.0,right: 8.0),
+                child: Text(name, textScaleFactor: 1.2, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold)).tr(),),
+            ),
+            ListTile(
+              leading:Padding(
+                  padding: const EdgeInsets.only(top:6.0,bottom: 6.0,right: 8.0),
+                  child: Icon(CupertinoIcons.car_detailed,color:Color(0xff97a7c3),size: 45)),
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                    child:Text(carnumber,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+                  Padding(
+                    padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                    child:Text(carmodel,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+                  Padding(
+                    padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                    child:Text(color,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+                ],),
+            ),
+            ListTile(
+              leading:Padding(
+                  padding: const EdgeInsets.only(top:10.0,bottom: 6.0,right: 10.0),
+                  child: Icon(CupertinoIcons.device_phone_portrait,color:Color(0xff97a7c3),size: 45)),
+              title: Padding(
+                padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                child:Text(mobilenumber,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+            ),
+            ListTile(
+              leading:Padding(
+                  padding: const EdgeInsets.only(top:10.0,bottom: 15.0,right: 10.0),
+                  child: Icon(CupertinoIcons.plus_rectangle_on_rectangle,color:Color(0xff97a7c3),size: 40)),
+              title: Padding(
+                padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                child:Text(subscribtionlevel,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+            ),
+            ListTile(
+              leading:Padding(
+                  padding: const EdgeInsets.only(top:10.0,bottom: 15.0,right: 10.0),
+                  child: Icon(CupertinoIcons.location,color:Color(0xff97a7c3),size: 45)),
+              title: Padding(
+                padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                child:Text('Location : Moharam Bek - Alex - 22 nasr ahmed zaki',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+            ),
+            ListTile(
+              leading:Padding(
+                  padding: const EdgeInsets.only(top:10.0,bottom: 15.0,right: 10.0),
+                  child: Icon(CupertinoIcons.car_fill,color:Color(0xff97a7c3),size: 45)),
+              title: Padding(
+                padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                child:Text('Client Requested RSA  ${now.day.toString().padLeft(2,'0')}-${now.month.toString().padLeft(2,'0')}-${now.year.toString()}'+'   '+'${now.hour.toString().padLeft(2,'0')}:${now.minute.toString().padLeft(2,'0')}',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+            ),
    ],
           ),
+    ),
+      ),
     );
   }
 
@@ -114,11 +116,13 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
         .of(context)
         .size;
     return Scaffold(
+      backgroundColor: const Color(0xFFd1d9e6),
+
       appBar: AppBar(
-        title: Image.asset(
-            'assets/images/logo white.png', fit: BoxFit.contain, scale: 50),
+        title: Text('RSA Full Data'),
         centerTitle: true,
         backgroundColor: const Color(0xff193566),
+        flexibleSpace: Image.asset('assets/images/logo white.png',fit: BoxFit.scaleDown,alignment: Alignment.bottomRight,scale: 55),
       ),
 
       drawer: Drawer(
@@ -151,7 +155,7 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
               },
             ),
             ListTile(
-              title: const Text('Set availability',
+              title: const Text('OnGoing Requests',
                   style: TextStyle(fontWeight: FontWeight.bold)).tr(),
               onTap: () {
                 Navigator.pop(context);
@@ -159,7 +163,7 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
             ),
             ListTile(
               title: const Text(
-                  'Log Out', style: TextStyle(fontWeight: FontWeight.bold))
+                  'Set availability', style: TextStyle(fontWeight: FontWeight.bold))
                   .tr(),
               onTap: () {
                 Navigator.pop(context);
@@ -173,78 +177,22 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
         width: double.infinity,
         child: Stack(
           children: [
-            Positioned(
-              top: 35,
-              left: 35,
-              right: 35,
-              child: const Text(
-                  'RSA Full Data',textScaleFactor: 2,
-                  style: TextStyle(
-                      color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.center).tr(),
-            ),
         Positioned(
-          top:80,
-          left: 35,
-          right: 35,
+          top:35,
+          left: 25,
+          right: 25,
           child: Column(
                     children:
                     Clients.map((p) {
                       return personDetailCard(p);
                     }).toList()),
              ),
-            const Positioned(
-              left: 50,
-              right: 50,
-              bottom: 320,
-              child: Text(
-                  'Location : Moharam Bek - Alex',textScaleFactor: 1.25,
-                  style: TextStyle(
-                    color: Color(0xff193566), fontWeight: FontWeight.bold,),textAlign: TextAlign.center),
-            ),
-             Positioned(
-              left: 150,
-              right: 150,
-              bottom: 220,
-              child: InkWell(
-                onTap: () {
-                }, // Image tapped
-                splashColor: Colors.blue, // Splash color over image
-                child: Ink.image(
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.contain, // Fixes border issues
-                  image: AssetImage(
-                      'assets/images/location.png'
-                  ),
-                ),
-              ),
-
-            ),
-            const Positioned(
-              left: 50,
-              right: 50,
-              bottom: 180,
-              child: Text(
-                  'Client Requested RSA',textScaleFactor: 1.5,
-                  style: TextStyle(
-                      color: Color(0xff193566), fontWeight: FontWeight.bold,),textAlign: TextAlign.center),
-            ),
-
             Positioned(
-              right: 5.0,
-              left: 6.0,
-              bottom: 155,
-              child: Text(
-                  DateFormat.jm().format(DateTime.now()),textScaleFactor: 1.5,
-                  style: const TextStyle(
-                      color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.center),
-            ),
-            Positioned(
-              bottom: 100,
+              bottom: 200,
                 left: 80,
                 right: 80,
               child: FloatingActionButton.extended(
-                  onPressed: (){}, label: const Text('Report'),backgroundColor:const Color(0xff193566) , icon: const Icon(Icons.report),)
+                  onPressed: (){}, label: const Text('Rsa Report'),backgroundColor:const Color(0xff193566) , icon: const Icon(Icons.fact_check_rounded)),
             ),
           ],
         ),

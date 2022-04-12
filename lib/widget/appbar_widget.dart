@@ -1,26 +1,35 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:salahly_mechanic/themes.dart';
 
 AppBar buildAppBar(BuildContext context) {
-  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-  final icon = CupertinoIcons.moon_stars;
 
   return AppBar(
     leading: BackButton(),
+    title: Text('Mechanic Profile Page'),
+    centerTitle: true,
     backgroundColor: Color(0xff193566),
     elevation: 0,
     actions: [
-      ThemeSwitcher(
-        builder: (context) => IconButton(
-          icon: Icon(icon),
-          onPressed: () {
-            final theme = isDarkMode ? MyThemes.lightTheme : MyThemes.darkTheme;
-
-            final switcher = ThemeSwitcher.of(context);
-            switcher.changeTheme(theme: theme);
-          },
+      IconButton(
+        onPressed: () async {
+          if (await confirm(
+            context,
+            title: const Text('Confirm').tr(),
+            content: const Text('Would you like to LogOut?').tr(),
+            textOK: const Text('Yes').tr(),
+            textCancel: const Text('No').tr(),
+          )) {
+            return print('pressedOK');
+          }
+          return print('pressedCancel');
+        },
+        icon: const Icon(
+          Icons.logout,
+          size: 35,
+          color: Colors.red,
         ),
       ),
     ],

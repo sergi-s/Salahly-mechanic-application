@@ -28,10 +28,15 @@ class _ClientsDataState extends State<ViewRequests> {
   ];
   Widget personDetailCard(Client) {
     return Container(
-      height: 150,
+      height: 120,
       alignment: Alignment.center,
       child: Card(
-        margin:const EdgeInsets.all(16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: Colors.grey[100],
+        semanticContainer: true,
+        margin:const EdgeInsets.symmetric(vertical:10,horizontal:25 ),
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: ()
@@ -48,113 +53,104 @@ class _ClientsDataState extends State<ViewRequests> {
             return print('pressedCancel');
 
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+          child:
               Container(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(Client.name,
-                        style: TextStyle (
-                            color: Color(0xff193566),
-                            fontSize: 18
-                        ),
+                      ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.red,
                       ),
-                      Text(Client.carnumber,
-                        style: TextStyle (
-                            color: Color(0xff97a7c3),
-                            fontSize: 12
+                        title: Column(
+                         children: <Widget>[
+                           Text(Client.carmodel,
+                             style: const TextStyle (
+                                 color: Color(0xff193566),
+                                 fontSize: 20 ,
+                                 fontWeight: FontWeight.bold
+                          ),
+                           ),
+                           Text(Client.carnumber,
+                             style: const TextStyle (
+                                 color: Colors.black45,
+                                 fontSize: 18
+                             ),
+                           ),
+                           Text(Client.mobilenumber,
+                             style: const TextStyle(
+                                 color: Colors.black45,
+                                 fontSize: 18
+                             ),
+                           ),
+                         ],
                         ),
+                        trailing : Row(
+                          mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                onPressed: () async {
+                                  if (await confirm(
+                                    context,
+                                    title: const Text('Confirm').tr(),
+                                    content: const Text('Would you like to Accept Request?').tr(),
+                                    textOK: const Text('Yes').tr(),
+                                    textCancel: const Text('No').tr(),
+                                  )) {
+                                    return print('pressedOK');
+                                  }
+                                  return print('pressedCancel');
+                                },
+                                icon: const Icon(
+                                  Icons.check,
+                                  size: 35,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  if (await confirm(
+                                    context,
+                                    title: const Text('Confirm').tr(),
+                                    content: const Text('Would you like to Refuse Request?').tr(),
+                                    textOK: const Text('Yes').tr(),
+                                    textCancel: const Text('No').tr(),
+                                  )) {
+                                    return print('pressedOK');
+                                  }
+                                  return print('pressedCancel');
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 35,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+    ],
                       ),
-                      Text(Client.mobilenumber,
-                        style: TextStyle (
-                            color: Color(0xff97a7c3),
-                            fontSize: 12
-                        ),
-                      ),
-                      Text(Client.carmodel,
-                        style: TextStyle (
-                            color: Color(0xff97a7c3),
-                            fontSize: 12
-                        ),
-                      )
 
-                      ],
-                    ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:[
-                  Container(
-                    alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.only(left: 10.0,bottom:10.0),
-                  child:Row(
-                  children: <Widget>[
-                  FloatingActionButton.small(
-                    backgroundColor: Colors.greenAccent[700],
-                    elevation: 3.0,
-                    onPressed: () async {
-                      if (await confirm(
-                        context,
-                        title: const Text('Confirm').tr(),
-                        content: const Text('Would you like to Accept Request?').tr(),
-                        textOK: const Text('Yes').tr(),
-                        textCancel: const Text('No').tr(),
-                      )) {
-                        return print('pressedOK');
-                      }
-                      return print('pressedCancel');
-                    },
-                    child: Icon(
-                      Icons.check,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  FloatingActionButton.small(
-                    backgroundColor: Colors.red,
-                    elevation: 3.0,
-                    onPressed: () async {
-                      if (await confirm(
-                        context,
-                        title: const Text('Confirm').tr(),
-                        content: const Text('Would you like to Refuse Request?').tr(),
-                        textOK: const Text('Yes').tr(),
-                        textCancel: const Text('No').tr(),
-                      )) {
-                        return print('pressedOK');
-                      }
-                      return print('pressedCancel');
-                    },
-                    child: Icon(
-                      Icons.close,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-                  ),
-        ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    ),
+    ),
     );
   }
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
+      backgroundColor: Color(0xFFd1d9e6),
       appBar: AppBar(
-        title: Image.asset('assets/images/logo white.png', fit: BoxFit.contain, scale:50),
+        title:Text('View Requests'),
         centerTitle: true,
-        backgroundColor: Color(0xff193566),
+        backgroundColor: const Color(0xff193566),
+        flexibleSpace: Image.asset('assets/images/logo white.png',fit: BoxFit.scaleDown,alignment: Alignment.bottomRight,scale: 55),
       ),
-
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -173,7 +169,7 @@ class _ClientsDataState extends State<ViewRequests> {
               },
             ),
             ListTile(
-              title: const Text('View Requests',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
+              title: const Text('OnGoing Requests',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -188,17 +184,15 @@ class _ClientsDataState extends State<ViewRequests> {
         ),
       ),
 
-      body: Center(
-        child:Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
           children:
           Clients.map((p) {
               return personDetailCard(p);
             }).toList()
         ),
-      ),
-    );
+      );
   }
 }
 class Client {
