@@ -114,12 +114,12 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 16),
             Text(
               user.lastappointement,
-              style: TextStyle(fontSize: 16, height: 1.4,color: Color(0xff193566)),
+              style: TextStyle(fontSize: 16, height: 1.4),
             ).tr(),
             const SizedBox(height: 16),
             Text(
               'Last Review',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
             Text(
