@@ -24,6 +24,7 @@ class _MechanicEditProfilePageState extends State<MechanicEditProfilePage> {
   Widget build(BuildContext context) => ThemeSwitchingArea(
         child: Builder(
           builder: (context) => Scaffold(
+            backgroundColor: const Color(0xFFd1d9e6),
             appBar: buildAppBar(context),
             body: ListView(
               padding: EdgeInsets.symmetric(horizontal: 32),
@@ -50,12 +51,18 @@ class _MechanicEditProfilePageState extends State<MechanicEditProfilePage> {
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
-                  label: 'Mechanic Experience',
-                  text: user.about,
-                  onChanged: (about)  {
-
+                  label: 'Location',
+                  text: user.location,
+                  onChanged: (location)  {
                   },
                 ),
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              label: 'Password',
+              text: user.password,
+              onChanged: (password)  {
+              },
+            ),
                 const SizedBox(height: 24),
                 Center(child: buildUpgradeButton()),
               ],

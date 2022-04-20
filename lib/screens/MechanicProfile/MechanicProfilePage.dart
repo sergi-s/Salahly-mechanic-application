@@ -6,7 +6,6 @@ import 'package:salahly_mechanic/model/user.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicEditProfilePage.dart';
 import 'package:salahly_mechanic/utils/user_preferences.dart';
 import 'package:salahly_mechanic/widget/appbar_widget.dart';
-import 'package:salahly_mechanic/widget/button_widget.dart';
 import 'package:salahly_mechanic/widget/numbers_widget.dart';
 import 'package:salahly_mechanic/widget/profile_widget.dart';
 import 'package:salahly_mechanic/themes.dart';
@@ -16,10 +15,9 @@ class MechanicProfilePage extends StatelessWidget {
   static final routeName = "/profile_page";
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
 
     return ThemeProvider(
-      initTheme: user.isDarkMode ? MyThemes.darkTheme : MyThemes.lightTheme,
+      initTheme: MyThemes.lightTheme,
       child: Builder(
         builder: (context) => MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -49,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return ThemeSwitchingArea(
       child: Builder(
         builder: (context) => Scaffold(
+          backgroundColor: const Color(0xFFd1d9e6),
           appBar: buildAppBar(context),
           body: ListView(
             physics: BouncingScrollPhysics(),
@@ -64,8 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 24),
               buildName(user),
               const SizedBox(height: 24),
-              Center(child: buildUpgradeButton()),
-              const SizedBox(height: 24),
               NumbersWidget(),
               const SizedBox(height: 48),
               buildAbout(user),
@@ -80,19 +77,19 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(
             user.name,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color: Color(0xff193566)),
           ).tr(),
           const SizedBox(height: 4),
           Text(
             user.email,
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: Colors.black54,fontSize: 15),
+          ).tr(),
+          const SizedBox(height: 4),
+          Text(
+            user.mobileno,
+            style: TextStyle(color: Colors.black54,fontSize: 15),
           ).tr()
         ],
-      );
-
-  Widget buildUpgradeButton() => ButtonWidget(
-        text: 'Upgrade To PRO'.tr(),
-        onClicked: () {},
       );
 
   Widget buildAbout(User user) => Container(
@@ -101,18 +98,18 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Mechanic Experience',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Location',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
             Text(
-              user.about,
+              user.location,
               style: TextStyle(fontSize: 16, height: 1.4),
             ).tr(),
             const SizedBox(height: 16),
             Text(
               'Last Appointement',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
             Text(
@@ -122,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 16),
             Text(
               'Last Review',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
             Text(

@@ -6,10 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:salahly_mechanic/main.dart';
 import 'package:http/http.dart' as http;
-import 'package:go_router/go_router.dart';
-import 'package:salahly_mechanic/screens/homepage/homescreen.dart';
 
 
 class OnGoingRequests extends StatefulWidget {
@@ -32,11 +29,15 @@ class _ClientsDataState extends State<OnGoingRequests> {
     final String carmodel=Client.carmodel;
     final String color=Client.color;
     return Container(
-      height: 200,
+      height: 120,
       alignment: Alignment.center,
       child: Center(
         child:Card(
-          margin:const EdgeInsets.all(16.0),
+          color: Colors.grey[100],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          margin:const EdgeInsets.symmetric(vertical:6,horizontal:25 ),
           child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
@@ -48,12 +49,9 @@ class _ClientsDataState extends State<OnGoingRequests> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListTile(
-                  minLeadingWidth: 100,
-                  horizontalTitleGap: 25,
-                  leading: Text(name , textScaleFactor: 1.5,style: TextStyle(color: Color(0xff193566),fontWeight:FontWeight.bold)).tr(),
-                  title: Text(carnumber , style: TextStyle(color:Color(0xff97a7c3) )).tr(),
-                  subtitle: Text(carmodel , style: TextStyle(color:Color(0xff97a7c3) )).tr(),
-                  trailing: Text(color , style: TextStyle(color:Color(0xff97a7c3) )).tr(),
+                  leading:Icon(CupertinoIcons.car_detailed,color:Color(0xff97a7c3),size: 40),
+                  title: Text(name , textScaleFactor: 1.4,style: TextStyle(color: Color(0xff193566),fontWeight:FontWeight.bold)).tr(),
+                  subtitle: Text(carnumber ,textScaleFactor: 1.1, style: TextStyle(color:Colors.black54 )).tr(),
                 )
               ],
             ),
@@ -64,10 +62,12 @@ class _ClientsDataState extends State<OnGoingRequests> {
   }
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFd1d9e6),
       appBar: AppBar(
-        title: Image.asset('assets/images/logo white.png', fit: BoxFit.contain, scale:50),
+        title: Text('OnGoing Requests'),
         centerTitle: true,
         backgroundColor: Color(0xff193566),
+        flexibleSpace: Image.asset('assets/images/logo white.png',fit: BoxFit.scaleDown,alignment: Alignment.bottomRight,scale: 55),
       ),
 
       drawer: Drawer(
@@ -95,12 +95,6 @@ class _ClientsDataState extends State<OnGoingRequests> {
             ),
             ListTile(
               title: const Text('Set availability',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Log Out',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
               onTap: () {
                 Navigator.pop(context);
               },
