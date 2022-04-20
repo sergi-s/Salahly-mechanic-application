@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:salahly_mechanic/routes.dart';
 class MyApp extends StatelessWidget {
@@ -7,9 +8,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    context.setLocale(Locale("en"));
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return OverlaySupport.global(
+
         child: MaterialApp.router(
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,

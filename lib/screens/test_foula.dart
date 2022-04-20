@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
+import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
@@ -25,12 +27,18 @@ class TestScreenFoula extends ConsumerWidget {
               context.push(SetAvalability.routeName);
             }, child: const Text('set availability screen')),
             ElevatedButton(onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
+              /*final prefs = await SharedPreferences.getInstance();
               final rsaID =  await prefs.getString("rsaID").toString();
               print("RSA ID: "+rsaID);
               final userID = await FirebaseAuth.instance.currentUser!.uid;
-              dbRef.child("rsa").child(rsaID).child("mechanicsResponses").child(userID).set("accepted");
+              dbRef.child("rsa").child(rsaID).child("mechanicsResponses").child(userID).set("accepted");*/
+
+              dbRef.child("rsa").child(ref.watch(pendingRequestsProvider)[0].rsaID!).child("mechanicsResponses").child( FirebaseAuth.instance.currentUser!.uid).set("accepted");
             }, child: const Text('accept rsa request')),
+            Text("RSA TEST "+(ref.watch(pendingRequestsProvider).length >0? ref.watch(pendingRequestsProvider)[0].state.toString():"BEFORE")),
+            ElevatedButton(onPressed: (){
+              ref.watch(pendingRequestsProvider.notifier).changeState();
+            }, child: Text('Change description'))
           ],
         ),
       ),

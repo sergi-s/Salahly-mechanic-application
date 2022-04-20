@@ -1,16 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:salahly_mechanic/abstract_classes/authentication.dart';
+import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_models/models/client.dart' as Models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class FirebaseCustom extends Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -24,7 +20,7 @@ class FirebaseCustom extends Authentication {
           email: emm, password: password);
       if (user != null) {
         await _registerFCMToken(FirebaseAuth.instance.currentUser!.uid);
-        _registerNotficiations();
+        _registerNotifications();
         return true;
       }
     } catch (e) {
@@ -38,31 +34,56 @@ class FirebaseCustom extends Authentication {
     return await FirebaseMessaging.instance
         .getToken()
         .then((value) => dbRef.child("FCMTokens").child(id).set(value));
-        // .then((value) => dbRef.child("FCMTokens").set({id: value}));
+    // .then((value) => dbRef.child("FCMTokens").set({id: value}));
   }
 
-  _registerNotficiations() async {
-    final prefs = await SharedPreferences.getInstance();
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) async{
-      print("message recieved");
-      print(event.notification!.body);
+  Future<void> _onBackgroundMessage(RemoteMessage message) async {
+    print('>>> onBackgroundMessage');
 
-      showSimpleNotification(Text("Received a notification, rsaID: "+event.notification!.body.toString()),
-          background: Colors.green);
-      await prefs.setString("rsaID", event.notification!.body.toString());
-      print("RSA ID: "+ event.notification!.body.toString());
+    if (message.data["request_type"] == "rsa" ||
+        message.data["request_type"] == "wsa") {}
+    if (navigatorKey.currentState != null) {
+      print('>>> opened screen');
+      navigatorKey.currentState?.pushNamed(PENDINGVIEW.routeName);
+    } else
+      print('>>> navigatorkey state is null');
+  }
+
+  _registerNotifications() {
+    FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
+      await _registerFCMToken(FirebaseAuth.instance.currentUser!.uid);
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
+    FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage);
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
+      print("message received");
+      print(event.notification!.body);
     });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) async {
+      print("message opened");
+      print(event.data);
+    });
+
+    // final prefs = await SharedPreferences.getInstance();
+    // FirebaseMessaging.onMessage.listen((RemoteMessage event) async{
+    //   print("message recieved");
+    //   print(event.notification!.body);
+    //
+    //   showSimpleNotification(Text("Received a notification, rsaID: "+event.notification!.body.toString()),
+    //       background: Colors.green);
+    //   await prefs.setString("rsaID", event.notification!.body.toString());
+    //   print("RSA ID: "+ event.notification!.body.toString());
+    // });
+    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    //   print('Message clicked!');
+    // });
   }
 
   @override
   Future<bool> signup(String email, String password) async {
     String emm = ((email) != null ? email : "").toString();
     final User? firebaseUser = (await _firebaseAuth
-        .createUserWithEmailAndPassword(email: emm, password: password)
-        .catchError((errMsg) {
+            .createUserWithEmailAndPassword(email: emm, password: password)
+            .catchError((errMsg) {
       print(errMsg);
       return false;
     }))
@@ -70,7 +91,7 @@ class FirebaseCustom extends Authentication {
 
     if (firebaseUser != null) {
       await _registerFCMToken(FirebaseAuth.instance.currentUser!.uid);
-      _registerNotficiations();
+      _registerNotifications();
       return true;
       //user created
       // Map userDataMap = {
@@ -106,8 +127,8 @@ class FirebaseCustom extends Authentication {
       "address": client.address,
       "phoneNumber": client.phoneNumber,
       "isCenter": false,
-      "rating" : 3.4,
-      "type" : "mechanic"
+      "rating": 3.4,
+      "type": "mechanic"
     };
     usersRef.child(uid).set(userDataMap);
     return true;

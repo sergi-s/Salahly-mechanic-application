@@ -15,6 +15,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   //await FirebaseCustom().connectToEmulator();
+  // FirebaseMessaging push notification listener
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
