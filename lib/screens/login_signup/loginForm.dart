@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
@@ -12,10 +15,7 @@ import 'package:salahly_mechanic/widgets/login_signup/Rounded_password.dart';
 import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 
-class LoginForm extends StatelessWidget {
-
-
-
+class LoginForm extends ConsumerWidget {
   LoginForm({
     Key? key,
     required this.size,
@@ -37,7 +37,7 @@ class LoginForm extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: size.width,
       height: defaultlogin,
@@ -87,19 +87,18 @@ class LoginForm extends StatelessWidget {
               // }
               bool check = await fb.login(email, password);
               if (check) {
-
+                ref
+                    .watch(pendingRequestsProvider.notifier)
+                    .listenRequestsFromDatabase();
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text(
-                        'Login successful')));
-                context.go(TestScreenFoula.routeName);
+                    const SnackBar(content: Text('Login successful')));
+                context.go(OngoingScreenDummy.routeName);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text(
-                        'Account isnt Correct !!Please try again')));
-                };
-
-              },
-
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Account isnt Correct !!Please try again')));
+              }
+              ;
+            },
           )
         ],
       ),

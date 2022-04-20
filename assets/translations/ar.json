@@ -17,11 +17,12 @@
   "mechanic": "ميكانيكي",
   "provider": "مزود السحابه",
   "enter_your_problem": "أدخل مشكلتك",
-  "describe_Your_problem": "صِف مشكلتك",
+  "describe_your_problem": "صِف مشكلتك",
   "my_car_is_broke_and_doesnt_work":"سيارتي معطلة ولا تعمل",
   "send": "إرسال",
   "cancel": "إِلغاء",
   "problem":"مشكلة",
   "received_a_new_request" : "تلقيت طلب جديد",
-  "go_to_request": "اذهب الى الطلب"
+  "go_to_request": "اذهب الى الطلب",
+  "ttarequest"
 }
