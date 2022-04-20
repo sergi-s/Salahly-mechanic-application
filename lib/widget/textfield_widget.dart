@@ -19,7 +19,7 @@ class TextFieldWidget extends StatefulWidget {
 }
 
 class _TextFieldWidgetState extends State<TextFieldWidget> {
-  late final TextEditingController controller;
+  late TextEditingController controller;
 
   @override
   void initState() {
@@ -28,12 +28,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
     controller = TextEditingController(text: widget.text);
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -45,6 +45,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           ),
           const SizedBox(height: 7),
           TextField(
+            minLines: 1,
             controller: controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(

@@ -121,13 +121,8 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
         .child(rsa.rsaID!)
         .child("state")
         .set("accepted");
-    state.forEach((element) {
-      if (element == rsa) {
-        removeRSA(element);
-        //ADD IN ONGOING PROVIDER
-        ref.watch(ongoingRequestsProvider.notifier).addRSA(rsa);
-      }
-    });
+
+    removeRSA(rsa);
   }
 
   bool onTopOverlay = false;

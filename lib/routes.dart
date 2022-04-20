@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/OnGoingRequests.dart';
-import 'package:salahly_mechanic/screens/Requests/ViewRequests.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
@@ -13,7 +13,7 @@ import 'package:salahly_mechanic/screens/test_foula.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: MechanicProfilePage.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -48,8 +48,8 @@ class Routing {
             builder: (context, state) => HomeScreen(),
           ),
           GoRoute(
-            path: ViewRequests.routeName,
-            builder: (context, state) => ViewRequests(),
+            path: PendingRequests.routeName,
+            builder: (context, state) => PendingRequests(),
           ),
           GoRoute(
             path: OnGoingRequests.routeName,

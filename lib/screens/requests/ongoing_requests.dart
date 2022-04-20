@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,7 @@ class OngoingScreenDummy extends ConsumerWidget {
     PendingRequestsNotifier pendingNotifier =
         ref.watch(pendingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
+    FirebaseAuth.instance.signOut();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -44,7 +46,8 @@ class OngoingScreenDummy extends ConsumerWidget {
                   ElevatedButton(
                       onPressed: () {
                         // context.go(TestScreenFoula.routeName);
-                        context.push(PENDINGVIEW.routeName);
+                        // context.push(PENDINGVIEW.routeName);
+                        context.push(PendingRequests.routeName);
                       },
                       child: Text('go to pending screen')),
                   ElevatedButton(onPressed: (){
