@@ -89,7 +89,7 @@ class PENDINGVIEW extends ConsumerWidget {
               // print(RSA.typeToString(pendingRequests[index].requestType!));
               return ListTile(
                 leading: const Icon(Icons.directions_car),
-                title: Text(RSA.typeToString(pendingRequests[index].requestType!)),//Text('ID: '+pendingRequests[index].rsaID!),
+                title: Text(RSA.requestTypeToString(pendingRequests[index].requestType!)),//Text('ID: '+pendingRequests[index].rsaID!),
                 subtitle: Text('ID: '+pendingRequests[index].rsaID!),//Text(pendingRequests[index].state.toString()),
                 trailing: Container(
                   width: 100,
@@ -148,7 +148,7 @@ class ONGOINGVIEW extends ConsumerWidget {
                   //     arguments: ongoingRequests[index]);
                 },
                 leading: Icon(Icons.directions_car),
-                title: Text(RSA.typeToString(ongoingRequests[index].requestType!).tr()),//Text('ID: '+ongoingRequests[index].rsaID!),
+                title: Text(RSA.requestTypeToString(ongoingRequests[index].requestType!).tr()),//Text('ID: '+ongoingRequests[index].rsaID!),
                 subtitle: Text(ongoingRequests[index].state.toString()),
                 trailing: Container(
                   width: 100,

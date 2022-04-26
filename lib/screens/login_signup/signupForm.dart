@@ -36,9 +36,37 @@ class SignUpForm extends StatelessWidget {
   updateconfirmpassword(String confpass) {
     confirmpassword = confpass;
   }
-
+signupFunction(BuildContext context)async{
+  if (!Validation.Validator.emailValidator(email)) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Invalid Email!! Please try again')));
+  }
+  // if (!Validation.Validator.passValidator(password)) {
+  //   return ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //           content: Text('Invalid Password!! Please try again')));
+  // }
+  if (confirmpassword != password) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+            Text('Invalid Confirmation!! Please try again')));
+  }
+  bool check = await fb.signup(email, password);
+  if (check) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Account is Created Sucessfully ')));
+  } else {
+    return ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account is Already Used!!')));
+  }
+  context.go(Registration.routeName, extra: email);
+}
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       width: MediaQuery.of(context).size.width,
       height: defaultlogin,
@@ -55,7 +83,7 @@ class SignUpForm extends StatelessWidget {
           //   ),
           // ),
           SizedBox(height: 40),
-          Image.asset('assets/images/logo ta5arog 2.png'),
+          Image.asset('assets/images/logo ta5arog 2.png',width:300,),
           //SvgPicture.assets('assets/images/icon.svg'),
           SizedBox(height: 40),
           // RounedInput(
@@ -78,37 +106,24 @@ class SignUpForm extends StatelessWidget {
           ),
           //RounedInput(icon: Icons.phone, hint: 'phone_number'.tr(), fn:updatePhonenumber,),
           SizedBox(height: 10),
-          RoundedButton(
-            title: 'sign_up'.tr(),
-            onPressedFunction: () async {
-              if (!Validation.Validator.emailValidator(email)) {
-                return ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Invalid Email!! Please try again')));
-              }
-              // if (!Validation.Validator.passValidator(password)) {
-              //   return ScaffoldMessenger.of(context).showSnackBar(
-              //       const SnackBar(
-              //           content: Text('Invalid Password!! Please try again')));
-              // }
-              if (confirmpassword != password) {
-                return ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content:
-                            Text('Invalid Confirmation!! Please try again')));
-              }
-              bool check = await fb.signup(email, password);
-              if (check) {
-                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Account is Created Sucessfully ')));
-              } else {
-                return ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Account is Already Used!!')));
-              }
-              context.go(Registration.routeName, extra: email);
-            },
-
+          SizedBox(
+            width: size.width*0.4,
+            height: 40,
+            child: RaisedButton(
+              color: Colors.grey[200],
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(
+                      12)),
+              onPressed: () {
+                signupFunction(context);
+              },
+              child: Text(
+                "Signup".tr(),
+                style: TextStyle(
+                   color: Color(0xFF193566)),
+              ),
+            ),
           ),
 
         ],

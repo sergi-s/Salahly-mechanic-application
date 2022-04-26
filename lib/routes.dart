@@ -4,8 +4,11 @@ import 'package:salahly_mechanic/screens/Requests/OnGoingRequests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
+import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
+import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
@@ -13,7 +16,7 @@ import 'package:salahly_mechanic/screens/test_foula.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: MechanicProfilePage.routeName,
+        initialLocation:TestScreenAya.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -71,6 +74,21 @@ class Routing {
             path: PENDINGVIEW.routeName,
             builder: (context, state) => PENDINGVIEW(),
           ),
+          GoRoute(
+            path: ReportScreen.routeName +":requestType&:rsaId",
+            name: 'ReportScreen',
+            builder: (context, state) {
+              return ReportScreen(
+                  rsaId: state.params["rsaId"] as String,
+                  requestType: state.params["requestType"] as String);},
+
+          ),
+          GoRoute(
+              path: Switcher.routeName,
+              builder: (context, state) => Switcher()),
+          GoRoute(
+              path:TestScreenAya.routeName,
+              builder: (context, state) => TestScreenAya()),
         ],
       );
 }

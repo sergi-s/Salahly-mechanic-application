@@ -60,7 +60,7 @@ class PendingRequests extends ConsumerWidget {
                     children: <Widget>[
                       Text(
                         // Client.carmodel,
-                        RSA.typeToString(rsa.requestType!),
+                        RSA.requestTypeToString(rsa.requestType!),
                         style: const TextStyle(
                             color: Color(0xff193566),
                             fontSize: 20,
