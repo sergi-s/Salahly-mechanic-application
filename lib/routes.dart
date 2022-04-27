@@ -13,7 +13,7 @@ import 'package:salahly_mechanic/screens/test_foula.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: MechanicProfilePage.routeName,
+        initialLocation: CheckLogin.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,

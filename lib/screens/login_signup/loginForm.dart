@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
@@ -85,11 +87,15 @@ class LoginForm extends ConsumerWidget {
               //       const SnackBar(
               //           content: Text('Invalid Password!! Please try again')));
               // }
+
+              String email = "fou@fou.fou";
+              String password = "foufou";
               bool check = await fb.login(email, password);
               if (check) {
-                ref
-                    .watch(pendingRequestsProvider.notifier)
-                    .listenRequestsFromDatabase();
+
+                    listenRequestsFromDatabaseByNotifiers(ref
+                        .watch(pendingRequestsProvider.notifier), ref
+                        .watch(ongoingRequestsProvider.notifier));
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Login successful')));
                 context.go(OngoingScreenDummy.routeName);

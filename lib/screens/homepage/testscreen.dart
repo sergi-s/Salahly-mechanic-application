@@ -25,10 +25,10 @@ class SetAvalability extends StatelessWidget {
           activeBgColors: [[Colors.red],[Colors.green]],
           onToggle: (index) async{
             if(index==0){
-            await NearbyLocations.deleteNearbyMechanicsAndProviders();
+            await NearbyLocations.setAvailabilityOff();
             }
             if(index==1){
-              await NearbyLocations.addNearbyMechanicsAndProviders();
+              await NearbyLocations.setAvailabilityOn();
             }
 
           },
