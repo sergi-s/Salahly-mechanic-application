@@ -8,7 +8,7 @@ import 'package:salahly_models/models/client.dart' as Models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/constants.dart';
-
+import 'package:salahly_models/models/report.dart' as Rep;
 class FirebaseCustom extends Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -162,5 +162,22 @@ class FirebaseCustom extends Authentication {
       }
     } else
       print("Not using emulator");
+  }
+  Future<bool> report(Rep.Report report, String rsaID ,String requestType) async {
+    Map reportDataMap = {
+      "carType" :report.carType,
+      "actualdistance": report.actualDistance,
+      "systemname": report.systemName,
+      "maintancecost": report.maintenanceCost,
+      "maintancedescription": report.maintenanceDescription,
+      "othercost": report.otherCost,
+      "partcost": report.partCost,
+      "partname": report.partName,
+      "partid": report.partID,
+      "distance": report.distance,
+
+    };
+    dbRef.child("wsa").child(rsaID).child("report").set(reportDataMap);
+    return true;
   }
 }

@@ -16,17 +16,17 @@ class InputContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       width: size.width*0.8,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color:Colors.grey[200],
-          boxShadow:[
-            BoxShadow(
-              color: Colors.blueGrey,
-              blurRadius: 2.0,
-              spreadRadius: 0.0,
-              offset:Offset(3,0),
+        borderRadius: BorderRadius.circular(30),
+        color:Colors.grey[200],
+        boxShadow:[
+          BoxShadow(
+            color: Colors.blueGrey,
+            blurRadius: 2.0,
+            spreadRadius: 0.0,
+            offset:Offset(3,0),
 
-            ),
-          ]
+          ),
+        ]
       ),
 
       child: child,

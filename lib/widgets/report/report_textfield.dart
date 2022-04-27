@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:salahly_mechanic/widgets/login_signup/Input_container.dart';
 
-class RounedInput extends StatelessWidget {
-  RounedInput({
+import 'Input_container.dart';
+
+// ignore: camel_case_types
+class BuildMultipleTextField extends StatelessWidget {
+  BuildMultipleTextField({
     Key? key,
-    required this.icon,
-    required this.hint,
+    required this.hintText,
+
     required this.fn,
   }) : super(key: key);
+  final String hintText;
 
-  final IconData icon;
-  final String hint;
   final TextEditingController _textEditingController = TextEditingController();
   final Function fn;
 
@@ -19,20 +20,16 @@ class RounedInput extends StatelessWidget {
     return InputContainer(
       child: TextField(
         onChanged: (value) {
-          fn(value);
           _textEditingController.text=value;
+          fn(value);
 
         },
-       // controller: _textEditingController,
-        cursorColor: Colors.blue[900],
+        cursorColor: Colors.blue,
         decoration: InputDecoration(
-          icon: Icon(
-            icon,
-            color: Color(0xFF193566),
-          ),
-          hintText: hint,
+          hintText: hintText,
           border: InputBorder.none,
         ),
+        maxLines: 10,
       ),
     );
   }

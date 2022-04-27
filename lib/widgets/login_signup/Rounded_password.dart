@@ -20,14 +20,14 @@ final String hint;
       child:TextField(
 
         onChanged: (value) {
+          _textEditingController.text=value;
           function(value);
 
         },
-        controller: _textEditingController,
         cursorColor: Colors.blue,
         obscureText: true,
         decoration:InputDecoration(
-          icon:   Icon(Icons.lock,color: Colors.blue,),
+          icon:   Icon(Icons.lock,color: Color(0xFF193566),),
           hintText: hint,
           border: InputBorder.none,
 
