@@ -501,9 +501,9 @@ class ReportScreen extends StatelessWidget {
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFF193566)),
                                               ),
-                                              // SizedBox(
-                                              //   width: 10,
-                                              // ),
+                                              SizedBox(
+                                                width: 10,height: 10,
+                                              ),
                                               Expanded(
                                                 child: Container(
                                                   child: Text(

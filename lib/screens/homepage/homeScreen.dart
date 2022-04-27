@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(child:ElevatedButton(
         onPressed: (){
-          context.go(SetAvalability.routeName);
+          context.go(Switcher.routeName);
         }, child:Text("press here") ,
       )));
 

@@ -16,7 +16,7 @@ import 'package:salahly_mechanic/screens/test_foula.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation:TestScreenAya.routeName,
+        initialLocation: LoginSignupScreen.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -46,10 +46,7 @@ class Routing {
             path: OngoingScreenDummy.routeName,
             builder: (context,state) => OngoingScreenDummy()
           ),
-          GoRoute(
-            path: HomeScreen.routeName,
-            builder: (context, state) => HomeScreen(),
-          ),
+
           GoRoute(
             path: PendingRequests.routeName,
             builder: (context, state) => PendingRequests(),

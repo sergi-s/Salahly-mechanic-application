@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../classes/firebase/customgeofire.dart';
 // import 'package:flutter_icons/flutter_icons.dart';
 
@@ -21,17 +20,17 @@ class _SwitcherState extends State<Switcher> {
   @override
   void initState() {
     super.initState();
+    final _controller = ValueNotifier<bool>(false);
     getSavedAvailability();
     _controller.addListener(() {
       setState(() async {
-        if (_controller.value) {
-          await NearbyLocations.deleteNearbyMechanicsAndProviders();
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setBool("isAvailable", false);
-        } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (_controller.value) {// boolean = true
           await NearbyLocations.addNearbyMechanicsAndProviders();
-          SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setBool("isAvailable", true);
+        } else {
+          await NearbyLocations.deleteNearbyMechanicsAndProviders();
+          prefs.setBool("isAvailable", false);
         }
       });
     });
@@ -41,7 +40,8 @@ class _SwitcherState extends State<Switcher> {
     bool? isAvailableSP = prefs.getBool("isAvailable");
     if (isAvailableSP != null && isAvailableSP){
       isAvailable=true;}
-    setState(() {});
+
+    setState(() { });
   }
   @override
   Widget build(BuildContext context) {

@@ -20,10 +20,10 @@ final String hint;
       child:TextField(
 
         onChanged: (value) {
+          _textEditingController.text=value;
           function(value);
 
         },
-        controller: _textEditingController,
         cursorColor: Colors.blue,
         obscureText: true,
         decoration:InputDecoration(

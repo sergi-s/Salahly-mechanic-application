@@ -20,10 +20,10 @@ class RounedInput extends StatelessWidget {
       child: TextField(
         onChanged: (value) {
           fn(value);
+          _textEditingController.text=value;
 
         },
-
-        controller: _textEditingController,
+       // controller: _textEditingController,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
           icon: Icon(

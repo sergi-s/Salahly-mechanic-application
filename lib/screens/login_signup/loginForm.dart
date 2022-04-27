@@ -105,7 +105,7 @@ loginFunction(BuildContext context , WidgetRef ref)async{
               shape: RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.circular(
-                      12)),
+                      12),),
               onPressed: () {
                 loginFunction(context, ref);
               },

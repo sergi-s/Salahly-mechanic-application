@@ -26,7 +26,7 @@ class SignUpForm extends StatelessWidget {
 
   updateEmail(String e) {
     email = e;
-    print("ana ana ana moza" + email);
+    print("ana ana ana moza"+"  " + email);
   }
 
   updatepassword(String pass) {
@@ -37,11 +37,11 @@ class SignUpForm extends StatelessWidget {
     confirmpassword = confpass;
   }
 signupFunction(BuildContext context)async{
-  if (!Validation.Validator.emailValidator(email)) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Invalid Email!! Please try again')));
-  }
+  // if (!Validation.Validator.emailValidator(email)) {
+  //   return ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //           content: Text('Invalid Email!! Please try again')));
+  // }
   // if (!Validation.Validator.passValidator(password)) {
   //   return ScaffoldMessenger.of(context).showSnackBar(
   //       const SnackBar(
@@ -53,7 +53,9 @@ signupFunction(BuildContext context)async{
             content:
             Text('Invalid Confirmation!! Please try again')));
   }
+  print(email+"  "+password);
   bool check = await fb.signup(email, password);
+  print(email+"  "+password);
   if (check) {
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
