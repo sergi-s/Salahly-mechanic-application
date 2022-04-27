@@ -6,6 +6,7 @@ import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_li
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
+import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
@@ -28,7 +29,7 @@ class OngoingScreenDummy extends ConsumerWidget {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 300,
+              height: 500,
               child: Column(
 
                 children: [
@@ -59,9 +60,12 @@ class OngoingScreenDummy extends ConsumerWidget {
                       onPressed: () {
                         // context.go(TestScreenFoula.routeName);
                         // contex//t.push(PENDINGVIEW.routeName);
-                        context.push(SetAvalability.routeName);
+                        context.push(Switcher.routeName);
                       },
                       child: Text('Set availability')),
+                  ElevatedButton(onPressed: (){
+                    context.goNamed("ReportScreen",params: {"requestType":"wsa" ,"rsaId":"12345678"} );
+                  }, child: Text("Write report screen")),
                   ElevatedButton(onPressed: (){
                     FirebaseAuth.instance.signOut();
                     context.go(LoginSignupScreen.routeName);

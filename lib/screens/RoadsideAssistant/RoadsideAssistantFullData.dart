@@ -192,7 +192,9 @@ class _RoadsideAssistantFullDataState extends State<RoadsideAssistantFullData> {
                 left: 80,
                 right: 80,
               child: FloatingActionButton.extended(
-                  onPressed: (){}, label: const Text('Rsa Report'),backgroundColor:const Color(0xff193566) , icon: const Icon(Icons.fact_check_rounded)),
+                  onPressed: (){
+
+                  }, label: const Text('Rsa Report'),backgroundColor:const Color(0xff193566) , icon: const Icon(Icons.fact_check_rounded)),
             ),
           ],
         ),

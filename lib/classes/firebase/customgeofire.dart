@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:salahly_mechanic/utils/location/getuserlocation.dart';
 import 'package:salahly_mechanic/main.dart';
@@ -8,7 +9,12 @@ class NearbyLocations {
 
   static setAvailabilityOn() async {
     _initializeGeoFireOnAvailable();
-    CustomLocation loc_1 = await getUserLocation();
+    // CustomLocation loc_1 = await getUserLocation();
+    DatabaseReference workshopLocaiton = dbRef.child("users").child(FirebaseAuth.instance.currentUser!.uid).child("workshop");
+    print("Data: "+(await workshopLocaiton.get()).value.toString());
+    double longitude = (await workshopLocaiton.child("longitude").get()).value as double;
+    double latitude = (await workshopLocaiton.child("latitude").get()).value as double;
+    CustomLocation loc_1 = CustomLocation(longitude: longitude, latitude: latitude);
     loc_1 = CustomLocation(latitude: loc_1.latitude, longitude: loc_1.longitude, name: FirebaseAuth.instance.currentUser!.uid);
     //31.207545, 29.919915
     return await _addLocToDB(loc_1);

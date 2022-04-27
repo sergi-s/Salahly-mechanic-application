@@ -15,11 +15,13 @@ import 'package:easy_localization/easy_localization.dart';
 
 
 bool onTopOverlay = false;
-
+bool alreadyListening = false;
 
 listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,OngoingRequestsNotifier ongoingRequestsNotifier) async {
   // PendingRequestsNotifier pendingNotifier = ref.watch(pendingRequestsProvider.notifier);
   //need to be refactored to listen only to new requests
+  if(alreadyListening) return;
+  alreadyListening = true;
   DatabaseReference requestsRef = FirebaseDatabase.instance
       .ref()
       .child("mechanicsRequests")
@@ -83,7 +85,7 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,On
               );
             }
           }
-          else if(event.child("state").value == "chosen"){
+          else if(event.child("state").value == "chosen" || event.child("state").value == "accepted" ){
             print("chosen listener inside if");
             ongoingRequestsNotifier.addRSA(r);
             // ref.watch(ongoingRequestsProvider.notifier).addRSA(r);

@@ -83,12 +83,14 @@ Future<void>_selectTime(BuildContext context) async {
                 activeBgColors: [[Color(0xFF193566)],[Color(0xFF193566)]],
                 onToggle: (index) async{
                   if(index==0){
-                  await NearbyLocations.deleteNearbyMechanicsAndProviders();
+                    print("isAvailable is false");
+                  await NearbyLocations.setAvailabilityOff();
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.setBool("isAvailable", false);
                   }
                   if(index==1){
-                    await NearbyLocations.addNearbyMechanicsAndProviders();
+                    print("isAvailable is true");
+                    await NearbyLocations.setAvailabilityOn();
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setBool("isAvailable", true);
                   };

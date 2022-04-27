@@ -50,9 +50,9 @@ loginFunction(BuildContext context , WidgetRef ref)async{
   // }
   bool check = await fb.login(email, password);
   if (check) {
-    ref
-        .watch(pendingRequestsProvider.notifier)
-        .listenRequestsFromDatabase();
+    listenRequestsFromDatabaseByNotifiers(ref
+        .watch(pendingRequestsProvider.notifier), ref
+        .watch(ongoingRequestsProvider.notifier));
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successful')));
     context.go(HomeScreen.routeName);
