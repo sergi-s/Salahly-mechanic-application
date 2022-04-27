@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
+import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +19,9 @@ class OngoingScreenDummy extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     PendingRequestsNotifier pendingNotifier =
         ref.watch(pendingRequestsProvider.notifier);
+    OngoingRequestsNotifier ongoingRequestsNotifier =
+    ref.watch(ongoingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
-    FirebaseAuth.instance.signOut();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -27,10 +30,12 @@ class OngoingScreenDummy extends ConsumerWidget {
             Container(
               height: 300,
               child: Column(
+
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        pendingNotifier.listenRequestsFromDatabase();
+                        // pendingNotifier.startRequestsListener();
+                        listenRequestsFromDatabaseByNotifiers(pendingNotifier,ongoingRequestsNotifier);
                       },
                       child: Text("Start stream")),
                   Text("Number of pending requests found " +
@@ -50,6 +55,13 @@ class OngoingScreenDummy extends ConsumerWidget {
                         context.push(PendingRequests.routeName);
                       },
                       child: Text('go to pending screen')),
+                  ElevatedButton(
+                      onPressed: () {
+                        // context.go(TestScreenFoula.routeName);
+                        // contex//t.push(PENDINGVIEW.routeName);
+                        context.push(SetAvalability.routeName);
+                      },
+                      child: Text('Set availability')),
                   ElevatedButton(onPressed: (){
                     FirebaseAuth.instance.signOut();
                     context.go(LoginSignupScreen.routeName);

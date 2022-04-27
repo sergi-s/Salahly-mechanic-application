@@ -80,54 +80,10 @@ class PendingRequests extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () async {
-                          if (await confirm(
-                            context,
-                            title: const Text('Confirm').tr(),
-                            content:
-                                 Text('Would you like to Accept Request?'.tr()),
-                            textOK: const Text('Yes').tr(),
-                            textCancel: const Text('No').tr(),
-                          )) {
-                            onConfirmRequest();
-                            return print('pressedOK');
-                          }
-                          return print('pressedCancel');
-                        },
-                        icon: const Icon(
-                          Icons.check,
-                          size: 35,
-                          color: Colors.green,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          if (await confirm(
-                            context,
-                            title: const Text('Confirm').tr(),
-                            content:
-                                const Text('Would you like to Refuse Request?')
-                                    .tr(),
-                            textOK: const Text('Yes').tr(),
-                            textCancel: const Text('No').tr(),
-                          )) {
-                            onRefuseRequest();
-                            return print('pressedOK');
-                          }
-                          return print('pressedCancel');
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          size: 35,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
+                  trailing: (rsa.state == RSAStates.mechanicConfirmed && rsa.requestType != RequestType.RSA)?
+                  Text("Pending",style: TextStyle(color: Colors.red,fontSize: 18),)
+                      :actionsRow(onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest)
+                  ,
                 ),
               ],
             ),
@@ -208,6 +164,67 @@ class PendingRequests extends ConsumerWidget {
               });
             }).toList()),
       ),
+    );
+  }
+}
+
+class actionsRow extends StatelessWidget {
+  const actionsRow({
+    Key? key,
+    required this.onConfirmRequest,
+    required this.onRefuseRequest
+  }) : super(key: key);
+  final Function onConfirmRequest,onRefuseRequest;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        IconButton(
+          onPressed: () async {
+            if (await confirm(
+              context,
+              title: const Text('Confirm').tr(),
+              content:
+                   Text('Would you like to Accept Request?'.tr()),
+              textOK: const Text('Yes').tr(),
+              textCancel: const Text('No').tr(),
+            )) {
+              onConfirmRequest();
+              return print('pressedOK');
+            }
+            return print('pressedCancel');
+          },
+          icon: const Icon(
+            Icons.check,
+            size: 35,
+            color: Colors.green,
+          ),
+        ),
+        IconButton(
+          onPressed: () async {
+            if (await confirm(
+              context,
+              title: const Text('Confirm').tr(),
+              content:
+                  const Text('Would you like to Refuse Request?')
+                      .tr(),
+              textOK: const Text('Yes').tr(),
+              textCancel: const Text('No').tr(),
+            )) {
+              onRefuseRequest();
+              return print('pressedOK');
+            }
+            return print('pressedCancel');
+          },
+          icon: const Icon(
+            Icons.close,
+            size: 35,
+            color: Colors.red,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
+import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 // import 'package:salahly_mechanic/classes/models/client.dart';
 // import 'package:salahly_mechanic/utils/validation.dart';
@@ -74,7 +75,7 @@ class Registration extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text(' Sucessfull ')));
-      context.go(TestScreenFoula.routeName);
+      context.go(OngoingScreenDummy.routeName);
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to Register!!')));
