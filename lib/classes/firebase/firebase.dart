@@ -121,7 +121,6 @@ class FirebaseCustom extends Authentication {
     return false;
   }
 
-  @override
   Future<bool> registration(Models.Client client) async {
     final User? user = _firebaseAuth.currentUser;
     if (user == null) {

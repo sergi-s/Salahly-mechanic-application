@@ -55,7 +55,7 @@ loginFunction(BuildContext context , WidgetRef ref)async{
         .watch(ongoingRequestsProvider.notifier));
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successful')));
-    context.go(HomeScreen.routeName);
+    context.go(OngoingScreenDummy.routeName);
   } else {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Account isnt Correct !!Please try again')));
