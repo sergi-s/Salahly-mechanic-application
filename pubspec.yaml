@@ -60,6 +60,10 @@ dependencies:
   flutter_advanced_switch: ^3.0.1
   syncfusion_flutter_datepicker: ^20.1.50
   reminders: ^0.0.2
+  time_planner: ^0.0.4
+  localstore: ^1.2.3
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

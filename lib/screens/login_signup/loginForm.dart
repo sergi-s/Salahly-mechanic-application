@@ -7,6 +7,7 @@ import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Rounded_Bottom.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
@@ -48,6 +49,8 @@ loginFunction(BuildContext context , WidgetRef ref)async{
   //       const SnackBar(
   //           content: Text('Invalid Password!! Please try again')));
   // }
+  email = "pro@pro.pro";
+  password = "propro";
   bool check = await fb.login(email, password);
   if (check) {
     listenRequestsFromDatabaseByNotifiers(ref
@@ -55,10 +58,14 @@ loginFunction(BuildContext context , WidgetRef ref)async{
         .watch(ongoingRequestsProvider.notifier));
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successful')));
-    context.go(OngoingScreenDummy.routeName);
+    if(userType == null){
+      context.go(Registration.routeName,extra: email);
+    }else{
+      context.go(OngoingScreenDummy.routeName);
+    }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Account isnt Correct !!Please try again')));
+        content: Text('Account isn\'t Correct !!Please try again')));
   }
   ;
 }

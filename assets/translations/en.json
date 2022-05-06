@@ -42,5 +42,13 @@
   "description": "Description",
   "please_add_fields": "Please Add Fields",
   "car_type": "Car Type",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "title": "Title",
+  "add_new_task": "Add new task",
+  "start_time": "Start time",
+  "start_date": "Start date",
+  "duration": "Duration",
+  "end_time": "End time",
+  "color": "Color",
+  "request" : "Request"
 }
