@@ -25,7 +25,7 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
 
   if (alreadyListening) return;
   var reqVar = "";
-  if (userType == null) userType = await getUserType();
+  userType ??= await getUserType();
   if (userType == Type.provider) {
     reqVar = "providersRequests";
   } else if (userType == Type.mechanic) {
@@ -99,12 +99,16 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
                 slideDismissDirection: DismissDirection.up,
               );
             }
-          } else if (event.child("state").value == "chosen" ||
-              event.child("state").value == "accepted") {
+          } else if ((event.child("state").value == "chosen") ||
+             ( event.child("state").value == "accepted" && event.child('type').value == 'rsa')) {
             ongoingRequestsNotifier.addRSA(r);
-          } else if (event.value == "done") {
+          } else if (event.child("state").value == "done") {
             //add in shared preferences
             pendingNotifier.doneRSA.add(r);
+          }
+          else if (event.child("state").value == "accepted") { //automatically tests wsa,tta
+            //add in shared preferences
+            pendingNotifier.addRSA(r);
           }
         } else {
           // Already exists

@@ -18,18 +18,36 @@ import 'package:salahly_mechanic/widgets/login_signup/Rounded_password.dart';
 import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 
-class LoginForm extends ConsumerWidget {
+class LoginForm extends  ConsumerStatefulWidget {
+  var size;
+
+  var defaultlogin;
+
   LoginForm({
     Key? key,
     required this.size,
     required this.defaultlogin,
   }) : super(key: key);
 
-  final Size size;
-  final double defaultlogin;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _LoginFormState();
+  }
+
+}
+class _LoginFormState extends ConsumerState<LoginForm> {
+  late final Size size;
+  late final double defaultlogin;
   String email = "";
   String password = "";
   FirebaseCustom fb = FirebaseCustom();
+
+  @override
+  initState() {
+    super.initState();
+    size = widget.size;
+    defaultlogin = widget.defaultlogin;
+  }
 
   updateEmail(String e) {
     email = e;
@@ -57,7 +75,7 @@ class LoginForm extends ConsumerWidget {
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Login successful')));
-      context.go(HomeScreen.routeName);
+      context.go(OngoingScreenDummy.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Account isnt Correct !!Please try again')));
@@ -65,7 +83,8 @@ class LoginForm extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+
     return Container(
       width: size.width,
       height: defaultlogin,

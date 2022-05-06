@@ -51,7 +51,7 @@ class _AddSchedulerTaskScreenState extends State<AddSchedulerTaskScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                ScheduleTask scheduleTask = ScheduleTask(startDate: dateTime!, title: title, color: color, id: id);
+                // ScheduleTask scheduleTask = ScheduleTask(startDate: dateTime!, title: title, color: color, id: id);
               },
               child: Text('add_scheduler_task'),
             )
