@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -12,8 +14,10 @@ import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_mechanic/utils/requests_memory_caching.dart';
 import 'package:salahly_mechanic/widgets/notifications/message_notification.dart';
+import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:go_router/go_router.dart';
@@ -29,11 +33,10 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
   PendingRequestsNotifier(this.ref) : super([]);
   final Ref ref;
 
-
   // Setters
 
   addRSA(RSA rsa) {
-    if(state.contains(rsa)) return;
+    if (state.contains(rsa)) return;
     state = [...state, rsa];
   }
 
@@ -67,12 +70,11 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
     return el;
   }
 
-
   RSA _prepareRSA(String id) {
     if (rsaCache.containsKey(id)) {
       return rsaCache[id]!;
     }
-    RSA r = loadRequestFromDB(id,"rsa");
+    RSA r = loadRequestFromDB(id, "rsa");
     addRSA(r);
     return r;
   }
@@ -85,6 +87,14 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
 
   denyRequest(RSA rsa) {
     rsa = rsa.copyWith(state: RSAStates.canceled);
+    var reqVar = "";
+    if (userType == Type.provider) {
+      reqVar = "providersRequests";
+    } else if (userType == Type.mechanic) {
+      reqVar = "mechanicsRequests";
+    } else {
+      return;
+    }
     // dbRef
     //     .child(RSA.typeToString(rsa.requestType!).toLowerCase())
     //     .child(rsa.rsaID!)
@@ -92,7 +102,7 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
     //     .child(FirebaseAuth.instance.currentUser!.uid)
     //     .set("denied");
     dbRef
-        .child("mechanicsRequests")
+        .child(reqVar)
         .child(FirebaseAuth.instance.currentUser!.uid)
         .child(rsa.rsaID!)
         .child("state")
@@ -100,24 +110,48 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
     removeRSA(rsa);
   }
 
-  acceptRequest(RSA rsa) {
-    rsa = rsa.copyWith(state: RSAStates.mechanicConfirmed);
+  Future<bool> acceptRequest(RSA rsa) async {
+    var reqVar = "";
+    if (userType == Type.provider) {
+      reqVar = "providersRequests";
+      rsa = rsa.copyWith(state: RSAStates.providerConfirmed);
+    } else if (userType == Type.mechanic) {
+      reqVar = "mechanicsRequests";
+      rsa = rsa.copyWith(state: RSAStates.mechanicConfirmed);
+    } else {
+      return false;
+    }
     dbRef
-        .child("mechanicsRequests")
+        .child(reqVar)
         .child(FirebaseAuth.instance.currentUser!.uid)
         .child(rsa.rsaID!)
         .child("state")
         .set("accepted");
-    if(rsa.requestType == RequestType.RSA) {
+    if (rsa.requestType == RequestType.RSA) {
+      await Future.delayed(const Duration(seconds: 3));
       removeRSA(rsa);
-      ref.watch(ongoingRequestsProvider.notifier).addRSA(rsa);
-    }else {
+      dbRef
+          .child(reqVar)
+          .child(FirebaseAuth.instance.currentUser!.uid)
+          .child(rsa.rsaID!)
+          .child("state")
+          .get()
+          .then((value) async {
+        if (value.value != "timeout") {
+          ref.watch(ongoingRequestsProvider.notifier).addRSA(rsa);
+          return true;
+        } else {
+          removeRSAById(rsa.rsaID!);
+          return false;
+        }
+      });
+    } else {
       removeRSA(rsa);
       addRSA(rsa);
-      // listenToBeingChosen(rsa,ref);
+      return true;
     }
+    return false;
   }
 
   List<RSA> doneRSA = [];
-
 }

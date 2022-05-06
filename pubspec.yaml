@@ -61,6 +61,10 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.1.50
   google_maps_flutter: ^2.1.2
   reminders: ^0.0.2
+  time_planner: ^0.0.4
+  localstore: ^1.2.3
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

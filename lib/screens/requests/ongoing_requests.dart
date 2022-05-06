@@ -9,6 +9,7 @@ import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
+import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -21,7 +22,7 @@ class OngoingScreenDummy extends ConsumerWidget {
     PendingRequestsNotifier pendingNotifier =
         ref.watch(pendingRequestsProvider.notifier);
     OngoingRequestsNotifier ongoingRequestsNotifier =
-    ref.watch(ongoingRequestsProvider.notifier);
+        ref.watch(ongoingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
     return Scaffold(
       body: SafeArea(
@@ -31,12 +32,12 @@ class OngoingScreenDummy extends ConsumerWidget {
             Container(
               height: 500,
               child: Column(
-
                 children: [
                   ElevatedButton(
                       onPressed: () async {
                         // pendingNotifier.startRequestsListener();
-                        listenRequestsFromDatabaseByNotifiers(pendingNotifier,ongoingRequestsNotifier);
+                        listenRequestsFromDatabaseByNotifiers(
+                            pendingNotifier, ongoingRequestsNotifier);
                       },
                       child: Text("Start stream")),
                   Text("Number of pending requests found " +
@@ -63,17 +64,29 @@ class OngoingScreenDummy extends ConsumerWidget {
                         context.push(Switcher.routeName);
                       },
                       child: Text('Set availability')),
-                  ElevatedButton(onPressed: (){
-                    context.goNamed("ReportScreen",params: {"requestType":"wsa" ,"rsaId":"12345678"} );
-                  }, child: Text("Write report screen")),
-                  ElevatedButton(onPressed: (){
-                    FirebaseAuth.instance.signOut();
-                    context.go(LoginSignupScreen.routeName);
-                  }, child: Text("Log out"))
+                  ElevatedButton(
+                      onPressed: () {
+                        context.goNamed("ReportScreen", params: {
+                          "requestType": "wsa",
+                          "rsaId": "12345678"
+                        });
+                      },
+                      child: Text("Write report screen")),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(SchedulerScreen.routeName);
+                    },
+                    child: Text("Scheduler screen"),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        context.go(LoginSignupScreen.routeName);
+                      },
+                      child: Text("Log out"))
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -83,20 +96,21 @@ class OngoingScreenDummy extends ConsumerWidget {
 
 class PENDINGVIEW extends ConsumerWidget {
   static final routeName = "/pendingviewongoingviewawdawdawdawd";
+
   const PENDINGVIEW({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     PendingRequestsNotifier pendingNotifier =
-    ref.watch(pendingRequestsProvider.notifier);
+        ref.watch(pendingRequestsProvider.notifier);
     List<RSA> pendingRequests = ref.watch(pendingRequestsProvider);
     // print("Length of list "+pendingRequests.length.toString());
     // print("latitude "+pendingRequests[0].location!.latitude.toString());
     return Scaffold(
       appBar: AppBar(
-        title:Text( "Pending requests"),
+        title: Text("Pending requests"),
       ),
-      body:  SafeArea(
+      body: SafeArea(
         child: ListView.builder(
             itemCount: pendingRequests.length,
             itemBuilder: (context, index) {
@@ -105,11 +119,14 @@ class PENDINGVIEW extends ConsumerWidget {
               // print(RSA.typeToString(pendingRequests[index].requestType!));
               return ListTile(
                 leading: const Icon(Icons.directions_car),
-                title: Text(RSA.requestTypeToString(pendingRequests[index].requestType!)),//Text('ID: '+pendingRequests[index].rsaID!),
-                subtitle: Text('ID: '+pendingRequests[index].rsaID!),//Text(pendingRequests[index].state.toString()),
+                title: Text(RSA
+                    .requestTypeToString(pendingRequests[index].requestType!)),
+                //Text('ID: '+pendingRequests[index].rsaID!),
+                subtitle: Text('ID: ' + pendingRequests[index].rsaID!),
+                //Text(pendingRequests[index].state.toString()),
                 trailing: Container(
                   width: 100,
-             child: Row(
+                  child: Row(
                     children: [
                       IconButton(
                         onPressed: () {
@@ -137,23 +154,23 @@ class PENDINGVIEW extends ConsumerWidget {
   }
 }
 
-
 class ONGOINGVIEW extends ConsumerWidget {
   static final routeName = "/ongoingviewawdawdawdawd";
+
   const ONGOINGVIEW({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     OngoingRequestsNotifier pendingNotifier =
-    ref.watch(ongoingRequestsProvider.notifier);
+        ref.watch(ongoingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
     // print("Length of list "+ongoingRequests.length.toString());
     // print("latitude "+ongoingRequests[0].location!.latitude.toString());
     return Scaffold(
       appBar: AppBar(
-        title:Text( "Ongoing requests"),
+        title: Text("Ongoing requests"),
       ),
-      body:  SafeArea(
+      body: SafeArea(
         child: ListView.builder(
             itemCount: ongoingRequests.length,
             itemBuilder: (context, index) {
@@ -164,14 +181,15 @@ class ONGOINGVIEW extends ConsumerWidget {
                   //     arguments: ongoingRequests[index]);
                 },
                 leading: Icon(Icons.directions_car),
-                title: Text(RSA.requestTypeToString(ongoingRequests[index].requestType!).tr()),//Text('ID: '+ongoingRequests[index].rsaID!),
+                title: Text(RSA
+                    .requestTypeToString(ongoingRequests[index].requestType!)
+                    .tr()),
+                //Text('ID: '+ongoingRequests[index].rsaID!),
                 subtitle: Text(ongoingRequests[index].state.toString()),
                 trailing: Container(
                   width: 100,
                   child: Row(
-                    children: [
-
-                    ],
+                    children: [],
                   ),
                 ),
               );
@@ -180,4 +198,3 @@ class ONGOINGVIEW extends ConsumerWidget {
     );
   }
 }
-
