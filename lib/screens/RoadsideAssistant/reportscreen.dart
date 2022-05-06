@@ -203,9 +203,10 @@ class ReportScreen extends StatelessWidget {
                       onPressed: () {
                         if (system_name == "" && cartype == "") {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('please_add_fields'.tr())));
+                              SnackBar(
+                                  content: Text('please_add_fields'.tr())));
                           const SnackBar(content: Text('Please Add Fields'));
-                        } else
+                        } else {
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -215,8 +216,14 @@ class ReportScreen extends StatelessWidget {
                                 elevation: 16,
                                 child: Container(
                                   height:
-                                      MediaQuery.of(context).size.height / 1.7,
-                                  width: MediaQuery.of(context).size.height,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 1.6,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height,
                                   child: ListView(
                                     children: <Widget>[
                                       SizedBox(height: 20),
@@ -225,7 +232,7 @@ class ReportScreen extends StatelessWidget {
                                           "Report".tr(),
                                           style: TextStyle(
                                               decoration:
-                                                  TextDecoration.underline,
+                                              TextDecoration.underline,
                                               fontSize: 30,
                                               letterSpacing: 2,
                                               color: Color(0xFF193566),
@@ -235,7 +242,7 @@ class ReportScreen extends StatelessWidget {
                                       SizedBox(height: 20),
                                       Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                        MainAxisAlignment.spaceAround,
                                         children: [
                                           Row(
                                             children: [
@@ -502,7 +509,7 @@ class ReportScreen extends StatelessWidget {
                                                     color: Color(0xFF193566)),
                                               ),
                                               SizedBox(
-                                                width: 10,height: 10,
+                                                width: 10, height: 10,
                                               ),
                                               Expanded(
                                                 child: Container(
@@ -510,11 +517,11 @@ class ReportScreen extends StatelessWidget {
                                                     maint_description,
                                                     softWrap: true,
                                                     overflow:
-                                                        TextOverflow.ellipsis,
+                                                    TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
-                                                          FontWeight.normal,
+                                                      FontWeight.normal,
                                                       color: Colors.grey[600],
                                                     ),
                                                   ),
@@ -524,56 +531,66 @@ class ReportScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 70, top: 20),
-                                        child: Row(
-                                          children: [
-                                            RaisedButton(
-                                              color: Colors.blueGrey[300],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(
+                                      //       left: 70, top: 20),
+                                      SizedBox(height: 40,),
+                                         Column(
+                                           mainAxisAlignment: MainAxisAlignment.end,
+                                           crossAxisAlignment: CrossAxisAlignment.end,
+                                           children: [
+                                             Row(
+                                               mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                RaisedButton(
+                                                  color: Colors.blueGrey[300],
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
                                                       BorderRadius.circular(
                                                           12)),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                "Cancel".tr(),
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            RaisedButton(
-                                              color: Color(0xFF193566),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text(
+                                                    "Cancel".tr(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                RaisedButton(
+                                                  color: Color(0xFF193566),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
                                                       BorderRadius.circular(
                                                           12)),
-                                              onPressed: () {
-                                                reportOnPress(context);
-                                              },
-                                              child: Text(
-                                                "Confirm".tr(),
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
+                                                  onPressed: () {
+                                                    reportOnPress(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    "Confirm".tr(),
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ],
                                         ),
-                                      ),
+                                           ],
+                                         ),
+
                                     ],
                                   ),
                                 ),
                               );
                             },
                           );
-                      },
-                    ),
-                    SizedBox(
+                        }
+                      },),
+                    const SizedBox(
                       height: 50,
                     )
                   ],
