@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
+
 // import 'package:salahly_mechanic/classes/models/client.dart';
 // import 'package:salahly_mechanic/utils/validation.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Registration_TextField.dart';
@@ -13,44 +14,47 @@ import 'package:salahly_mechanic/widgets/login_signup/Birthday_Input.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Rounded_Bottom.dart';
 import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 
-class Registration extends StatelessWidget {
+class Registration extends StatefulWidget {
   static final routeName = "/registrationscreen";
 
-   Registration({
+  Registration({
     Key? key,
     required this.emailobj,
   }) : super(key: key);
   final String emailobj;
+
+  @override
+  State<Registration> createState() => _RegistrationState();
+}
+
+class _RegistrationState extends State<Registration> {
   // Validator validation = Validator();
   FirebaseCustom fb = FirebaseCustom();
 
   //late TextEditingController emailController = TextEditingController();
   String username = "";
+
   String phonenumber = "";
+
   String address = "";
+
   String age = "";
+
   // String gender = "";
-
-
   updateusername(String u) {
-    username=u;
-    
+    username = u;
   }
 
   updatephonenumber(String pn) {
-    phonenumber=pn;
+    phonenumber = pn;
   }
 
   updateaddress(String adr) {
-    address=adr;
+    address = adr;
   }
+
   // updateage(String age) {
-  //   this.age=age;
-  // }
-  // updategender(String g) {
-  //  gender=g;
-  // }
-  registerOnPress(BuildContext context)async{
+  registerOnPress(BuildContext context) async {
     // if (!Validator.usernameValidator(username)) {
     //   return ScaffoldMessenger.of(context).showSnackBar(
     //       const SnackBar(
@@ -68,19 +72,24 @@ class Registration extends StatelessWidget {
     //           Text('Invalid age!! Please try again')));
     // }
 
-    Client.Client client=Client.Client(name: username, email: emailobj,address: address,phoneNumber: phonenumber, subscription: Client.SubscriptionTypes.silver);
+    Client.Client client = Client.Client(
+        name: username,
+        email: widget.emailobj,
+        address: address,
+        phoneNumber: phonenumber,
+        subscription: Client.SubscriptionTypes.silver);
 
     bool check = await fb.registration(client);
     if (check) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(' Sucessfull ')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text(' Sucessfull ')));
       context.go(OngoingScreenDummy.routeName);
     } else {
-      return ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to Register!!')));
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Failed to Register!!')));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -90,15 +99,14 @@ class Registration extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xFF193566),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+        title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           Image.asset(
-          'assets/images/logo ta5arog white car.png',
-          fit: BoxFit.contain,
-          height: 32,
-        ),]
-      ),),
+            'assets/images/logo ta5arog white car.png',
+            fit: BoxFit.contain,
+            height: 32,
+          ),
+        ]),
+      ),
       body: Stack(children: [
         CustomPaint(
           child: Container(
@@ -127,8 +135,8 @@ class Registration extends StatelessWidget {
         SingleChildScrollView(
           child: Center(
             child: Container(
-              margin: EdgeInsets.symmetric(vertical:150),
-              height:MediaQuery.of(context).size.height *0.55,
+              margin: EdgeInsets.symmetric(vertical: 150),
+              height: MediaQuery.of(context).size.height * 0.55,
               width: MediaQuery.of(context).size.width,
               // decoration: BoxDecoration(
               //     color: Color(0xFFd1d9e6),
@@ -149,20 +157,33 @@ class Registration extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   // SizedBox(height:180),
-                     Registration_Input(hintText: 'Username', icon: Icons.face,fn:updateusername,),
-                     Registration_Input(hintText: 'PhoneNumber', icon: Icons.phone,fn:updatephonenumber),
-                     Registration_Input(hintText: 'Address', icon: Icons.location_on,fn: updateaddress,),
-                     //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
+                    // SizedBox(height:180),
+                    Registration_Input(
+                      hintText: 'Username',
+                      icon: Icons.face,
+                      fn: updateusername,
+                    ),
+                    Registration_Input(
+                        hintText: 'PhoneNumber',
+                        icon: Icons.phone,
+                        fn: updatephonenumber),
+                    Registration_Input(
+                      hintText: 'Address',
+                      icon: Icons.location_on,
+                      fn: updateaddress,
+                    ),
+                    //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
                     //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
-                   // Registration_Input(hintText: 'Gender', icon: Icons.transgender,fn: updategender,),
-                    SizedBox(height: 10,),
-                    RoundedButton(title: "Register", onPressedFunction: () async {
-                      registerOnPress(context);
-
-                    },
+                    // Registration_Input(hintText: 'Gender', icon: Icons.transgender,fn: updategender,),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    RoundedButton(
+                      title: "Register",
+                      onPressedFunction: () async {
+                        registerOnPress(context);
+                      },
                     )
-
                   ],
                 ),
               ),
