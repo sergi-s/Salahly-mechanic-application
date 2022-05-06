@@ -3,22 +3,31 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:salahly_mechanic/abstract_classes/authentication.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_models/models/client.dart' as Models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/constants.dart';
 import 'package:salahly_models/models/report.dart' as Rep;
+import 'package:shared_preferences/shared_preferences.dart';
 class FirebaseCustom extends Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Future<bool> login(String email, String password) async {
-    // TODO: Magdy
     try {
       String emm = ((email) != null ? email : "").toString();
       final user = await _firebaseAuth.signInWithEmailAndPassword(
           email: emm, password: password);
       if (user != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await dbRef.child("users").child(user.user!.uid).get().then((snapshot) async {
+          if(snapshot.value != null) {
+            prefs.setString("userType", snapshot.child("type").value.toString());
+            userType = await getUserType();
+          }
+        });
         await _registerFCMToken(FirebaseAuth.instance.currentUser!.uid);
         _registerNotifications();
         return true;
@@ -44,7 +53,7 @@ class FirebaseCustom extends Authentication {
         message.data["request_type"] == "wsa") {}
     if (navigatorKey.currentState != null) {
       print('>>> opened screen');
-      navigatorKey.currentState?.pushNamed(PENDINGVIEW.routeName);
+      navigatorKey.currentState?.pushNamed(PendingRequests.routeName);
     } else
       print('>>> navigatorkey state is null');
   }
@@ -53,7 +62,7 @@ class FirebaseCustom extends Authentication {
     FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
       await _registerFCMToken(FirebaseAuth.instance.currentUser!.uid);
     });
-    FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage);
+    // FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage); TODO sh8alha tani
     FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
       print("message received");
       print(event.notification!.body);
@@ -111,7 +120,6 @@ class FirebaseCustom extends Authentication {
     return false;
   }
 
-  @override
   Future<bool> registration(Models.Client client) async {
     final User? user = _firebaseAuth.currentUser;
     if (user == null) {

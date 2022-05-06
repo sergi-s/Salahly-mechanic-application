@@ -39,8 +39,21 @@
   "part_cost": "سعر القطعة",
   "maintance_cost": "سعر الصيانة",
   "other_cost": "سعر الاضافي",
-  "description": "وصف",
   "please_add_fields": "يرجي ادخال البيانات",
   "car_type": "نوع السيارة",
-  "confirm": "تأكيد"
+  "confirm": "تأكيد",
+  "title": "الاسم",
+  "description" : "وصف",
+  "add_new_task": "اضافة مهمة جديدة",
+  "start_time": "وقت البدء",
+  "start_date": "تاريخ البدء",
+  "duration": "المدة",
+  "end_time": "وقت الانتهاء",
+  "color": "اللون",
+  "request" : "الطلب",
+  "request_type" : "نوع الطلب",
+  "request_status" : "حالة الطلب",
+  "car_number" : "رقم السيارة",
+  "car_model" : "موديل السيارة",
+  "client_name" : "اسم العميل"
 }

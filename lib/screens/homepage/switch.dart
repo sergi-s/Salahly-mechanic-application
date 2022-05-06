@@ -4,45 +4,57 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../classes/firebase/customgeofire.dart';
 // import 'package:flutter_icons/flutter_icons.dart';
 
-
-
 class Switcher extends StatefulWidget {
   static final routeName = "/switcherscreen";
+
   Switcher({Key? key}) : super(key: key);
+
   @override
   _SwitcherState createState() => _SwitcherState();
 }
-NearbyLocations as=NearbyLocations();
+
+NearbyLocations as = NearbyLocations();
+
 class _SwitcherState extends State<Switcher> {
-  final _controller = ValueNotifier<bool>(false);
-  bool isAvailable=false;
+  late final _controller;
+  bool isAvailable = false;
 
   @override
   void initState() {
     super.initState();
-    final _controller = ValueNotifier<bool>(false);
     getSavedAvailability();
+  }
+
+  void _startListener() {
     _controller.addListener(() {
       setState(() async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        if (_controller.value) {// boolean = true
-          await NearbyLocations.addNearbyMechanicsAndProviders();
+        if (_controller.value) {
+          // boolean = true
+          print("isAvailable: true");
+          await NearbyLocations.setAvailabilityOn();
           prefs.setBool("isAvailable", true);
         } else {
-          await NearbyLocations.deleteNearbyMechanicsAndProviders();
+          print("isAvailable: false");
+          await NearbyLocations.setAvailabilityOff();
           prefs.setBool("isAvailable", false);
         }
       });
     });
   }
-  getSavedAvailability() async{
+
+  getSavedAvailability() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isAvailableSP = prefs.getBool("isAvailable");
-    if (isAvailableSP != null && isAvailableSP){
-      isAvailable=true;}
-
-    setState(() { });
+    if (isAvailableSP != null && isAvailableSP) {
+      isAvailable = true;
+    }
+    _controller = ValueNotifier<bool>(isAvailable);
+    _startListener();
+    setState(() {
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,15 +72,12 @@ class _SwitcherState extends State<Switcher> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-
                   AdvancedSwitch(
                     controller: _controller,
                     width: 80,
                     activeChild: Text('ON'),
                     inactiveChild: Text('OFF'),
-
                   ),
-
                 ],
               ),
               // _buildLabel('XXS/XS Switch'),
