@@ -53,8 +53,8 @@ class PendingRequests extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.red,
+                  leading: CircleAvatar(
+                    backgroundColor: Color((rsa.car != null && rsa.car?.color != null)?int.parse(rsa.car!.color!):0xFF000000),
                   ),
                   title: Column(
                     children: <Widget>[
@@ -67,23 +67,18 @@ class PendingRequests extends ConsumerWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        // Client.carnumber,
-                        "Kia cerato L0920i3",
+                          (rsa.car != null && rsa.car?.model != null)?rsa.car!.model!:"",
                         style: const TextStyle(
                             color: Colors.black45, fontSize: 18),
                       ),
                       Text(
-                        // Client.mobilenumber,
-                        "1082 | م ح ي",
+                        (rsa.car != null)?rsa.car!.noPlate:"",
                         style: const TextStyle(
                             color: Colors.black45, fontSize: 18),
                       ),
                     ],
                   ),
-                  trailing: (rsa.state == RSAStates.mechanicConfirmed && rsa.requestType != RequestType.RSA)?
-                  Text("Pending",style: TextStyle(color: Colors.red,fontSize: 18),)
-                      :actionsRow(onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest)
-                  ,
+                  trailing: _trailing(rsa, onConfirmRequest, onRefuseRequest),
                 ),
               ],
             ),
@@ -92,7 +87,18 @@ class PendingRequests extends ConsumerWidget {
       ),
     );
   }
-
+  List<String> _checkingrsaId = [];
+  _trailing(RSA rsa,Function onConfirmRequest,Function onRefuseRequest) {
+    if((rsa.state == RSAStates.providerConfirmed || rsa.state == RSAStates.mechanicConfirmed) && rsa.requestType != RequestType.RSA){
+      return Text("Pending",style: TextStyle(color: Colors.red,fontSize: 18),);
+    }
+    else if(_checkingrsaId.contains(rsa.rsaID)){
+      return Text("Checking",style: TextStyle(color: Colors.blueAccent,fontSize: 18),);
+    }
+    else {
+      return actionsRow(onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest);
+    }
+  }
 
 
   Widget build(BuildContext context, WidgetRef ref) {
@@ -157,8 +163,15 @@ class PendingRequests extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: pendingRequests.map((p) {
-              return personDetailCard(rsa: p,context:  context,onConfirmRequest: (){
-                pendingNotifier.acceptRequest(p);
+              return personDetailCard(rsa: p,context:  context,onConfirmRequest: () async {
+                if(p.requestType == RequestType.RSA){
+                  _checkingrsaId.add(p.rsaID!);
+                  await pendingNotifier.acceptRequest(p);
+                  _checkingrsaId.remove(p.rsaID!);
+                }
+                else{
+                  await pendingNotifier.acceptRequest(p);
+                }
               },onRefuseRequest: (){
                 pendingNotifier.denyRequest(p);
               });
@@ -187,27 +200,6 @@ class actionsRow extends StatelessWidget {
               context,
               title: const Text('Confirm').tr(),
               content:
-                   Text('Would you like to Accept Request?'.tr()),
-              textOK: const Text('Yes').tr(),
-              textCancel: const Text('No').tr(),
-            )) {
-              onConfirmRequest();
-              return print('pressedOK');
-            }
-            return print('pressedCancel');
-          },
-          icon: const Icon(
-            Icons.check,
-            size: 35,
-            color: Colors.green,
-          ),
-        ),
-        IconButton(
-          onPressed: () async {
-            if (await confirm(
-              context,
-              title: const Text('Confirm').tr(),
-              content:
                   const Text('Would you like to Refuse Request?')
                       .tr(),
               textOK: const Text('Yes').tr(),
@@ -222,6 +214,27 @@ class actionsRow extends StatelessWidget {
             Icons.close,
             size: 35,
             color: Colors.red,
+          ),
+        ),
+        IconButton(
+          onPressed: () async {
+            if (await confirm(
+              context,
+              title: const Text('Confirm').tr(),
+              content:
+              Text('Would you like to Accept Request?'.tr()),
+              textOK: const Text('Yes').tr(),
+              textCancel: const Text('No').tr(),
+            )) {
+              onConfirmRequest();
+              return print('pressedOK');
+            }
+            return print('pressedCancel');
+          },
+          icon: const Icon(
+            Icons.check,
+            size: 35,
+            color: Colors.green,
           ),
         ),
       ],

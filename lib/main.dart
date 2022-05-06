@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salahly_mechanic/MyApp.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 DatabaseReference usersRef =  FirebaseDatabase.instance.ref().child("users");
@@ -16,7 +15,6 @@ void main() async {
   await Firebase.initializeApp();
   //await FirebaseCustom().connectToEmulator();
   // FirebaseMessaging push notification listener
-
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
