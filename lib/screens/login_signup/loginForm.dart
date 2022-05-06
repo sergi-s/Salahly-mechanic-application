@@ -38,37 +38,32 @@ class LoginForm extends ConsumerWidget {
   updatePassword(String pass) {
     password = pass;
   }
-loginFunction(BuildContext context , WidgetRef ref)async{
-  // if (!Validator.emailValidator(email)) {
-  //   return ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //           content: Text('Invalid Email!! Please try again')));
-  // }
-  // if (!Validator.passValidator(password)) {
-  //   return ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //           content: Text('Invalid Password!! Please try again')));
-  // }
-  email = "pro@pro.pro";
-  password = "propro";
-  bool check = await fb.login(email, password);
-  if (check) {
-    listenRequestsFromDatabaseByNotifiers(ref
-        .watch(pendingRequestsProvider.notifier), ref
-        .watch(ongoingRequestsProvider.notifier));
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successful')));
-    if(userType == null){
-      context.go(Registration.routeName,extra: email);
-    }else{
-      context.go(OngoingScreenDummy.routeName);
+
+  loginFunction(BuildContext context, WidgetRef ref) async {
+    // if (!Validator.emailValidator(email)) {
+    //   return ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(
+    //           content: Text('Invalid Email!! Please try again')));
+    // }
+    // if (!Validator.passValidator(password)) {
+    //   return ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(
+    //           content: Text('Invalid Password!! Please try again')));
+    // }
+    bool check = await fb.login(email, password);
+    if (check) {
+      listenRequestsFromDatabaseByNotifiers(
+          ref.watch(pendingRequestsProvider.notifier),
+          ref.watch(ongoingRequestsProvider.notifier));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Login successful')));
+      context.go(HomeScreen.routeName);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Account isnt Correct !!Please try again')));
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Account isn\'t Correct !!Please try again')));
   }
-  ;
-}
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -107,21 +102,19 @@ loginFunction(BuildContext context , WidgetRef ref)async{
           RounedPasswordInput(hint: 'password'.tr(), function: updatePassword),
           SizedBox(height: 10),
           SizedBox(
-            width: size.width*0.4,
+            width: size.width * 0.4,
             height: 40,
             child: RaisedButton(
               color: Color(0xFF193566),
               shape: RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(
-                      12),),
+                borderRadius: BorderRadius.circular(12),
+              ),
               onPressed: () {
                 loginFunction(context, ref);
               },
               child: Text(
                 "Login".tr(),
-                style: TextStyle(
-                    color: Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),
