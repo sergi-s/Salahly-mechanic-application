@@ -55,5 +55,7 @@
   "request_status" : "حالة الطلب",
   "car_number" : "رقم السيارة",
   "car_model" : "موديل السيارة",
-  "client_name" : "اسم العميل"
+  "client_name" : "اسم العميل",
+  "settings": "اعدادات",
+  "change_lang": "اختار لغه"
 }

@@ -12,6 +12,8 @@ import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/widgets/gloable_widgets/app_bar.dart';
+import 'package:salahly_mechanic/widgets/gloable_widgets/app_drawer.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 class OngoingScreenDummy extends ConsumerWidget {
@@ -25,6 +27,8 @@ class OngoingScreenDummy extends ConsumerWidget {
         ref.watch(ongoingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
     return Scaffold(
+      appBar: salahlyAppBar(),
+      drawer: salahlyDrawer(context),
       body: SafeArea(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,

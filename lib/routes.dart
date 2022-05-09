@@ -17,6 +17,8 @@ import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 
+import 'screens/switchLanguage.dart';
+
 class Routing {
   get router => GoRouter(
         initialLocation: CheckLogin.routeName,
@@ -95,6 +97,10 @@ class Routing {
           GoRoute(
             path: ViewSchedulerTaskScreen.routeName,
             builder: (context, state) => ViewSchedulerTaskScreen(scheduleTask: state.extra! as ScheduleTask),
+          ),
+          GoRoute(
+            path: SwitchLanguageScreen.routeName,
+            builder: (context, state) => SwitchLanguageScreen(),
           ),
         ],
       );
