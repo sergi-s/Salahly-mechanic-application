@@ -8,7 +8,8 @@ class Scheduler {
   // static var items = <String, ScheduleTask>{};
   static List<ScheduleTask>? tasks;
 
-  static List<ScheduleTask>? getTasks(){
+  static Future<List<ScheduleTask>?> getTasks() async{
+    tasks?? await getAllFromStorage();
     return tasks;
   }
 

@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
-import 'package:salahly_mechanic/screens/Requests/OnGoingRequests.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
+import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
@@ -17,6 +17,7 @@ import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
+import 'package:salahly_models/models/road_side_assistance.dart';
 
 
 class Routing {
@@ -60,8 +61,8 @@ class Routing {
             builder: (context, state) => OnGoingRequests(),
           ),
           GoRoute(
-            path: RoadsideAssistantFullData.routeName,
-            builder: (context, state) => RoadsideAssistantFullData(),
+            path: RequestFullDataScreen.routeName,
+            builder: (context, state) => RequestFullDataScreen(rsa: state.extra! as RSA),
           ),
           GoRoute(
             path: MechanicProfilePage.routeName,
