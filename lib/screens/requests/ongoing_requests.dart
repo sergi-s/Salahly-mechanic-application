@@ -8,9 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
+
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 
@@ -18,7 +20,86 @@ class OnGoingRequests extends ConsumerStatefulWidget {
   const OnGoingRequests({Key? key,}) : super(key: key);
   static final routeName = "/ongoingrequests";
   @override
+
+  Widget build(BuildContext context, WidgetRef ref) {
+    PendingRequestsNotifier pendingNotifier =
+        ref.watch(pendingRequestsProvider.notifier);
+    OngoingRequestsNotifier ongoingRequestsNotifier =
+        ref.watch(ongoingRequestsProvider.notifier);
+    List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
+    return Scaffold(
+      appBar: salahlyAppBar(),
+      drawer: salahlyDrawer(context),
+      body: SafeArea(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              height: 500,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        // pendingNotifier.startRequestsListener();
+                        listenRequestsFromDatabaseByNotifiers(
+                            pendingNotifier, ongoingRequestsNotifier);
+                      },
+                      child: Text("Start stream")),
+                  Text("Number of pending requests found " +
+                      ref.watch(pendingRequestsProvider).length.toString()),
+                  Text("Number of ongoing requests found " +
+                      ref.watch(ongoingRequestsProvider).length.toString()),
+                  ElevatedButton(
+                      onPressed: () {
+                        // context.go(TestScreenFoula.routeName);
+                        context.push(ONGOINGVIEW.routeName);
+                      },
+                      child: Text('go to ongoing screen')),
+                  ElevatedButton(
+                      onPressed: () {
+                        // context.go(TestScreenFoula.routeName);
+                        // context.push(PENDINGVIEW.routeName);
+                        context.push(PendingRequests.routeName);
+                      },
+                      child: Text('go to pending screen')),
+                  ElevatedButton(
+                      onPressed: () {
+                        // context.go(TestScreenFoula.routeName);
+                        // contex//t.push(PENDINGVIEW.routeName);
+                        context.push(Switcher.routeName);
+                      },
+                      child: Text('Set availability')),
+                  ElevatedButton(
+                      onPressed: () {
+                        context.goNamed("ReportScreen", params: {
+                          "requestType": "wsa",
+                          "rsaId": "12345678"
+                        });
+                      },
+                      child: Text("Write report screen")),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(SchedulerScreen.routeName);
+                    },
+                    child: Text("Scheduler screen"),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        context.go(LoginSignupScreen.routeName);
+                      },
+                      child: Text("Log out"))
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   _ClientsDataState createState() => _ClientsDataState();
+
 }
 
 class _ClientsDataState extends ConsumerState<OnGoingRequests> {

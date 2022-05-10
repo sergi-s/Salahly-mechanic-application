@@ -20,6 +20,8 @@ import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 
+import 'screens/switchLanguage.dart';
+
 class Routing {
   get router => GoRouter(
         initialLocation: AddSchedulerTaskScreen.routeName,
@@ -101,9 +103,14 @@ class Routing {
                 scheduleTask: state.extra! as ScheduleTask),
           ),
           GoRoute(
+            path: SwitchLanguageScreen.routeName,
+            builder: (context, state) => SwitchLanguageScreen(),
+          ),
+GoRoute(
               path: AddSchedulerTaskScreen.routeName,
               builder: (context, state) => AddSchedulerTaskScreen()),
 
+),
         ],
       );
 }

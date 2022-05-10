@@ -50,5 +50,7 @@
   "duration": "Duration",
   "end_time": "End time",
   "color": "Color",
-  "request" : "Request"
+  "request" : "Request",
+  "settings": "Settings",
+  "change_lang": "Choose language"
 }
