@@ -2,8 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/OnGoingRequests.dart';
-import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
@@ -13,13 +13,15 @@ import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
+import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 
+
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: AddSchedulerTaskScreen.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -94,8 +96,13 @@ class Routing {
           ),
           GoRoute(
             path: ViewSchedulerTaskScreen.routeName,
-            builder: (context, state) => ViewSchedulerTaskScreen(scheduleTask: state.extra! as ScheduleTask),
+            builder: (context, state) => ViewSchedulerTaskScreen(
+                scheduleTask: state.extra! as ScheduleTask),
           ),
+          GoRoute(
+              path: AddSchedulerTaskScreen.routeName,
+              builder: (context, state) => AddSchedulerTaskScreen()),
+
         ],
       );
 }
