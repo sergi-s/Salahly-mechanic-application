@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,21 +16,35 @@ class SchedulerScreen extends StatefulWidget {
   _SchedulerScreenState createState() => _SchedulerScreenState();
 }
 
+class DaysObject {
+  DateTime date;
+  WeekEnum weekEnum;
+
+  DaysObject({required this.date, required this.weekEnum});
+}
+
+enum WeekEnum { previous, current, next }
+
 class _SchedulerScreenState extends State<SchedulerScreen> {
   List<TimePlannerTask> tasks = [];
   Map<int, bool> cache = {};
+  int totalTasks = 0;
 
   _refreshRenderList() async {
-    List<ScheduleTask>? savedTasks = Scheduler.getTasks();
-    if (savedTasks == null) {
-      await Scheduler.getAllFromStorage();
-      savedTasks = Scheduler.getTasks();
-    }
+    List<ScheduleTask>? savedTasks = await Scheduler.getTasks();
+    totalTasks = savedTasks?.length ?? 0;
+    // if (savedTasks == null) {
+    //   await Scheduler.getAllFromStorage();
+    //   savedTasks = Scheduler.getTasks();
+    // }
     for (var element in savedTasks!) {
       if (!cache.containsKey(element.id)) {
         cache[element.id] = true;
         setState(() {
-          tasks.add(toTimePlannerTask(element));
+          dynamic v = toTimePlannerTask(element);
+          if (v != null) {
+            tasks.add(v);
+          }
         });
         /*TimePlannerTask(
             minutesDuration: element.duration!,
@@ -51,6 +66,25 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
   void initState() {
     super.initState();
     _refreshRenderList();
+    // print(weekDays.length);
+    // 1 -> 7, 8 -> 14, 16 -> 22,
+    // previous, current, next
+    //-7 -> -1, 0 -> 6, 7 -> 14
+    for (var i = 0; i < 21; i++) {
+      WeekEnum weekEnum;
+      if (i < 7) {
+        weekEnum = WeekEnum.previous;
+      } else if (i < 14) {
+        weekEnum = WeekEnum.current;
+      } else {
+        weekEnum = WeekEnum.next;
+      }
+
+      weekDays.add(DaysObject(
+          date: DateTime.now().add(Duration(days: i-7)), weekEnum: weekEnum));
+    }
+    // print(weekDays[7].date.day);
+    _getDaysList();
 /*    tasks =
     [
       TimePlannerTask(
@@ -121,22 +155,50 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     ];*/
   }
 
-  _prepareDay(int day){
-    DateTime nw = DateTime.now();
-    // 1 -> 7, 8 -> 14, 16 -> 22,
-    // previous, current, next
-    Random rnd = Random();
-    return rnd.nextInt(10)+1;
+  compareDay(DateTime date1, DateTime date2) {
+    return date1.day == date2.day &&
+        date1.month == date2.month &&
+        date1.year == date2.year;
   }
 
+  List<DaysObject> weekDays = [];
+  List<TimePlannerTitle> weekDaysWidget = [];
 
+  int? _prepareDay(ScheduleTask scheduleTask) {
+    DateTime dateSaved = scheduleTask.startDate;
+    // 1 -> 7, 8 -> 14, 16 -> 22,
+    // previous, current, next
 
-  TimePlannerTask toTimePlannerTask(ScheduleTask scheduleTask) {
+    bool found = false;
+    int day = 0;
+    //DateTime date in days
+    for (int i = 0; i < weekDays.length; i++) {
+      if (compareDay(dateSaved, weekDays[i].date)) {
+        found = true;
+        day = i;
+        break;
+      }
+    }
+    if (!found) {
+      Scheduler.deleteTask(scheduleTask);
+      return null;
+    } else {
+      return day;
+    }
+    // Random rnd = Random();
+    // return rnd.nextInt(10)+1;
+  }
+
+  TimePlannerTask? toTimePlannerTask(ScheduleTask scheduleTask) {
+    int? day = _prepareDay(scheduleTask);
+    if (day == null) {
+      return null;
+    }
     return TimePlannerTask(
       child: Text(scheduleTask.title),
       color: scheduleTask.color,
       dateTime: TimePlannerDateTime(
-          day: _prepareDay(scheduleTask.startDate.day),
+          day: day,
           hour: scheduleTask.startDate.hour,
           minutes: scheduleTask.startDate.minute),
       minutesDuration: scheduleTask.duration!,
@@ -154,8 +216,56 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       nextWeek = Colors.green;
 
   _addTask() async {
-    await Scheduler.addTask(ScheduleTask(startDate: DateTime.now(), title: "title 3", color: Colors.greenAccent, id: 5,duration: 120));
+    Random rnd = Random();
+    // return rnd.nextInt(10)+1;
+    await Scheduler.addTask(ScheduleTask(
+        startDate: DateTime.now().add(
+            Duration(days: rnd.nextInt(12) - 5, hours: rnd.nextInt(12) - 5)),
+        title: "title " + (++totalTasks).toString(),
+        color: Colors.greenAccent,
+        id: totalTasks,
+        duration: 120));
     await _refreshRenderList();
+  }
+
+  _getDaysList() {
+    // List<Widget> daysList = [];
+    for (var day in weekDays) {
+      if (day.weekEnum == WeekEnum.previous) {
+        setState(() {
+          weekDaysWidget.add(TimePlannerTitle(
+            date: "Previous week",
+            title: DateFormat('EEEE').format(day.date),
+            titleStyle:
+                TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
+            dateStyle: TextStyle(
+                color: previousWeek, fontWeight: FontWeight.bold, fontSize: 13),
+          ));
+        });
+      }else if (day.weekEnum == WeekEnum.current) {
+        setState(() {
+          weekDaysWidget.add(TimePlannerTitle(
+            date: "Current week",
+            title: DateFormat('EEEE').format(day.date),
+            titleStyle:
+            TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
+            dateStyle: TextStyle(
+                color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
+          ));
+        });
+      }else {
+        setState(() {
+          weekDaysWidget.add(TimePlannerTitle(
+            date: "Next week",
+            title: DateFormat('EEEE').format(day.date),
+            titleStyle:
+            TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
+            dateStyle: TextStyle(
+                color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
+          ));
+        });
+      }
+    }
   }
 
   @override
@@ -174,18 +284,17 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           // time will be end at this hour on table
           endHour: 23,
           // each header is a column and a day
-          headers: [
-            TimePlannerTitle(
-              date: "Previous week",
-              title: "Saturday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
+          headers: weekDaysWidget,
+          // List of task will be show on the time planner
+          tasks: tasks,
+        ),
+      ),
+    );
+  }
+}
+
+/*
+  TimePlannerTitle(
               date: "Previous week",
               title: "Sunday",
               titleStyle:
@@ -358,11 +467,4 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
               dateStyle: TextStyle(
                   color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
             ),
-          ],
-          // List of task will be show on the time planner
-          tasks: tasks,
-        ),
-      ),
-    );
-  }
-}
+ */
