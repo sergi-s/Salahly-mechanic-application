@@ -3,6 +3,7 @@ import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/requests_memory_caching.dart';
 import 'package:salahly_models/models/car.dart';
 import 'package:salahly_models/models/client.dart';
+import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 loadRequestFromDB(String id, String requestType) async {
@@ -40,10 +41,11 @@ loadRequestFromDB(String id, String requestType) async {
     state: RSA.stringToState(dataSnapshot.child("state").value.toString()),
     rsaID: dataSnapshot.key.toString(),
     requestType: t,
-    // location: CustomLocation(
-    //   latitude: latitude, longitude: longitude,
-    //   // name: dataSnapshot.child("address").value.toString(),
-    // ),
+    location: CustomLocation(
+      name: "Location",
+      latitude: double.parse(dataSnapshot.child("latitude").value.toString()), longitude: double.parse(dataSnapshot.child("longitude").value.toString()),
+      // name: dataSnapshot.child("address").value.toString(),
+    ),
     // report: Report()
   );
   rsaCache[rsa.rsaID!] = rsa;
