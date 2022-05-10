@@ -13,14 +13,16 @@ import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
+import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
+
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: AddSchedulerTaskScreen.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -95,8 +97,13 @@ class Routing {
           ),
           GoRoute(
             path: ViewSchedulerTaskScreen.routeName,
-            builder: (context, state) => ViewSchedulerTaskScreen(scheduleTask: state.extra! as ScheduleTask),
+            builder: (context, state) => ViewSchedulerTaskScreen(
+                scheduleTask: state.extra! as ScheduleTask),
           ),
+          GoRoute(
+              path: AddSchedulerTaskScreen.routeName,
+              builder: (context, state) => AddSchedulerTaskScreen()),
+
         ],
       );
 }

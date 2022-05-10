@@ -8,6 +8,8 @@ import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:time_planner/time_planner.dart';
 
+import 'add_scheduler_task.dart';
+
 class SchedulerScreen extends StatefulWidget {
   const SchedulerScreen({Key? key}) : super(key: key);
   static const String routeName = '/schedulerScreen';
@@ -274,6 +276,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addTask();
+          context.go(AddSchedulerTaskScreen.routeName);
         },
         child: const Icon(Icons.add),
       ),
