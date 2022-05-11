@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:salahly_mechanic/widgets/gloable_widgets/app_bar.dart';
-import 'package:salahly_mechanic/widgets/gloable_widgets/app_drawer.dart';
+
+import '../widgets/global_widgets/app_bar.dart';
+import '../widgets/global_widgets/app_drawer.dart';
 
 
 class SwitchLanguageScreen extends StatefulWidget {

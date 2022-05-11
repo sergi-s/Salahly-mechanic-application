@@ -84,11 +84,11 @@ class ReportScreen extends StatelessWidget {
         maintenanceCost: maint_cost,
         // distance:distance,
         maintenanceDescription: maint_description);
-    bool check = await fb.report(report, "123456", "wsa");
-    if (requestType != "wsa" && requestType != "rsa") {
+    bool check = await fb.report(report, rsaId, requestType);
+    if (requestType != "wsa" && requestType != "rsa" && requestType != "tta") {
+
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('wrong_request'.tr())));
-      const SnackBar(content: Text('Wrong Request'));
+          SnackBar(content: Text('wrong_request'.tr()+" "+requestType)));
     } else if (check) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('data_saved_successfully'.tr())));

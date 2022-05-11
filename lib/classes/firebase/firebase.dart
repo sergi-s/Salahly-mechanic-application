@@ -175,7 +175,7 @@ class FirebaseCustom extends Authentication {
       "distance": report.distance,
 
     };
-    dbRef.child("wsa").child(rsaID).child("report").set(reportDataMap);
+    dbRef.child(requestType).child(rsaID).child("report").set(reportDataMap);
     return true;
   }
 }

@@ -24,7 +24,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: AddSchedulerTaskScreen.routeName,
+        initialLocation: OngoingScreenDummy.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -100,7 +100,7 @@ class Routing {
           GoRoute(
             path: ViewSchedulerTaskScreen.routeName,
             builder: (context, state) => ViewSchedulerTaskScreen(
-                scheduleTask: state.extra! as ScheduleTask),
+                scheduleTaskAndFunctionOnDelete: state.extra! as Map<String, dynamic>),
           ),
           GoRoute(
             path: SwitchLanguageScreen.routeName,
@@ -108,9 +108,9 @@ class Routing {
           ),
 GoRoute(
               path: AddSchedulerTaskScreen.routeName,
-              builder: (context, state) => AddSchedulerTaskScreen()),
+              builder: (context, state) => AddSchedulerTaskScreen(onAdd: state.extra! as Function)),
 
-),
+
         ],
       );
 }

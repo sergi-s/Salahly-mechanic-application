@@ -1,30 +1,94 @@
 import 'dart:core';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../classes/scheduler/scheduler.dart';
+import '../../model/schedule_task.dart';
 import '../../widgets/add_Schedular/select_textfield.dart';
 import '../../widgets/add_Schedular/text_input.dart';
+import '../../widgets/progress_dialog/progress_dialog.dart';
 
 class AddSchedulerTaskScreen extends ConsumerStatefulWidget {
   static const String routeName = '/add_scheduler_task';
+  final Function onAdd;
+
+
+  AddSchedulerTaskScreen({required this.onAdd});
 
   @override
   _AddSchedulerTaskScreenState createState() => _AddSchedulerTaskScreenState();
 }
 
-class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen> {
-  final DateTime? _selectedDate = DateTime.now();
-  TimeOfDay startSelectedTime = TimeOfDay.now();
-  int _duration = 0;
+class _AddSchedulerTaskScreenState
+    extends ConsumerState<AddSchedulerTaskScreen> {
+  int totalTasks = 0;
+
+  @override
+  initState() {
+    super.initState();
+    Scheduler.getTasks().then((value) {
+      setState(() {
+        totalTasks = value != null ? value.length : 0;
+      });
+    });
+  }
+
+  _addRandomTask() async {
+    Random rnd = Random();
+    // return rnd.nextInt(10)+1;
+    await Scheduler.addTask(ScheduleTask(
+      startDate: DateTime.now()
+          .add(Duration(days: rnd.nextInt(12) - 5, hours: rnd.nextInt(12) - 5)),
+      title: "title " + (++totalTasks).toString(),
+      color: Colors.greenAccent,
+      id: totalTasks,
+      duration: 120,
+    ));
+    // await _refreshRenderList();
+  }
+
+  _addTask() async {
+    dateTime =  dateTime!.add(Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute));
+    print("Duration ${Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute)}");
+    print("add task");
+    print("time of day: ${timeOfDay!.hour}:${timeOfDay!.minute}");
+    print("datetime: ${dateTime!}");
+    print("title: ${title}");
+    print("duration: ${_duration.toString()}");
+    print("color: ${pickerColor}");
+    print("id: ${totalTasks+1}");
+    print("description: ${description}");
+
+    await Scheduler.addTask(ScheduleTask(
+      startDate: dateTime!,
+      title: title,
+      color: pickerColor,
+      id: ++totalTasks,
+      duration: _duration,
+      description: description,
+    ));
+    await widget.onAdd();
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Added scheduler'.tr())));
+    Navigator.pop(context);
+
+    // await _refreshRenderList();
+  }
+
+  // final DateTime? _selectedDate = DateTime.now();
+  // TimeOfDay startSelectedTime = TimeOfDay.now();
+  int _duration = 90;
   TimeOfDay? timeOfDay = TimeOfDay.now();
   DateTime? dateTime = DateTime.now();
-  String description="";
+  String description = "", title = "";
   Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
-  String? color;
+  // Color currentColor = Color(0xff443a49);
+  // String? color;
 
   _timePicker(BuildContext context) async {
     timeOfDay = await showTimePicker(
@@ -41,18 +105,21 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
   }
- // create some values
 
+  // create some values
 
 // ValueChanged<Color> callback
   void changeColor(Color color) {
     setState(() => pickerColor = color);
   }
-
+  
+  bool isLoading = false;
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      
       backgroundColor: const Color(0xFFd1d9e6),
       appBar: AppBar(
         elevation: 0.0,
@@ -97,7 +164,7 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
                     MyInputField(
                       fn: () {},
                       title: "Start Date",
-                      hint: DateFormat.yMMMEd().format(_selectedDate!),
+                      hint: DateFormat.yMMMEd().format(dateTime!),
                       widget: IconButton(
                         onPressed: () {
                           _datePicker(context);
@@ -115,7 +182,7 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
                             fn: () {},
                             title: 'Start Time',
                             hint:
-                                "${startSelectedTime.hour}:${startSelectedTime.minute}",
+                                "${timeOfDay!.hour}:${timeOfDay!.minute}",
                             widget: IconButton(
                               onPressed: () {
                                 _timePicker(context);
@@ -133,33 +200,53 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
                     //   height: MediaQuery.of(context).size.height * 0.02,
                     // ),
                     Row(
-                      children: [ 
-                         Expanded(flex:8, child: MyInputField(title: "Duration", hint: "Hours", fn: (){})),
+                      children: [
+                        Expanded(
+                            flex: 8,
+                            child: MyInputField(
+                                title: "Duration", hint: "Hours", fn: () {})),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.02,
                         ),
-                        Expanded(flex:8,child: MyInputField(title: "", hint: "Minutes", fn: (){})),
-
+                        Expanded(
+                            flex: 8,
+                            child: MyInputField(
+                                title: "", hint: "Minutes", fn: () {})),
                       ],
                     ),
 
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
-                    SelectRequest(items: ["RSA","WSA"], onChangedfunction: (){},  hintText: '',title: "Request Type",),
+                    SelectRequest(
+                      items: ["RSA", "WSA"],
+                      onChangedfunction: () {},
+                      hintText: '',
+                      title: "Request Type",
+                    ),
                     // SizedBox(
                     //   height: MediaQuery.of(context).size.height * 0.02,
                     // ),
-                    MyInputField(title: "Description", hint: "Description", fn: (){}),
+                    MyInputField(
+                        title: "Title", hint: "Title", fn: (updatedTitle) {
+                      title = updatedTitle;
+                    }),
+                    MyInputField(
+                        title: "Description", hint: "Description", fn: (updatedDescription) {
+                          description = updatedDescription;
+                    }),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.03,
                     ),
                     Row(
                       children: [
-                        Text("Color Picker",style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF193566)),),
+                        Text(
+                          "Color Picker",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF193566)),
+                        ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
@@ -169,13 +256,11 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: pickerColor),
+                                shape: BoxShape.circle, color: pickerColor),
                             width: 50,
                             height: 50,
                           ),
                         ),
-
                       ],
                     ),
                     SizedBox(
@@ -194,7 +279,16 @@ class _AddSchedulerTaskScreenState extends ConsumerState<AddSchedulerTaskScreen>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              isLoading = true;
+                              showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          ProgressDialog(message: "Adding schedule, please wait"));
+                              await _addTask();
+                              Navigator.pop(context);
+                              isLoading = false;
+                            },
                             child: Text(
                               "Add".tr(),
                               style: TextStyle(color: Colors.white),

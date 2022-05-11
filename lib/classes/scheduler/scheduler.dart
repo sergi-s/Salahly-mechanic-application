@@ -16,6 +16,7 @@ class Scheduler {
   // StreamSubscription<Map<String, dynamic>>? _subscription;
 
   static Future addTask(ScheduleTask scheduleTask) async {
+    await getTasks();
     if (tasks == null) return false;
     tasks?.add(scheduleTask);
     _db

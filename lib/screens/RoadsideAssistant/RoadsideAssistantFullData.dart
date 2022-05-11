@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -146,12 +147,12 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                    ),
              ),
             Positioned(
-              bottom: 200,
+              bottom: 50,
                 left: 80,
                 right: 80,
               child: FloatingActionButton.extended(
                   onPressed: (){
-
+                    context.pushNamed("ReportScreen",params: {"requestType": RSA.requestTypeToString(rsa.requestType!).toLowerCase() ,"rsaId":rsa.rsaID!} );
                   }, label: const Text('Rsa Report'),backgroundColor:const Color(0xff193566) , icon: const Icon(Icons.fact_check_rounded)),
             ),
           ],

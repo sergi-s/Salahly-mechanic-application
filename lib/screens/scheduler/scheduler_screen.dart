@@ -33,6 +33,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
   int totalTasks = 0;
 
   _refreshRenderList() async {
+    print("hello");
     List<ScheduleTask>? savedTasks = await Scheduler.getTasks();
     totalTasks = savedTasks?.length ?? 0;
     // if (savedTasks == null) {
@@ -196,6 +197,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     if (day == null) {
       return null;
     }
+    Map<String,dynamic> map = {
+      "scheduleTask": scheduleTask,
+      "onDelete": _refreshRenderList
+    };
     return TimePlannerTask(
       child: Text(scheduleTask.title),
       color: scheduleTask.color,
@@ -207,28 +212,16 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       onTap: () {
         context.push(
           ViewSchedulerTaskScreen.routeName,
-          extra: scheduleTask,
+          extra: map,
         );
       },
+
     );
   }
 
   final Color previousWeek = Colors.redAccent,
       thisWeek = Colors.blue,
       nextWeek = Colors.green;
-
-  _addTask() async {
-    Random rnd = Random();
-    // return rnd.nextInt(10)+1;
-    await Scheduler.addTask(ScheduleTask(
-        startDate: DateTime.now().add(
-            Duration(days: rnd.nextInt(12) - 5, hours: rnd.nextInt(12) - 5)),
-        title: "title " + (++totalTasks).toString(),
-        color: Colors.greenAccent,
-        id: totalTasks,
-        duration: 120));
-    await _refreshRenderList();
-  }
 
   _getDaysList() {
     // List<Widget> daysList = [];
@@ -274,9 +267,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addTask();
-          context.go(AddSchedulerTaskScreen.routeName);
+        onPressed: () async {
+          // _addTask();
+          context.push(AddSchedulerTaskScreen.routeName, extra: _refreshRenderList);
+          // await _refreshRenderList();
         },
         child: const Icon(Icons.add),
       ),

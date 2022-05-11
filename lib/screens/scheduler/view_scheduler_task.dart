@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
+import '../../classes/scheduler/scheduler.dart';
+
 class ViewSchedulerTaskScreen extends StatefulWidget {
-  const ViewSchedulerTaskScreen({Key? key, required this.scheduleTask})
-      : super(key: key);
+  ViewSchedulerTaskScreen({required this.scheduleTaskAndFunctionOnDelete}){
+    onDelete = scheduleTaskAndFunctionOnDelete["onDelete"];
+    scheduleTask  = scheduleTaskAndFunctionOnDelete["scheduleTask"];
+  }
   static const String routeName = '/view_scheduler_task';
-  final ScheduleTask scheduleTask;
+  final Map<String,dynamic> scheduleTaskAndFunctionOnDelete;
+  late Function onDelete;
+  late ScheduleTask scheduleTask;
 
   @override
   _ViewSchedulerTaskState createState() => _ViewSchedulerTaskState();
@@ -214,7 +220,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                       children: [
                                         RaisedButton(
                                             child: Text(
-                                              "Okay",
+                                              "Delete task",
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -222,6 +228,24 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
+                                            onPressed: () async {
+                                              await Scheduler.deleteTask(widget.scheduleTask);
+                                              await widget.onDelete();
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                      content: Text('Deleted scheduler task'.tr())));
+                                              Navigator.pop(context);
+                                            }),
+                                        RaisedButton(
+                                            child: Text(
+                                              "Okay",
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            color: const Color(0xFF193566),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(12)),
                                             onPressed: () {}),
                                       ],
                                     ),

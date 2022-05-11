@@ -11,6 +11,7 @@ import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFull
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
+import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +41,6 @@ class OngoingScreenDummy extends ConsumerWidget {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 500,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -93,6 +93,12 @@ class OngoingScreenDummy extends ConsumerWidget {
                       context.push(OnGoingRequests.routeName);
                     },
                     child: Text("Ongoing UI screen"),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        context.push(AddSchedulerTaskScreen.routeName);
+                      },
+                      child: Text("AddSchedulerTaskScreen screen"),
                   ),
                   ElevatedButton(
                     onPressed: () {

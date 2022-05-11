@@ -10,6 +10,7 @@ import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
+import 'package:salahly_mechanic/screens/switchLanguage.dart';
 
 Widget salahlyDrawer(BuildContext context) {
   return Drawer(
@@ -68,6 +69,15 @@ Widget salahlyDrawer(BuildContext context) {
           ).tr(),
           onTap: () {
             context.push(OnGoingRequests.routeName);
+          },
+        ),
+        ListTile(
+          title: const Text(
+            'Change language screen',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            context.push(SwitchLanguageScreen.routeName);
           },
         ),
         ListTile(
