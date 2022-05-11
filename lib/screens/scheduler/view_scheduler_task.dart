@@ -239,7 +239,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                         RaisedButton(
                                             child: Text(
                                               "Okay",
-                                              style: const TextStyle(
+                                              style:  TextStyle(
                                                   color: Colors.white),
                                             ),
                                             color: const Color(0xFF193566),

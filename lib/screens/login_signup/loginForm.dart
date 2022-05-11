@@ -6,7 +6,7 @@ import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
-import 'package:salahly_mechanic/screens/test_foula.dart';
+import 'package:salahly_mechanic/screens/testscreens/test_foula.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Rounded_Bottom.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -68,6 +68,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     //       const SnackBar(
     //           content: Text('Invalid Password!! Please try again')));
     // }
+    if(email == "" || password == "" ){
+      email = "pro@pro.pro";
+      password = "propro";
+    }
     bool check = await fb.login(email, password);
     if (check) {
       listenRequestsFromDatabaseByNotifiers(

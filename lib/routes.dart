@@ -8,15 +8,15 @@ import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFull
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
-import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
-import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
+import 'package:salahly_mechanic/screens/testscreens/testscreen.dart';
+import 'package:salahly_mechanic/screens/testscreens/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
-import 'package:salahly_mechanic/screens/test_foula.dart';
+import 'package:salahly_mechanic/screens/testscreens/test_foula.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 
@@ -24,7 +24,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: OngoingScreenDummy.routeName,
+        initialLocation: CheckLogin.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,

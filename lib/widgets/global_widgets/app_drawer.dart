@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
+import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
@@ -25,6 +26,15 @@ Widget salahlyDrawer(BuildContext context) {
                   fit: BoxFit.fill),
               color: Colors.transparent),
           child: Text(''),
+        ),
+        ListTile(
+          title: const Text(
+            "Home screen",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ).tr(),
+          onTap: () {
+            context.push(HomeScreen.routeName);
+          },
         ),
         ListTile(
           title: const Text(
@@ -51,15 +61,6 @@ Widget salahlyDrawer(BuildContext context) {
           ).tr(),
           onTap: () {
             context.push(PendingRequests.routeName);
-          },
-        ),
-        ListTile(
-          title: const Text(
-            "go to ongoing screen",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ).tr(),
-          onTap: () {
-            context.push(ONGOINGVIEW.routeName);
           },
         ),
         ListTile(
