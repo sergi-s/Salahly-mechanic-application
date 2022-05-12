@@ -87,6 +87,7 @@ class _AddSchedulerTaskScreenState
   DateTime? dateTime = DateTime.now();
   String description = "", title = "";
   Color pickerColor = Color(0xff443a49);
+  // TimeOfDay selectedTime = TimeOfDay.now();
   // Color currentColor = Color(0xff443a49);
   // String? color;
 
@@ -96,14 +97,13 @@ class _AddSchedulerTaskScreenState
       initialTime: timeOfDay ?? TimeOfDay.now(),
     );
   }
+  _datePicker(BuildContext context) async{
+    DateTime? _pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 365)));
 
-  _datePicker(BuildContext context) async {
-    dateTime = await showDatePicker(
-      context: context,
-      initialDate: dateTime ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
   }
 
   // create some values
@@ -150,158 +150,137 @@ class _AddSchedulerTaskScreenState
           ),
         ]),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              width: size.width * 0.88,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    MyInputField(
-                      fn: () {},
-                      title: "Start Date",
-                      hint: DateFormat.yMMMEd().format(dateTime!),
-                      widget: IconButton(
-                        onPressed: () {
-                          _datePicker(context);
-                        },
-                        icon: const Icon(
-                          Icons.calendar_today_outlined,
-                          color: Colors.grey,
-                        ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            width: size.width * 0.88,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                  MyInputField(
+                    fn: () {},
+                    title: "Start Date",
+                    hint: DateFormat.yMMMEd().format(dateTime!),
+                    widget: IconButton(
+                      onPressed: () {
+                        _datePicker(context);
+                      },
+                      icon: const Icon(
+                        Icons.calendar_today_outlined,
+                        color: Colors.grey,
                       ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
+                  ),
+                  MyInputField(
+                    fn: () {},
+                    title: 'Start Time',
+                    hint:
+                        "${timeOfDay!.hour}:${timeOfDay!.minute}",
+                    widget: IconButton(
+                      onPressed: () {
+                        _timePicker(context);
+                      },
+                      icon: const Icon(
+                        Icons.access_time_rounded,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
                           child: MyInputField(
-                            fn: () {},
-                            title: 'Start Time',
-                            hint:
-                                "${timeOfDay!.hour}:${timeOfDay!.minute}",
-                            widget: IconButton(
-                              onPressed: () {
-                                _timePicker(context);
-                              },
-                              icon: const Icon(
-                                Icons.access_time_rounded,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.02,
-                    // ),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 8,
-                            child: MyInputField(
-                                title: "Duration", hint: "Hours", fn: () {})),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.02,
-                        ),
-                        Expanded(
-                            flex: 8,
-                            child: MyInputField(
-                                title: "", hint: "Minutes", fn: () {})),
-                      ],
-                    ),
+                              title: "Duration", hint: "Hours", fn: () {})),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.02,
+                      ),
+                      Expanded(
+                          child: MyInputField(
+                              title: "", hint: "Minutes", fn: () {})),
+                    ],
+                  ),
 
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    SelectRequest(
-                      items: ["RSA", "WSA"],
-                      onChangedfunction: () {},
-                      hintText: '',
-                      title: "Request Type",
-                    ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.02,
-                    // ),
-                    MyInputField(
-                        title: "Title", hint: "Title", fn: (updatedTitle) {
-                      title = updatedTitle;
-                    }),
-                    MyInputField(
-                        title: "Description", hint: "Description", fn: (updatedDescription) {
-                          description = updatedDescription;
-                    }),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Color Picker",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF193566)),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.05,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            pickColor(context);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: pickerColor),
-                            width: 50,
-                            height: 50,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                    Row(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          // width: 95,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  SelectRequest(items: ["RSA","WSA"], onChangedfunction: (){},  hintText: '',title: "Request Type",),
+                  MyInputField(
+                      title: "Title", hint: "Title", fn: (updatedTitle) {
+                    title = updatedTitle;
+                  }),
+                  MyInputField(
+                      title: "Description", hint: "Description", fn: (updatedDescription) {
+                        description = updatedDescription;
+                  }),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Color Picker",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF193566)),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          pickColor(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: pickerColor),
+                          width: 50,
                           height: 50,
-                          child: RaisedButton(
-                            splashColor: Colors.white.withAlpha(40),
-                            color: Color(0xFF193566),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            onPressed: () async {
-                              isLoading = true;
-                              showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          ProgressDialog(message: "Adding schedule, please wait"));
-                              await _addTask();
-                              Navigator.pop(context);
-                              isLoading = false;
-                            },
-                            child: Text(
-                              "Add".tr(),
-                              style: TextStyle(color: Colors.white),
-                            ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Row(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        // width: 95,
+                        height: 50,
+                        child: RaisedButton(
+                          splashColor: Colors.white.withAlpha(40),
+                          color: Color(0xFF193566),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          onPressed: () async {
+                            isLoading = true;
+                            showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        ProgressDialog(message: "Adding schedule, please wait"));
+                            await _addTask();
+                            Navigator.pop(context);
+                            isLoading = false;
+                          },
+                          child: Text(
+                            "Add".tr(),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                  ]),
-            ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                ]),
           ),
         ),
       ),
@@ -311,8 +290,8 @@ class _AddSchedulerTaskScreenState
   Widget buildColorPicker() => ColorPicker(
       pickerColor: pickerColor,
       onColorChanged: (pickerColor) => setState(() {
-            this.pickerColor = pickerColor;
-          }));
+        this.pickerColor = pickerColor;
+      }));
 
   pickColor(BuildContext context) {
     showDialog(
@@ -346,4 +325,5 @@ class _AddSchedulerTaskScreenState
           );
         });
   }
+
 }
