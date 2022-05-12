@@ -50,35 +50,33 @@ class _SelectRequestState extends State<SelectRequest> {
                 ]),
 
             // dropdown below..
-            child: Expanded(
-              child: DropdownButtonFormField2<String>(
+            child: DropdownButtonFormField2<String>(
 
-                decoration: InputDecoration(
-                  hintText: widget.hintText,
-                  border: InputBorder.none,
-                ),
-                // value: selectedValue,
-                onChanged: (newValue) {
-                  setState(() => selectedValue = newValue!);
-                  widget.onChangedfunction(newValue);
-                },
-                items: widget.items
-                    .map<DropdownMenuItem<String>>(
-                        (String value) => DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    ))
-                    .toList()
-                ,
-
-                // add extra sugar..
-                icon: Padding(
-                  padding: EdgeInsets.fromLTRB(100,0,0,0),
-                  child: Icon(Icons.arrow_drop_down,color: Colors.grey,),
-                ),
-                 iconSize:40,
-                // underline: SizedBox(),
+              decoration: InputDecoration(
+                hintText: widget.hintText,
+                border: InputBorder.none,
               ),
+              // value: selectedValue,
+              onChanged: (newValue) {
+                setState(() => selectedValue = newValue!);
+                widget.onChangedfunction(newValue);
+              },
+              items: widget.items
+                  .map<DropdownMenuItem<String>>(
+                      (String value) => DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  ))
+                  .toList()
+              ,
+
+              // add extra sugar..
+              icon: Padding(
+                padding: EdgeInsets.fromLTRB(100,0,0,0),
+                child: Icon(Icons.arrow_drop_down,color: Colors.grey,),
+              ),
+               iconSize:40,
+              // underline: SizedBox(),
             ),
           ),
         ],

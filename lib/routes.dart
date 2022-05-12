@@ -12,6 +12,7 @@ import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
+import 'package:salahly_mechanic/screens/login_signup/registration_try.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
@@ -102,6 +103,9 @@ class Routing {
           GoRoute(
               path: AddSchedulerTaskScreen.routeName,
               builder: (context, state) => AddSchedulerTaskScreen()),
+          GoRoute(
+              path: Registration_try.routeName,
+              builder: (context, state) => Registration_try()),
 
         ],
       );
