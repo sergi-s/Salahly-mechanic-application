@@ -31,7 +31,10 @@ class _InputContainerState extends State<InputContainer> {
               offset: Offset(3, 0),
             ),
           ]),
-      child: widget.child,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: widget.child,
+      ),
     );
   }
 }

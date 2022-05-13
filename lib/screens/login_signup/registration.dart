@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
-import 'package:salahly_mechanic/screens/test_foula.dart';
-
-// import 'package:salahly_mechanic/classes/models/client.dart';
-// import 'package:salahly_mechanic/utils/validation.dart';
-import 'package:salahly_mechanic/widgets/login_signup/Registration_TextField.dart';
-import 'package:salahly_models/models/client.dart' as Client;
-import 'package:salahly_mechanic/widgets/login_signup/Birthday_Input.dart';
+import 'package:salahly_mechanic/screens/login_signup/text_input.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Rounded_Bottom.dart';
-import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
+import 'package:salahly_models/models/client.dart' as Client;
+
+import '../../widget/profile_widget.dart';
+import '../../widgets/login_signup/roundedInput.dart';
+import '../../widgets/report/select_button.dart';
 
 class Registration extends StatefulWidget {
   static final routeName = "/registrationscreen";
@@ -33,7 +31,7 @@ class _RegistrationState extends State<Registration> {
 
   //late TextEditingController emailController = TextEditingController();
   String username = "";
-
+  DateTime? _selectedDate ;
   String phonenumber = "";
 
   String address = "";
@@ -90,6 +88,19 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
+  _datePicker(BuildContext context) async {
+    DateTime? _pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 365)));
+    if (_pickerDate != null) {
+      setState(() {
+        _selectedDate = _pickerDate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -98,99 +109,126 @@ class _RegistrationState extends State<Registration> {
       backgroundColor: const Color(0xFFd1d9e6),
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: const Color(0xFF193566),
-        title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        backgroundColor: const Color(0xFFd1d9e6),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xFF193566),
+          ),
+          onPressed: () {},
+        ),
+        title:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(""),
+          Text(
+            "Registration".tr(),
+            style: TextStyle(
+              fontSize: 22,
+              letterSpacing: 1,
+              color: Color(0xFF193566),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           Image.asset(
-            'assets/images/logo ta5arog white car.png',
+            'assets/images/logo white.png',
             fit: BoxFit.contain,
             height: 32,
           ),
         ]),
       ),
-      body: Stack(children: [
-        CustomPaint(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-          painter: HeaderCurvedContainer(),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: const EdgeInsets.all(20),
-              child: const Text(
-                "Registration",
-                style: const TextStyle(
-                  fontSize: 30,
-                  letterSpacing: 1.5,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              ProfileWidget(
+                imagePath: "assets/images/user.png",
+                onClicked: () async {},
+              ),
+              // SizedBox(height:180),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              RounedInput(
+                icon: Icons.face,
+                fn: () {},
+                hint: 'Name',
+              ),
+              RounedInput(
+                icon: Icons.phone,
+                fn: () {},
+                hint: 'Phone',
+              ),
+              MyInput(
+                hint:  _selectedDate != null? DateFormat.yMMMEd().format(_selectedDate!) : 'Birthdate',
+                fn: () {},
+                widget: IconButton(
+                  onPressed: () {
+                    _datePicker(context);
+                  },
+                  icon: const Icon(
+                    Icons.calendar_today,
+                    color: Color(0xFF193566),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        SingleChildScrollView(
-          child: Center(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 150),
-              height: MediaQuery.of(context).size.height * 0.55,
-              width: MediaQuery.of(context).size.width,
-              // decoration: BoxDecoration(
-              //     color: Color(0xFFd1d9e6),
-              //   borderRadius: BorderRadius.circular(30), //border corner radius
-              //   boxShadow:[
-              //     BoxShadow(
-              //       color: Colors.grey.withOpacity(0.5), //color of shadow
-              //       spreadRadius: 5, //spread radius
-              //       blurRadius: 7, // blur radius
-              //       //offset: Offset(0, 2), // changes position of shadow
-              //
-              //     ),
-              //
-              //   ],
-              // ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // SizedBox(height:180),
-                    Registration_Input(
-                      hintText: 'Username',
-                      icon: Icons.face,
-                      fn: updateusername,
-                    ),
-                    Registration_Input(
-                        hintText: 'PhoneNumber',
-                        icon: Icons.phone,
-                        fn: updatephonenumber),
-                    Registration_Input(
-                      hintText: 'Address',
-                      icon: Icons.location_on,
-                      fn: updateaddress,
-                    ),
-                    //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
-                    //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
-                    // Registration_Input(hintText: 'Gender', icon: Icons.transgender,fn: updategender,),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    RoundedButton(
-                      title: "Register",
-                      onPressedFunction: () async {
-                        registerOnPress(context);
-                      },
-                    )
-                  ],
+              MyInput(
+                hint: "Address",
+                fn: () {},
+                widget: IconButton(
+                  onPressed: () {
+                    _datePicker(context);
+                  },
+                  icon: const Icon(
+                    Icons.pin_drop,
+                    color: Color(0xFF193566),
+                  ),
                 ),
               ),
-            ),
+              SelectTextField(
+                hintText: 'User Type',
+                items: ["Mechanic", "Provider"],
+                onChangedfunction: () {},
+              ),
+              SelectTextField(
+                hintText: 'WorkShop Type',
+                items: ["Center", "WorkShop"],
+                onChangedfunction: () {},
+              ),
+
+              //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
+              //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
+              // Registration_Input(hintText: 'Gender', icon: Icons.transgender,fn: updategender,),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              SizedBox(
+                width: size.width * 0.4,
+                height:  size.height * 0.06,
+                child: RaisedButton(
+                  color: Color(0xFF193566),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    "Register".tr(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              // RoundedButton(
+              //   title: "Register",
+              //   onPressedFunction: () async {
+              //     registerOnPress(context);
+              //   },
+              // )
+            ],
           ),
         ),
-      ]),
+      ),
     );
   }
 }

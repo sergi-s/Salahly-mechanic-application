@@ -99,7 +99,7 @@ Future<void>_selectTime(BuildContext context) async {
             ),
             Container(
              child: RaisedButton(
-                child: Text("press Here!!!"),
+                child: Text("Report!!!"),
                 onPressed: (){  context.goNamed("ReportScreen",params: {"requestType":"wsa" ,"rsaId":"12345678"} );},
               ),
             ),
@@ -107,7 +107,7 @@ Future<void>_selectTime(BuildContext context) async {
 
             Container(
               child: RaisedButton(
-                child: Text("press Here!!!"),
+                child: Text("Register!!!"),
                 onPressed: (){  context.go(Registration.routeName, extra: "email") ;},
               ),
             ),
