@@ -3,6 +3,7 @@ import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/login_signup/TryScreen.dart';
+import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
@@ -25,7 +26,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: TestScreenAya.routeName,
+        initialLocation: EditProfile.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -111,7 +112,9 @@ GoRoute(
               path: AddSchedulerTaskScreen.routeName,
               builder: (context, state) => AddSchedulerTaskScreen(onAdd: state.extra! as Function)),
 
-
+          GoRoute(
+              path: EditProfile.routeName,
+              builder: (context, state) => EditProfile()),
         ],
       );
 }
