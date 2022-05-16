@@ -52,5 +52,16 @@
   "color": "Color",
   "request" : "Request",
   "settings": "Settings",
-  "change_lang": "Choose language"
+  "change_lang": "Choose language",
+  "added_scheduler": "Added Scheduler",
+  "add_scheduler": "Add Scheduler",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "end_date": "End date",
+  "select_request": "Select Request",
+  "color_picker": "Color Picker",
+  "add" : "Add",
+  "adding_schedule_please_wait": "Adding Schedule, Please Wait",
+  "pick_color": "Pick Color",
+  "select_color": "Select Color"
 }

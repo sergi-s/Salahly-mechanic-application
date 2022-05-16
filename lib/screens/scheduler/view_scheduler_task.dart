@@ -6,14 +6,16 @@ import 'package:salahly_models/models/road_side_assistance.dart';
 import '../../classes/scheduler/scheduler.dart';
 
 class ViewSchedulerTaskScreen extends StatefulWidget {
-  ViewSchedulerTaskScreen({required this.scheduleTaskAndFunctionOnDelete}){
-    onDelete = scheduleTaskAndFunctionOnDelete["onDelete"];
-    scheduleTask  = scheduleTaskAndFunctionOnDelete["scheduleTask"];
+  ViewSchedulerTaskScreen({required this.scheduleTaskAndFunctionOnDelete}) {
+    // onDelete = scheduleTaskAndFunctionOnDelete["onDelete"];
+    scheduleTask = scheduleTaskAndFunctionOnDelete["scheduleTask"];
   }
+
   static const String routeName = '/view_scheduler_task';
-  final Map<String,dynamic> scheduleTaskAndFunctionOnDelete;
+  final Map<String, dynamic> scheduleTaskAndFunctionOnDelete;
   late Function onDelete;
   late ScheduleTask scheduleTask;
+  static bool deleted = false;
 
   @override
   _ViewSchedulerTaskState createState() => _ViewSchedulerTaskState();
@@ -67,8 +69,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
               Icons.arrow_back,
               color: Colors.white,
             ),
-            onPressed: () {
-             },
+            onPressed: () {},
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -171,7 +172,6 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                           firstStr: "Start Time :",
                                           secondStr:
                                               "${(widget.scheduleTask.startDate.hour).floor()}:${widget.scheduleTask.startDate.minute}"),
-
                                       if (widget.scheduleTask.endDate != null)
                                         MyTwoEndTextDivided(
                                             firstStr: "End Time :",
@@ -181,7 +181,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                         MyTwoEndTextDivided(
                                             firstStr: "Duration :",
                                             secondStr:
-                                                "${((widget.scheduleTask.duration)!/ 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
+                                                "${((widget.scheduleTask.duration)! / 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
                                       Row(
                                         children: [
                                           const MyTwoEndTextDivided(
@@ -229,11 +229,15 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
                                             onPressed: () async {
-                                              await Scheduler.deleteTask(widget.scheduleTask);
-                                              await widget.onDelete();
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                      content: Text('Deleted scheduler task'.tr())));
+                                              await Scheduler.deleteTask(
+                                                  widget.scheduleTask);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          'Deleted scheduler task'
+                                                              .tr())));
+                                              ViewSchedulerTaskScreen.deleted =
+                                                  true;
                                               Navigator.pop(context);
                                             }),
                                         RaisedButton(
@@ -245,7 +249,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                             color: const Color(0xFF193566),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(12)),
+                                                    BorderRadius.circular(12)),
                                             onPressed: () {}),
                                       ],
                                     ),

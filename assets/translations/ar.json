@@ -57,5 +57,17 @@
   "car_model" : "موديل السيارة",
   "client_name" : "اسم العميل",
   "settings": "اعدادات",
-  "change_lang": "اختار لغه"
+  "change_lang": "اختار لغه",
+  "added_scheduler": "تم اضافة المهمة بنجاح",
+  "add_scheduler": "اضافة مهمة",
+  "hours": "ساعات",
+  "minutes": "دقائق",
+  "end_date": "تاريخ الانتهاء",
+  "select_request" : "اختر الطلب",
+  "color_picker": "اختيار اللون",
+  "add" : "اضافة",
+  "adding_schedule_please_wait": "جاري اضافة المهمة",
+  "pick_color": "اختيار اللون",
+  "select_color": "اختر اللون"
+
 }

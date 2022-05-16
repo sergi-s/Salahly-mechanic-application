@@ -1,8 +1,10 @@
-import 'dart:math';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/classes/provider/scheduler_tasks_change_notifier.dart';
+import 'package:salahly_mechanic/classes/provider/scheduler_tasks_state_notifier.dart';
 import 'package:salahly_mechanic/classes/scheduler/scheduler.dart';
 import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
@@ -10,7 +12,7 @@ import 'package:time_planner/time_planner.dart';
 
 import 'add_scheduler_task.dart';
 
-class SchedulerScreen extends StatefulWidget {
+class SchedulerScreen extends ConsumerStatefulWidget {
   const SchedulerScreen({Key? key}) : super(key: key);
   static const String routeName = '/schedulerScreen';
 
@@ -27,52 +29,54 @@ class DaysObject {
 
 enum WeekEnum { previous, current, next }
 
-class _SchedulerScreenState extends State<SchedulerScreen> {
-  List<TimePlannerTask> tasks = [];
+class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
+  // List<TimePlannerTask> tasks = [];
   Map<int, bool> cache = {};
   int totalTasks = 0;
 
   _refreshRenderList() async {
-    print("hello");
+    setState(() {
+      todos = [];
+    });
     List<ScheduleTask>? savedTasks = await Scheduler.getTasks();
-    totalTasks = savedTasks?.length ?? 0;
-    // if (savedTasks == null) {
-    //   await Scheduler.getAllFromStorage();
-    //   savedTasks = Scheduler.getTasks();
-    // }
     for (var element in savedTasks!) {
-      if (!cache.containsKey(element.id)) {
+      dynamic v = toTimePlannerTask(element);
+      if (!cache.containsKey(element.id) && element.id != 3) {// || true ||
         cache[element.id] = true;
         setState(() {
-          dynamic v = toTimePlannerTask(element);
-          if (v != null) {
-            tasks.add(v);
-          }
+          todos.add(v);
         });
-        /*TimePlannerTask(
-            minutesDuration: element.duration!,
-            dateTime: TimePlannerDateTime(
-                day: element.startDate.day,
-                hour: element.startDate.hour,
-                minutes: element.startDate.minute),
-            color: element.color,
-            child: Text(element.title),
-            onTap: () {
-              context.push(ViewSchedulerTaskScreen.routeName, extra: element);
-            })*/
-
       }
     }
   }
 
+  // List<TimePlannerTask> _renderList(List<ScheduleTask> tasks) {
+  //   List<TimePlannerTask> list = [];
+  //   for (var element in tasks) {
+  //     dynamic v = toTimePlannerTask(element);
+  //     if (v != null) {
+  //       setState(() {
+  //         list.add(v);
+  //         todos.add(v);
+  //       });
+  //     }
+  //   }
+  //   return list;
+  // }
+
+  @override
+  void dispose() {
+    // print("Scheduler.tasks.length: ${Scheduler.tasks!.length}");
+    Scheduler.resetTasks();
+    // print("Scheduler.tasks is null: ${Scheduler.tasks == null}");
+    // Scheduler.getAllFromStorage();
+    // print("Scheduler.tasks is null: ${Scheduler.tasks == null}");
+    super.dispose();
+  }
+
   @override
   void initState() {
-    super.initState();
     _refreshRenderList();
-    // print(weekDays.length);
-    // 1 -> 7, 8 -> 14, 16 -> 22,
-    // previous, current, next
-    //-7 -> -1, 0 -> 6, 7 -> 14
     for (var i = 0; i < 21; i++) {
       WeekEnum weekEnum;
       if (i < 7) {
@@ -84,78 +88,18 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       }
 
       weekDays.add(DaysObject(
-          date: DateTime.now().add(Duration(days: i-7)), weekEnum: weekEnum));
+          date: DateTime.now().add(Duration(days: i - 7)), weekEnum: weekEnum));
     }
     // print(weekDays[7].date.day);
     _getDaysList();
-/*    tasks =
-    [
-      TimePlannerTask(
-        // background color for task
-        color: Colors.purple,
-        // day: Index of header, hour: Task will be begin at this hour
-        // minutes: Task will be begin at this minutes
-        dateTime: TimePlannerDateTime(day: 0, hour: 14, minutes: 30),
-        // Minutes duration of task
-        minutesDuration: 90,
-        // Days duration of task (use for multi days task)
-        daysDuration: 1,
-        onTap: () {
-          context.go(
-            ViewSchedulerTaskScreen.routeName,
-            extra: ScheduleTask(
-                startDate: DateTime(2020, 5, 3, 14, 30),
-                title: "Task title",
-                color: Colors.purple,
-                id: 1,
-                duration: 90,
-                requestObject: RSA(
-                  user: Client(name: "Ahmed", phoneNumber: "0123456789"),
-                  car: Car(
-                    model: "Corolla",
-                    noPlate: '12345',
-                  ),
-                )),
-          );
-        },
-        child: Text(
-          'this is a task',
-          style: TextStyle(color: Colors.grey[350], fontSize: 12),
-        ),
-      ),
-      TimePlannerTask(
-        // background color for task
-        color: Colors.purple,
-        // day: Index of header, hour: Task will be begin at this hour
-        // minutes: Task will be begin at this minutes
-        dateTime: TimePlannerDateTime(day: 1, hour: 14, minutes: 30),
-        // Minutes duration of task
-        minutesDuration: 90,
-        // Days duration of task (use for multi days task)
-        daysDuration: 2,
-        onTap: () {},
-        child: Text(
-          'this is a task',
-          style: TextStyle(color: Colors.grey[350], fontSize: 12),
-        ),
-      ),
-      TimePlannerTask(
-        // background color for task
-        color: Colors.purple,
-        // day: Index of header, hour: Task will be begin at this hour
-        // minutes: Task will be begin at this minutes
-        dateTime: TimePlannerDateTime(day: 4, hour: 15, minutes: 2),
-        // Minutes duration of task
-        minutesDuration: 144,
-        // Days duration of task (use for multi days task)
-        daysDuration: 1,
-        onTap: () {},
-        child: Text(
-          'this is a task',
-          style: TextStyle(color: Colors.grey[350], fontSize: 12),
-        ),
-      ),
-    ];*/
+
+    // print(weekDays.length);
+    // 1 -> 7, 8 -> 14, 16 -> 22,
+    // previous, current, next
+    //-7 -> -1, 0 -> 6, 7 -> 14
+
+
+    super.initState();
   }
 
   compareDay(DateTime date1, DateTime date2) {
@@ -166,6 +110,16 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
   List<DaysObject> weekDays = [];
   List<TimePlannerTitle> weekDaysWidget = [];
+
+  // _addTaskToTimePlanner(ScheduleTask task) {
+  //   // ref.watch(schedulerTasksProvider.notifier).addTask((task));
+  //   ref.watch(schedulerTasksChangeProvider).addTask(task);
+  // }
+
+  // _deleteTaskToTimePlanner(ScheduleTask task) {
+  //   // ref.watch(schedulerTasksProvider.notifier).removeTask((task));
+  //   // ref.watch(schedulerTasksChangeProvider).addTask(task);
+  // }
 
   int? _prepareDay(ScheduleTask scheduleTask) {
     DateTime dateSaved = scheduleTask.startDate;
@@ -197,9 +151,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     if (day == null) {
       return null;
     }
-    Map<String,dynamic> map = {
-      "scheduleTask": scheduleTask,
-      "onDelete": _refreshRenderList
+    Map<String, dynamic> map = {
+      "scheduleTask": scheduleTask
     };
     return TimePlannerTask(
       child: Text(scheduleTask.title),
@@ -210,12 +163,49 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           minutes: scheduleTask.startDate.minute),
       minutesDuration: scheduleTask.duration!,
       onTap: () {
-        context.push(
-          ViewSchedulerTaskScreen.routeName,
-          extra: map,
-        );
-      },
+        // Navigator.push(
+        //   ViewSchedulerTaskScreen.routeName,
+        //   extra: map,
+        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewSchedulerTaskScreen(
+              scheduleTaskAndFunctionOnDelete: map,
+            ),
+          ),
+        ).then((value) {
 
+          if(ViewSchedulerTaskScreen.deleted) {
+            setState(() {
+              // _deleteTaskToTimePlanner(scheduleTask);
+              // print("todos length: ${todos.length}");
+              //   todos.remove(toTimePlannerTask(scheduleTask)!);
+              // print("todos length: ${todos.length}");
+              //   todos.forEach((element) {
+              //     if(element.dateTime.day == scheduleTask.startDate.day && element.dateTime.hour == scheduleTask.startDate.hour && element.dateTime.minutes == scheduleTask.startDate.minute  && element.minutesDuration == scheduleTask.duration) {
+              //       todos.remove(element);
+              //       print("removed");
+              //     }
+              //   });
+              // todos.removeAt(scheduleTask.id);
+              });
+            TimePlannerTask? t ;
+            for (var element in todos) {
+              if( element.dateTime.hour == scheduleTask.startDate.hour && element.dateTime.minutes == scheduleTask.startDate.minute  && element.minutesDuration == scheduleTask.duration) {
+                t = element;
+              }
+            }
+            if(t != null) {
+              setState(() {
+                todos.remove(t!);
+              });
+              print("removed");
+            }
+              ViewSchedulerTaskScreen.deleted = false;
+          }
+        });
+      },
     );
   }
 
@@ -224,7 +214,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       nextWeek = Colors.green;
 
   _getDaysList() {
-    // List<Widget> daysList = [];
     for (var day in weekDays) {
       if (day.weekEnum == WeekEnum.previous) {
         setState(() {
@@ -237,24 +226,22 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                 color: previousWeek, fontWeight: FontWeight.bold, fontSize: 13),
           ));
         });
-      }else if (day.weekEnum == WeekEnum.current) {
+      } else if (day.weekEnum == WeekEnum.current) {
         setState(() {
           weekDaysWidget.add(TimePlannerTitle(
             date: "Current week",
             title: DateFormat('EEEE').format(day.date),
-            titleStyle:
-            TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
+            titleStyle: TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
                 color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
           ));
         });
-      }else {
+      } else {
         setState(() {
           weekDaysWidget.add(TimePlannerTitle(
             date: "Next week",
             title: DateFormat('EEEE').format(day.date),
-            titleStyle:
-            TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
+            titleStyle: TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
                 color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
           ));
@@ -263,14 +250,54 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     }
   }
 
+  List<TimePlannerTask> todos = [];
+
+  bool isListening = false;
+
   @override
   Widget build(BuildContext context) {
+    print("REBUILD");
+    // if(!isListening){
+    //   isListening = true;
+    //   ref.watch(schedulerTasksProvider.notifier).addListener(() {
+    //
+    //   todos = _renderList(ref.watch(schedulerTasksProvider).tasks);
+    //   });
+    // }
+    // setState(() {
+    //ref.watch(schedulerTasksProvider)
+
+    // todos = _renderList(ref.watch(schedulerTasksProvider));
+    // print(todos);
+    // });
+    // todos = ref.watch(schedulerTasksProvider);
+    // tasks = ref.watch(schedulerTasksProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // _addTask();
-          context.push(AddSchedulerTaskScreen.routeName, extra: _refreshRenderList);
-          // await _refreshRenderList();
+          dynamic v = await Scheduler.getTasks();
+
+          // print("tasks length: ${todos.length}");
+
+          // context.push(AddSchedulerTaskScreen.routeName, extra: _addTaskToTimePlanner);
+          // ScheduleTask newTask =
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddSchedulerTaskScreen(
+                        onAdd: (){},
+                      ))).then((value) {
+            //ez
+            if (AddSchedulerTaskScreen.newTask != null) {
+              setState(() {
+                print("added");
+                print("AddSchedulerTaskScreen.newTask.id: ${AddSchedulerTaskScreen.newTask!.id}");
+                todos.add(toTimePlannerTask(AddSchedulerTaskScreen.newTask!)!);
+              });
+              Scheduler.addTask(AddSchedulerTaskScreen.newTask!);
+              AddSchedulerTaskScreen.newTask = null;
+            }
+          });
         },
         child: const Icon(Icons.add),
       ),
@@ -283,7 +310,9 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           // each header is a column and a day
           headers: weekDaysWidget,
           // List of task will be show on the time planner
-          tasks: tasks,
+          // tasks: todos,
+          // tasks: _renderList(ref.watch(schedulerTasksProvider)),
+          tasks: todos,
         ),
       ),
     );

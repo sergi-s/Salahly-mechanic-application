@@ -45,7 +45,7 @@ class OnGoingRequests extends ConsumerStatefulWidget {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 500,
+              // height: 500,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -171,53 +171,19 @@ class _ClientsDataState extends ConsumerState<OnGoingRequests> {
     _requests = ref.watch(ongoingRequestsProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
-      appBar: AppBar(
-        title: Text('Ongoing Requests'),
-        centerTitle: true,
-        backgroundColor: const Color(0xff193566),
-        flexibleSpace: Image.asset('assets/images/logo white.png',fit: BoxFit.scaleDown,alignment: Alignment.bottomRight,scale: 55),
-      ),
+      appBar: salahlyAppBar(),
 
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/images/wavy shape copy.png'),alignment: Alignment.topCenter,fit: BoxFit.fill),
-                  color: Colors.transparent
-              ),
-              child: Text(''),
-            ),
-            ListTile(
-              title: const Text('Home Page',style: TextStyle(fontWeight: FontWeight.bold),).tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('View Requests',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Set availability',style: TextStyle(fontWeight: FontWeight.bold)).tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: salahlyDrawer(context),
 
       body: Center(
-        child:Column(
-          children: _requests.map((request) => rsaDetailsCard(request)).toList(),
-            // children:
-            // Clients.map((p) {
-            //   return personDetailCard(p);
-            // }).toList()
+        child:SingleChildScrollView(
+          child: Column(
+            children: _requests.map((request) => rsaDetailsCard(request)).toList(),
+              // children:
+              // Clients.map((p) {
+              //   return personDetailCard(p);
+              // }).toList()
+          ),
         ),
       ),
     );
