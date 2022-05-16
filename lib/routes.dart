@@ -19,7 +19,6 @@ import 'package:salahly_mechanic/screens/scheduler/view_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
-
 import 'screens/switchLanguage.dart';
 
 class Routing {
@@ -64,7 +63,8 @@ class Routing {
           ),
           GoRoute(
             path: RequestFullDataScreen.routeName,
-            builder: (context, state) => RequestFullDataScreen(rsa: state.extra! as RSA),
+            builder: (context, state) =>
+                RequestFullDataScreen(rsa: state.extra! as RSA),
           ),
           GoRoute(
             path: MechanicProfilePage.routeName,
@@ -100,17 +100,17 @@ class Routing {
           GoRoute(
             path: ViewSchedulerTaskScreen.routeName,
             builder: (context, state) => ViewSchedulerTaskScreen(
-                scheduleTaskAndFunctionOnDelete: state.extra! as Map<String, dynamic>),
+                scheduleTaskAndFunctionOnDelete:
+                    state.extra! as Map<String, dynamic>),
           ),
           GoRoute(
             path: SwitchLanguageScreen.routeName,
             builder: (context, state) => SwitchLanguageScreen(),
           ),
-GoRoute(
+          GoRoute(
               path: AddSchedulerTaskScreen.routeName,
-              builder: (context, state) => AddSchedulerTaskScreen(onAdd: state.extra! as Function)),
-
-
+              builder: (context, state) =>
+                  AddSchedulerTaskScreen(onAdd: state.extra! as Function)),
         ],
       );
 }

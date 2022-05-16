@@ -49,7 +49,7 @@ class _SelectRequestState extends State<SelectRequest> {
                   ),
                 ]),
             child: DropdownButtonFormField2<String>(
-
+  value: widget.items[0],
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 border: InputBorder.none,
