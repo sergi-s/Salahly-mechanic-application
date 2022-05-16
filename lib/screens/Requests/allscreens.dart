@@ -28,8 +28,17 @@ import '../../main.dart';
 class OngoingScreenDummy extends ConsumerWidget {
   static final routeName = "/ongoingscreendummy";
 
+  bool isListening = false;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if(!isListening){
+      listenRequestsFromDatabaseByNotifiers(
+          ref.watch(pendingRequestsProvider.notifier),
+          ref.watch(ongoingRequestsProvider.notifier));
+      isListening = true;
+    }
+
     PendingRequestsNotifier pendingNotifier =
         ref.watch(pendingRequestsProvider.notifier);
     OngoingRequestsNotifier ongoingRequestsNotifier =
