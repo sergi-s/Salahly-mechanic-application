@@ -1,12 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/login_signup/TryScreen.dart';
 import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
+import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/directionMap.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
@@ -110,9 +112,14 @@ class Routing {
             builder: (context, state) => SwitchLanguageScreen(),
           ),
           GoRoute(
-              path: AddSchedulerTaskScreen.routeName,
-              builder: (context, state) => AddSchedulerTaskScreen(onAdd: state.extra! as Function)),
-
+            path: AddSchedulerTaskScreen.routeName,
+            builder: (context, state) =>
+                AddSchedulerTaskScreen(onAdd: state.extra! as Function),
+          ),
+          GoRoute(
+              path: RideLocations.routeName,
+              builder: (context, state) =>
+                  RideLocations(bundledLocation: state.extra as BundledLocation)),
           GoRoute(
               path: EditProfile.routeName,
               builder: (context, state) => EditProfile()),

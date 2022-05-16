@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
@@ -11,19 +12,16 @@ import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
-import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/scheduler/add_scheduler_task.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
-import 'package:salahly_mechanic/screens/test_foula.dart';
-import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
-import 'package:salahly_models/models/car.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 import '../../main.dart';
+import '../RoadsideAssistant/directionMap.dart';
 
 class OngoingScreenDummy extends ConsumerWidget {
   static final routeName = "/ongoingscreendummy";
@@ -112,6 +110,7 @@ class OngoingScreenDummy extends ConsumerWidget {
                       child: Text("AddSchedulerTaskScreen screen"),
                   ),
                   ElevatedButton(
+
                     onPressed: () async {
 dynamic v = await Scheduler.getTasks();
 for(ScheduleTask i in v){
@@ -131,11 +130,26 @@ for(ScheduleTask i in v){
                   ),
                   ElevatedButton(
                       onPressed: () async {
-                        await dbRef.child("FCMTokens").child(FirebaseAuth.instance.currentUser!.uid).remove();
+                        await dbRef
+                            .child("FCMTokens")
+                            .child(FirebaseAuth.instance.currentUser!.uid)
+                            .remove();
                         await FirebaseAuth.instance.signOut();
                         context.go(LoginSignupScreen.routeName);
                       },
-                      child: Text("Log out"))
+                      child: Text("Log out")),
+                  ElevatedButton(
+                      onPressed: () {
+                        context.push(
+                          RideLocations.routeName,
+                          extra: BundledLocation(
+                              destinationLocation: CustomLocation(
+                                  latitude: 31.269965, longitude: 29.990275),
+                              clientLocation: CustomLocation(
+                                  latitude: 31.211795, longitude: 29.916125)),
+                        );
+                      },
+                      child: Text("TEST MAP"))
                 ],
               ),
             ),
