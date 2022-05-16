@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 class ScheduleTask {
+  final String? key;
   DateTime startDate;
   String title;
   String? description;
@@ -22,6 +23,7 @@ class ScheduleTask {
     this.endDate,
     this.duration,
     this.requestObject,
+    this.key,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +45,9 @@ class ScheduleTask {
     if (duration != null) {
       map['duration'] = duration;
     }
+    if (key != null) {
+      map['key'] = key;
+    }
     return map;
   }
 
@@ -58,6 +63,7 @@ class ScheduleTask {
       endDate: map['endDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['endDate']) : null,
       duration: map['duration'],
       requestObject: map['requestObject'],
+      key: map['key'],
     );
   }
 

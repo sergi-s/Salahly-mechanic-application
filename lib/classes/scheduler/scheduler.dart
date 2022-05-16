@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:localstore/localstore.dart';
 import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:time_planner/time_planner.dart';
@@ -8,17 +9,17 @@ class Scheduler {
   // static var items = <String, ScheduleTask>{};
   static List<ScheduleTask>? tasks;
 
-  static Future<List<ScheduleTask>?> getTasks() async{
-    tasks?? await getAllFromStorage();
+  static Future<List<ScheduleTask>?> getTasks() async {
+    tasks ?? await getAllFromStorage();
     return tasks;
   }
 
   // StreamSubscription<Map<String, dynamic>>? _subscription;
 
   static Future addTask(ScheduleTask scheduleTask) async {
-    await getTasks();
-    if (tasks == null) return false;
-    tasks?.add(scheduleTask);
+    if (tasks == null) await getTasks();
+    print("From inside Scheduler addtask with id ${scheduleTask.id}");
+    tasks!.add(scheduleTask);
     _db
         .collection('todos')
         .doc(scheduleTask.id.toString())
@@ -48,11 +49,14 @@ class Scheduler {
     return false;
   }
 
+  static resetTasks() {
+    tasks = null;
+  }
+
   static getAllFromStorage() async {
     tasks = [];
     final result = await _db.collection('todos').get();
     result?.forEach((key, value) {
-      // items[key] = ScheduleTask.fromMap(value);
       tasks!.add(ScheduleTask.fromMap(value));
     });
   }

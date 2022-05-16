@@ -1,5 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
+import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/login_signup/TryScreen.dart';
+import 'package:salahly_mechanic/screens/profile/editProfile.dart';
+import 'package:salahly_mechanic/screens/requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
@@ -23,7 +27,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: HomeScreen.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -63,7 +67,8 @@ class Routing {
           ),
           GoRoute(
             path: RequestFullDataScreen.routeName,
-            builder: (context, state) => RequestFullDataScreen(rsa: state.extra! as RSA),
+            builder: (context, state) =>
+                RequestFullDataScreen(rsa: state.extra! as RSA),
           ),
           GoRoute(
             path: MechanicProfilePage.routeName,
@@ -114,7 +119,10 @@ class Routing {
           GoRoute(
               path: RideLocations.routeName,
               builder: (context, state) =>
-                  RideLocations(bundledLocation: state.extra as BundledLocation))
+                  RideLocations(bundledLocation: state.extra as BundledLocation)),
+          GoRoute(
+              path: EditProfile.routeName,
+              builder: (context, state) => EditProfile()),
         ],
       );
 }

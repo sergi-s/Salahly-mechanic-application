@@ -5,6 +5,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
+import 'package:salahly_mechanic/classes/provider/scheduler_tasks_change_notifier.dart';
+import 'package:salahly_mechanic/classes/provider/scheduler_tasks_state_notifier.dart';
+import 'package:salahly_mechanic/main.dart';
+import 'package:salahly_mechanic/widgets/add_Schedular/number_input.dart';
+import 'package:salahly_models/models/road_side_assistance.dart';
 
 import '../../classes/scheduler/scheduler.dart';
 import '../../model/schedule_task.dart';
@@ -15,8 +21,7 @@ import '../../widgets/progress_dialog/progress_dialog.dart';
 class AddSchedulerTaskScreen extends ConsumerStatefulWidget {
   static const String routeName = '/add_scheduler_task';
   final Function onAdd;
-
-
+  static ScheduleTask? newTask;
   AddSchedulerTaskScreen({required this.onAdd});
 
   @override
@@ -26,6 +31,7 @@ class AddSchedulerTaskScreen extends ConsumerStatefulWidget {
 class _AddSchedulerTaskScreenState
     extends ConsumerState<AddSchedulerTaskScreen> {
   int totalTasks = 0;
+  List<RSA>? ongoingReqs;
 
   @override
   initState() {
@@ -35,6 +41,25 @@ class _AddSchedulerTaskScreenState
         totalTasks = value != null ? value.length : 0;
       });
     });
+
+    DateTime _nowDateTime = DateTime.now();
+    setState(() {
+      dateTime =
+          DateTime(_nowDateTime.year, _nowDateTime.month, _nowDateTime.day);
+    });
+  }
+
+  _getOngoingReqs() {
+    if (_requestsItems.isNotEmpty) return;
+    ongoingReqs = ref.watch(ongoingRequestsProvider);
+    if (ongoingReqs != null) {
+      _requestsItems.add("None");
+      for (RSA req in ongoingReqs!) {
+        setState(() {
+          _requestsItems.add(req.car!.noPlate);
+        });
+      }
+    }
   }
 
   _addRandomTask() async {
@@ -52,29 +77,39 @@ class _AddSchedulerTaskScreenState
   }
 
   _addTask() async {
-    dateTime =  dateTime!.add(Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute));
-    print("Duration ${Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute)}");
-    print("add task");
-    print("time of day: ${timeOfDay!.hour}:${timeOfDay!.minute}");
-    print("datetime: ${dateTime!}");
-    print("title: ${title}");
-    print("duration: ${_duration.toString()}");
-    print("color: ${pickerColor}");
-    print("id: ${totalTasks+1}");
-    print("description: ${description}");
-
-    await Scheduler.addTask(ScheduleTask(
+    // print("datetime: ${dateTime!}");
+    dateTime = dateTime!
+        .add(Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute));
+    // print("Duration ${Duration(hours: timeOfDay!.hour, minutes: timeOfDay!.minute)}");
+    // print("add task");
+    // print("time of day: ${timeOfDay!.hour}:${timeOfDay!.minute}");
+    // print("datetime: ${dateTime!}");
+    // print("title: ${title}");
+    // print("duration: ${_duration.toString()}");
+    // print("color: ${pickerColor}");
+    // print("id: ${totalTasks + 1}");
+    // print("description: ${description}");
+    int nextId = (Scheduler.tasks!.length+1)+5;
+    while(true){
+      if(Scheduler.tasks!.any((element) => element.id == nextId)){
+        nextId++;
+      }else{
+        break;
+      }
+    }
+    ScheduleTask task = ScheduleTask(
       startDate: dateTime!,
       title: title,
       color: pickerColor,
-      id: ++totalTasks,
-      duration: _duration,
+      id: nextId,
+      duration: _hours * 60 + _minutes,
       description: description,
-    ));
-    await widget.onAdd();
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Added scheduler'.tr())));
+      requestObject: _selectedRequest,
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('added_scheduler'.tr())));
+    print("title ${task.title}");
+    AddSchedulerTaskScreen.newTask = task;
     Navigator.pop(context);
 
     // await _refreshRenderList();
@@ -87,23 +122,27 @@ class _AddSchedulerTaskScreenState
   DateTime? dateTime = DateTime.now();
   String description = "", title = "";
   Color pickerColor = Color(0xff443a49);
-  // TimeOfDay selectedTime = TimeOfDay.now();
-  // Color currentColor = Color(0xff443a49);
-  // String? color;
+  int _hours = 2, _minutes = 0;
+  List<String> _requestsItems = [];
+  RSA? _selectedRequest;
 
   _timePicker(BuildContext context) async {
     timeOfDay = await showTimePicker(
       context: context,
       initialTime: timeOfDay ?? TimeOfDay.now(),
     );
+    setState(() {});
   }
-  _datePicker(BuildContext context) async{
+
+  _datePicker(BuildContext context) async {
     DateTime? _pickerDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 365)));
-
+    setState(() {
+      dateTime = _pickerDate;
+    });
   }
 
   // create some values
@@ -112,14 +151,14 @@ class _AddSchedulerTaskScreenState
   void changeColor(Color color) {
     setState(() => pickerColor = color);
   }
-  
+
   bool isLoading = false;
-  
+
   @override
   Widget build(BuildContext context) {
+    _getOngoingReqs();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      
       backgroundColor: const Color(0xFFd1d9e6),
       appBar: AppBar(
         elevation: 0.0,
@@ -135,7 +174,7 @@ class _AddSchedulerTaskScreenState
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(""),
           Text(
-            "Add Schedular".tr(),
+            "add_scheduler".tr(),
             style: const TextStyle(
               fontSize: 20,
               letterSpacing: 1,
@@ -154,133 +193,176 @@ class _AddSchedulerTaskScreenState
         child: Center(
           child: Container(
             width: size.width * 0.88,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.01,
+              ),
+              MyInputField(
+                fn: () {},
+                title: "start_date".tr(),
+                hint: DateFormat.yMMMEd().format(dateTime!),
+                widget: IconButton(
+                  onPressed: () {
+                    _datePicker(context);
+                  },
+                  icon: const Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              MyInputField(
+                fn: () {},
+                title: 'start_time'.tr(),
+                hint: "${timeOfDay!.hour}:${timeOfDay!.minute}",
+                widget: IconButton(
+                  onPressed: () {
+                    _timePicker(context);
+                  },
+                  icon: const Icon(
+                    Icons.access_time_rounded,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Text(
+                    'duration'.tr(),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF193566)),
+                  ),
+              Row(
                 children: [
+                  Expanded(
+                      child: MyNumberInputField(
+initialValue: 2,
+                          title: "hours".tr(),
+                          hint: "2",
+                          fn: (value) {
+                            _hours = int.parse(value);
+                          })),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
+                    width: MediaQuery.of(context).size.width * 0.02,
                   ),
-                  MyInputField(
-                    fn: () {},
-                    title: "Start Date",
-                    hint: DateFormat.yMMMEd().format(dateTime!),
-                    widget: IconButton(
-                      onPressed: () {
-                        _datePicker(context);
-                      },
-                      icon: const Icon(
-                        Icons.calendar_today_outlined,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  MyInputField(
-                    fn: () {},
-                    title: 'Start Time',
-                    hint:
-                        "${timeOfDay!.hour}:${timeOfDay!.minute}",
-                    widget: IconButton(
-                      onPressed: () {
-                        _timePicker(context);
-                      },
-                      icon: const Icon(
-                        Icons.access_time_rounded,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: MyInputField(
-                              title: "Duration", hint: "Hours", fn: () {})),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.02,
-                      ),
-                      Expanded(
-                          child: MyInputField(
-                              title: "", hint: "Minutes", fn: () {})),
-                    ],
-                  ),
-
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  SelectRequest(items: ["RSA","WSA"], onChangedfunction: (){},  hintText: '',title: "Request Type",),
-                  MyInputField(
-                      title: "Title", hint: "Title", fn: (updatedTitle) {
+                  Expanded(
+                      child: MyNumberInputField(
+                          initialValue: 0,
+                          title: "minutes".tr(),
+                          hint: "00",
+                          fn: (value) {
+                            _minutes = int.parse(value);
+                          })),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              MyInputField(
+                  title: "title".tr(),
+                  hint: "title".tr(),
+                  fn: (updatedTitle) {
                     title = updatedTitle;
                   }),
-                  MyInputField(
-                      title: "Description", hint: "Description", fn: (updatedDescription) {
-                        description = updatedDescription;
+              MyInputField(
+                  title: "description".tr(),
+                  hint: "description".tr(),
+                  fn: (updatedDescription) {
+                    description = updatedDescription;
                   }),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Color Picker",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF193566)),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          pickColor(context);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: pickerColor),
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        // width: 95,
-                        height: 50,
-                        child: RaisedButton(
-                          splashColor: Colors.white.withAlpha(40),
-                          color: Color(0xFF193566),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          onPressed: () async {
-                            isLoading = true;
-                            showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        ProgressDialog(message: "Adding schedule, please wait"));
-                            await _addTask();
-                            Navigator.pop(context);
-                            isLoading = false;
-                          },
-                          child: Text(
-                            "Add".tr(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              _requestsItems.isNotEmpty
+                  ? SelectRequest(
+                      items: _requestsItems,
+                      onChangedfunction: (value) {
+                        if (value == "None") {
+                          _selectedRequest = null;
+                        } else {
+                          if (ongoingReqs != null) {
+                            for (RSA req in ongoingReqs!) {
+                              if (req.car!.noPlate == value) {
+                                _selectedRequest = req;
+                              }
+                            }
+                          }
+                        }
+                      },
+                      hintText: '',
+                      title: "select_request".tr(),
+                    )
+                  : Container(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "color_picker".tr(),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF193566)),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    width: MediaQuery.of(context).size.width * 0.05,
                   ),
-                ]),
+                  GestureDetector(
+                    onTap: () {
+                      pickColor(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: pickerColor),
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              Row(
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // width: 95,
+                    height: 50,
+                    child: RaisedButton(
+                      splashColor: Colors.white.withAlpha(40),
+                      color: Color(0xFF193566),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      onPressed: () async {
+                        isLoading = true;
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => ProgressDialog(
+                                message: "adding_schedule_please_wait".tr()));
+                        await _addTask();
+                        Navigator.pop(context);
+                        isLoading = false;
+                      },
+                      child: Text(
+                        "add".tr(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+            ]),
           ),
         ),
       ),
@@ -290,40 +372,44 @@ class _AddSchedulerTaskScreenState
   Widget buildColorPicker() => ColorPicker(
       pickerColor: pickerColor,
       onColorChanged: (pickerColor) => setState(() {
-        this.pickerColor = pickerColor;
-      }));
+            this.pickerColor = pickerColor;
+          }));
 
   pickColor(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 60),
-            title: Text("Pick Color"),
+            insetPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03, vertical: MediaQuery.of(context).size.width*0.04),
+            title: Text("pick_color".tr()),
             content: Column(
               children: [
                 buildColorPicker(),
-                Row(
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("cancel".tr())),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("Select Color".tr())),
-                  ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // TextButton(
+                      //     onPressed: () {
+                      //       Navigator.of(context).pop();
+                      //     },
+                      //     child: Text("cancel".tr())),
+                      // SizedBox(
+                      //   width: 20,
+                      // ),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("select_color".tr())
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
           );
         });
   }
-
 }

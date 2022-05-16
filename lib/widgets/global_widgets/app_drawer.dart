@@ -29,7 +29,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             "Scheduler screen",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(SchedulerScreen.routeName);
@@ -38,7 +38,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             "Set availability",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(Switcher.routeName);
@@ -47,7 +47,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             "PendingRequests screen",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(PendingRequests.routeName);
@@ -56,7 +56,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             "go to ongoing screen",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(ONGOINGVIEW.routeName);
@@ -65,7 +65,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             'Ongoing UI screen',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(OnGoingRequests.routeName);
@@ -74,7 +74,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             'Change language screen',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ),
           onTap: () {
             context.push(SwitchLanguageScreen.routeName);
@@ -83,7 +83,7 @@ Widget salahlyDrawer(BuildContext context) {
         ListTile(
           title: const Text(
             'Log out',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () async {
             showDialog(

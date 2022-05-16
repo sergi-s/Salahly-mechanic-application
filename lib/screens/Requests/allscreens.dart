@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/classes/scheduler/scheduler.dart';
+import 'package:salahly_mechanic/model/schedule_task.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFullData.dart';
@@ -24,8 +26,17 @@ import '../RoadsideAssistant/directionMap.dart';
 class OngoingScreenDummy extends ConsumerWidget {
   static final routeName = "/ongoingscreendummy";
 
+  bool isListening = false;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if(!isListening){
+      listenRequestsFromDatabaseByNotifiers(
+          ref.watch(pendingRequestsProvider.notifier),
+          ref.watch(ongoingRequestsProvider.notifier));
+      isListening = true;
+    }
+
     PendingRequestsNotifier pendingNotifier =
         ref.watch(pendingRequestsProvider.notifier);
     OngoingRequestsNotifier ongoingRequestsNotifier =
@@ -99,21 +110,23 @@ class OngoingScreenDummy extends ConsumerWidget {
                       child: Text("AddSchedulerTaskScreen screen"),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      context.push(RequestFullDataScreen.routeName,
-                          extra: ref.watch(ongoingRequestsProvider).first
-                          // RSA(
-                          //   requestType: RequestType.RSA,
-                          //
-                          //   car: Car(
-                          //     model: "BMW",
-                          //     noPlate: "12345",
-                          //     color: "0xFFFF6347"
-                          //   )
-                          // )
-                          );
+
+                    onPressed: () async {
+dynamic v = await Scheduler.getTasks();
+for(ScheduleTask i in v){
+  print(i.startDate.toString()+" "+i.id.toString());
+}
                     },
-                    child: Text("RSA FULL DATA"),
+                    child: Text("All data in scheduler"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      List<ScheduleTask>? v = await Scheduler.getTasks();
+                      while(v!.isNotEmpty){
+                        Scheduler.deleteTask(v.first);
+                      }
+                    },
+                    child: Text("Erase all data in scheduler in db"),
                   ),
                   ElevatedButton(
                       onPressed: () async {

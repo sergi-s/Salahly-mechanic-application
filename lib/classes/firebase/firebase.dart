@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:salahly_mechanic/abstract_classes/authentication.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
@@ -50,7 +51,9 @@ class FirebaseCustom extends Authentication {
     print('>>> onBackgroundMessage');
 
     if (message.data["request_type"] == "rsa" ||
-        message.data["request_type"] == "wsa") {}
+        message.data["request_type"] == "wsa") {
+
+    }
     if (navigatorKey.currentState != null) {
       print('>>> opened screen');
       navigatorKey.currentState?.pushNamed(PendingRequests.routeName);
@@ -66,10 +69,12 @@ class FirebaseCustom extends Authentication {
     FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
       print("message received");
       print(event.notification!.body);
+
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) async {
       print("message opened");
       print(event.data);
+
     });
 
     // final prefs = await SharedPreferences.getInstance();
