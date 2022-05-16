@@ -1,6 +1,8 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
@@ -208,42 +210,72 @@ class PendingRequests extends ConsumerWidget {
     }
   }
 
-  _getEstimatedTime(context, p) async {
+  _getEstimatedTime(context, RSA p) async {
+    bool checkEstimated = false;
     await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text("Where To"),
-        content: Container(
-          height: 200,
-          child: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    context.push(RideLocations.routeName,
-                        extra: BundledLocation(
-                            destinationLocation:
-                                CustomLocation(longitude: 12, latitude: 12),
-                            clientLocation: p.location));
-                  },
-                  child: const Text("Where to?").tr()),
-              TextField(
-                controller: controller,
-                decoration:
-                    const InputDecoration(hintText: "Enter estimated Time"),
-              )
-            ],
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-              onPressed: () {
-                estimatedTime = controller.text;
-                Navigator.pop(context);
+        context: context,
+        builder: (BuildContext context) => StatefulBuilder(
+              builder: (context, setState) {
+                return AlertDialog(
+                  title: Text("Where To"),
+                  content: Container(
+                    // height: MediaQuery.of(context).size.height / 0.6,
+                    height:50,
+                    width: MediaQuery.of(context).size.height,
+                    child: ListView(children: [
+                      (p.mechanic != null &&
+                              p.mechanic!.loc != null &&
+                              p.mechanic!.loc!.address != null)
+                          ? Text(p.mechanic!.loc!.address!)
+                          : Container(),
+                      TextField(
+                        controller: controller,
+                        decoration: const InputDecoration(
+                            hintText: "Enter estimated Time"),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            checkEstimated = value.isNotEmpty;
+                          });
+                        },
+                      )
+                    ]),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          context.push(RideLocations.routeName,
+                              extra: BundledLocation(
+                                  destinationLocation: CustomLocation(
+                                      longitude: 12, latitude: 12),
+                                  clientLocation: p.location));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFF193566),
+                          padding: const EdgeInsets.all(10),
+                        ),
+                        child: const Text("Destinations").tr()),
+                    ElevatedButton(
+                      onPressed: checkEstimated
+                          ? () {
+                              onClick(context);
+                            }
+                          : null,
+                      child: Text("Confirm"),
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF193566),
+                        padding: const EdgeInsets.all(10),
+                      ),
+                    )
+                  ],
+                );
               },
-              child: Text("Confirm"))
-        ],
-      ),
-    );
+            ));
+  }
+
+  void onClick(context) {
+    estimatedTime = controller.text;
+    Navigator.pop(context);
   }
 }
 
