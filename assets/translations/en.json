@@ -63,5 +63,19 @@
   "add" : "Add",
   "adding_schedule_please_wait": "Adding Schedule, Please Wait",
   "pick_color": "Pick Color",
-  "select_color": "Select Color"
+  "select_color": "Select Color",
+  "okay": "Okay",
+  "deleted_scheduler_task": "Deleted Scheduler Task",
+  "delete_task": "Delete Task",
+  "view_time_planner": "View Time Planner",
+  "previous_week": "Previous Week",
+  "current_week": "Current Week",
+  "next_week": "Next Week",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Saturday": "Saturday",
+  "Sunday": "Sunday"
 }

@@ -380,7 +380,7 @@ initialValue: 2,
         context: context,
         builder: (context) {
           return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            insetPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03, vertical: MediaQuery.of(context).size.width*0.04),
             title: Text("pick_color".tr()),
             content: Column(
               children: [

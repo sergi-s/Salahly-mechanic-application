@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -200,7 +201,6 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
               setState(() {
                 todos.remove(t!);
               });
-              print("removed");
             }
               ViewSchedulerTaskScreen.deleted = false;
           }
@@ -218,8 +218,8 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
       if (day.weekEnum == WeekEnum.previous) {
         setState(() {
           weekDaysWidget.add(TimePlannerTitle(
-            date: "Previous week",
-            title: DateFormat('EEEE').format(day.date),
+            date: "previous_week".tr(),
+            title: DateFormat('EEEE').format(day.date).tr(),
             titleStyle:
                 TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
@@ -229,8 +229,8 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
       } else if (day.weekEnum == WeekEnum.current) {
         setState(() {
           weekDaysWidget.add(TimePlannerTitle(
-            date: "Current week",
-            title: DateFormat('EEEE').format(day.date),
+            date: "current_week".tr(),
+            title: DateFormat('EEEE').format(day.date).tr(),
             titleStyle: TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
                 color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
@@ -239,8 +239,8 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
       } else {
         setState(() {
           weekDaysWidget.add(TimePlannerTitle(
-            date: "Next week",
-            title: DateFormat('EEEE').format(day.date),
+            date: "next_week".tr(),
+            title: DateFormat('EEEE').format(day.date).tr(),
             titleStyle: TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
                 color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
@@ -256,31 +256,9 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("REBUILD");
-    // if(!isListening){
-    //   isListening = true;
-    //   ref.watch(schedulerTasksProvider.notifier).addListener(() {
-    //
-    //   todos = _renderList(ref.watch(schedulerTasksProvider).tasks);
-    //   });
-    // }
-    // setState(() {
-    //ref.watch(schedulerTasksProvider)
-
-    // todos = _renderList(ref.watch(schedulerTasksProvider));
-    // print(todos);
-    // });
-    // todos = ref.watch(schedulerTasksProvider);
-    // tasks = ref.watch(schedulerTasksProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          dynamic v = await Scheduler.getTasks();
-
-          // print("tasks length: ${todos.length}");
-
-          // context.push(AddSchedulerTaskScreen.routeName, extra: _addTaskToTimePlanner);
-          // ScheduleTask newTask =
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -290,8 +268,8 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
             //ez
             if (AddSchedulerTaskScreen.newTask != null) {
               setState(() {
-                print("added");
-                print("AddSchedulerTaskScreen.newTask.id: ${AddSchedulerTaskScreen.newTask!.id}");
+                // print("added");
+                // print("AddSchedulerTaskScreen.newTask.id: ${AddSchedulerTaskScreen.newTask!.id}");
                 todos.add(toTimePlannerTask(AddSchedulerTaskScreen.newTask!)!);
               });
               Scheduler.addTask(AddSchedulerTaskScreen.newTask!);
@@ -318,179 +296,3 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
     );
   }
 }
-
-/*
-  TimePlannerTitle(
-              date: "Previous week",
-              title: "Sunday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Previous week",
-              title: "Monday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Previous week",
-              title: "Tuesday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-
-              date: "Previous week",
-              title: "Wednesday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Previous week",
-              title: "Thursday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Previous week",
-              title: "Friday",
-              titleStyle:
-                  TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: previousWeek,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Saturday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Sunday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Monday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Tuesday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Wednesday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Thursday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "This week",
-              title: "Friday",
-              titleStyle:
-                  TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Saturday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Sunday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Monday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Tuesday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Wednesday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Thursday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            TimePlannerTitle(
-              date: "Next week",
-              title: "Friday",
-              titleStyle:
-                  TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
-              dateStyle: TextStyle(
-                  color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
-            ),
- */

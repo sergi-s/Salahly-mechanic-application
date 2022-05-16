@@ -74,8 +74,8 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
-            const Text(
-              "View Scheduler",
+             Text(
+              "view_time_planner".tr(),
               style: TextStyle(
                 fontSize: 20,
                 // letterSpacing: 1.5,
@@ -165,27 +165,27 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                     children: [
                                       if (widget.scheduleTask.startDate != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "Start Date :",
+                                            firstStr: "start_date".tr()+":",
                                             secondStr:
                                                 "${widget.scheduleTask.startDate.day}/${widget.scheduleTask.startDate.month}/${widget.scheduleTask.startDate.year}"),
                                       MyTwoEndTextDivided(
-                                          firstStr: "Start Time :",
+                                          firstStr: "start_time".tr()+":",
                                           secondStr:
                                               "${(widget.scheduleTask.startDate.hour).floor()}:${widget.scheduleTask.startDate.minute}"),
                                       if (widget.scheduleTask.endDate != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "End Time :",
+                                            firstStr: "end_time".tr()+ ":",
                                             secondStr:
                                                 "${(widget.scheduleTask.endDate?.hour)?.floor()}:${widget.scheduleTask.endDate?.minute}"),
                                       if (widget.scheduleTask.duration != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "Duration :",
+                                            firstStr: "duration".tr()+":",
                                             secondStr:
                                                 "${((widget.scheduleTask.duration)! / 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
                                       Row(
                                         children: [
-                                          const MyTwoEndTextDivided(
-                                              firstStr: "Color :",
+                                           MyTwoEndTextDivided(
+                                              firstStr: "color".tr()+":",
                                               secondStr: ""),
                                           CircleAvatar(
                                             backgroundColor:
@@ -196,13 +196,13 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                       if (widget.scheduleTask.requestObject !=
                                           null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "Request :",
+                                            firstStr: "request".tr()+":",
                                             secondStr:
                                                 "${(widget.scheduleTask.requestObject)}"),
                                       if (widget.scheduleTask.description !=
                                           null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "Description :",
+                                            firstStr: "description".tr()+":",
                                             secondStr:
                                                 "${widget.scheduleTask.description}"),
                                     ],
@@ -220,7 +220,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                       children: [
                                         RaisedButton(
                                             child: Text(
-                                              "Delete task",
+                                              "delete_task".tr(),
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -234,7 +234,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(SnackBar(
                                                       content: Text(
-                                                          'Deleted scheduler task'
+                                                          'deleted_scheduler_task'
                                                               .tr())));
                                               ViewSchedulerTaskScreen.deleted =
                                                   true;
@@ -242,7 +242,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                             }),
                                         RaisedButton(
                                             child: Text(
-                                              "Okay",
+                                              "okay".tr(),
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),

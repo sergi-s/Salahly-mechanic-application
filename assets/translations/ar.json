@@ -68,6 +68,19 @@
   "add" : "اضافة",
   "adding_schedule_please_wait": "جاري اضافة المهمة",
   "pick_color": "اختيار اللون",
-  "select_color": "اختر اللون"
-
+  "select_color": "اختر اللون",
+  "okay": "موافق",
+  "deleted_scheduler_task": "تم حذف المهمة بنجاح",
+  "delete_task": "حذف المهمة",
+  "view_time_planner": "عرض الخطة الزمنية",
+  "previous_week": "الأسبوع السابق",
+  "current_week": "الأسبوع الحالي",
+  "next_week": "الأسبوع القادم",
+  "Monday" : "الإثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Saturday": "السبت",
+  "Sunday": "الأحَد"
 }
