@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -112,6 +113,12 @@ Future<void>_selectTime(BuildContext context) async {
               ),
             ),
             SizedBox(height: 50,),
+            Container(
+              child: RaisedButton(
+                child: Text("HomeScreen!!!"),
+                onPressed: (){  context.go(HomeScreen.routeName);},
+              ),
+            ),
       Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
