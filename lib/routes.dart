@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
+import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
@@ -24,7 +25,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: HomeScreen.routeName,
+        initialLocation: DoneRequests.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -121,6 +122,9 @@ class Routing {
           GoRoute(
               path: EditProfile.routeName,
               builder: (context, state) => EditProfile()),
+          GoRoute(
+              path: DoneRequests.routeName,
+              builder: (context, state) => DoneRequests()),
         ],
       );
 }
