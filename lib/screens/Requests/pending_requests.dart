@@ -1,27 +1,27 @@
-import 'dart:convert';
 import 'package:confirm_dialog/confirm_dialog.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
-import 'package:salahly_mechanic/main.dart';
-import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
-import 'package:salahly_mechanic/screens/homepage/homescreen.dart';
+import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/directionMap.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
+import 'package:salahly_models/abstract_classes/user.dart';
+import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 class PendingRequests extends ConsumerWidget {
   static final routeName = "/viewrequests";
 
+  String? estimatedTime;
+
+  TextEditingController controller = TextEditingController();
+
   Widget personDetailCard(
       {required RSA rsa,
       required BuildContext context,
-        required Function onConfirmRequest,
-        required Function onRefuseRequest}) {
+      required Function onConfirmRequest,
+      required Function onRefuseRequest}) {
     return Container(
       // height: 120,
       alignment: Alignment.center,
@@ -100,7 +100,6 @@ class PendingRequests extends ConsumerWidget {
     }
   }
 
-
   Widget build(BuildContext context, WidgetRef ref) {
 
     PendingRequestsNotifier pendingNotifier =
@@ -163,31 +162,96 @@ class PendingRequests extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: pendingRequests.map((p) {
-              return personDetailCard(rsa: p,context:  context,onConfirmRequest: () async {
-                if(p.requestType == RequestType.RSA){
-                  _checkingrsaId.add(p.rsaID!);
-                  await pendingNotifier.acceptRequest(p);
-                  _checkingrsaId.remove(p.rsaID!);
-                }
-                else{
-                  await pendingNotifier.acceptRequest(p);
-                }
-              },onRefuseRequest: (){
-                pendingNotifier.denyRequest(p);
-              });
+              return personDetailCard(
+                  rsa: p,
+                  context: context,
+                  onConfirmRequest: () async {
+                    if (userType == Type.provider) {
+                      await _getEstimatedTime(context, p);
+                      print("????${estimatedTime}");
+                    }
+                    if (userType == Type.provider &&
+                        (estimatedTime == null || estimatedTime == "")) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please Enter estimat')));
+                      const SnackBar(content: Text('Please Enter estimat'));
+                      return;
+                    }
+                    if (await confirm(
+                      context,
+                      title: const Text('Confirm').tr(),
+                      content: Text('Would you like to Accept Request?'.tr()),
+                      textOK: const Text('Yes').tr(),
+                      textCancel: const Text('No').tr(),
+                    )) {
+                      _accept(p, pendingNotifier);
+                      return print('pressedOK');
+                    }
+                    estimatedTime = null;
+                    return print('pressedCancel');
+                  },
+                  onRefuseRequest: () {
+                    pendingNotifier.denyRequest(p);
+                  });
             }).toList()),
+      ),
+    );
+  }
+
+  void _accept(p, pendingNotifier) async {
+    if (p.requestType == RequestType.RSA) {
+      _checkingrsaId.add(p.rsaID!);
+      await pendingNotifier.acceptRequest(p);
+      _checkingrsaId.remove(p.rsaID!);
+    } else {
+      await pendingNotifier.acceptRequest(p);
+    }
+  }
+
+  _getEstimatedTime(context, p) async {
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Where To"),
+        content: Container(
+          height: 200,
+          child: Column(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    context.push(RideLocations.routeName,
+                        extra: BundledLocation(
+                            destinationLocation:
+                                CustomLocation(longitude: 12, latitude: 12),
+                            clientLocation: p.location));
+                  },
+                  child: const Text("Where to?").tr()),
+              TextField(
+                controller: controller,
+                decoration:
+                    const InputDecoration(hintText: "Enter estimated Time"),
+              )
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                estimatedTime = controller.text;
+                Navigator.pop(context);
+              },
+              child: Text("Confirm"))
+        ],
       ),
     );
   }
 }
 
 class actionsRow extends StatelessWidget {
-  const actionsRow({
-    Key? key,
-    required this.onConfirmRequest,
-    required this.onRefuseRequest
-  }) : super(key: key);
-  final Function onConfirmRequest,onRefuseRequest;
+  const actionsRow(
+      {Key? key, required this.onConfirmRequest, required this.onRefuseRequest})
+      : super(key: key);
+  final Function onConfirmRequest, onRefuseRequest;
 
   @override
   Widget build(BuildContext context) {
@@ -218,18 +282,19 @@ class actionsRow extends StatelessWidget {
         ),
         IconButton(
           onPressed: () async {
-            if (await confirm(
-              context,
-              title: const Text('Confirm').tr(),
-              content:
-              Text('Would you like to Accept Request?'.tr()),
-              textOK: const Text('Yes').tr(),
-              textCancel: const Text('No').tr(),
-            )) {
-              onConfirmRequest();
-              return print('pressedOK');
-            }
-            return print('pressedCancel');
+            onConfirmRequest();
+            // if (await confirm(
+            //   context,
+            //   title: const Text('Confirm').tr(),
+            //   content:
+            //   Text('Would you like to Accept Request?'.tr()),
+            //   textOK: const Text('Yes').tr(),
+            //   textCancel: const Text('No').tr(),
+            // )) {
+            //   onConfirmRequest();
+            //   return print('pressedOK');
+            // }
+            // return print('pressedCancel');
           },
           icon: const Icon(
             Icons.check,
@@ -242,3 +307,9 @@ class actionsRow extends StatelessWidget {
   }
 }
 
+class BundledLocation {
+  CustomLocation? destinationLocation, clientLocation;
+
+  BundledLocation(
+      {required this.destinationLocation, required this.clientLocation});
+}

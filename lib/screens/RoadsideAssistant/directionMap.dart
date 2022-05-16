@@ -3,36 +3,28 @@ import 'dart:async';
 import "package:flutter/material.dart";
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_models/models/location.dart';
 
-class DirectionMap extends StatefulWidget {
-  static const routeName = "/staticDirectionOnMap";
+class RideLocations extends StatefulWidget {
+  static const routeName = "/staticLocationOnMap";
 
-  DirectionMap(
-      {Key? key,
-      required this.currentLocation,
-      required this.destinationLocation})
-      : super(key: key);
+  static String? result;
+
+  BundledLocation bundledLocation;
+
+  RideLocations({Key? key, required this.bundledLocation}) : super(key: key);
 
   @override
-  State<DirectionMap> createState() => _DirectionMapState();
-
-  CustomLocation currentLocation;
-  CustomLocation destinationLocation;
+  State<RideLocations> createState() => _RideLocationsState();
 }
 
-class _DirectionMapState extends State<DirectionMap> {
+class _RideLocationsState extends State<RideLocations> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
 
   static const double initialCameraZoom = 18;
   double cameraZoom = 14;
-
-  // Current Location
-  // late Position currentPos;
-  late LatLng currentPos;
-  late CustomLocation currentCustomLoc;
 
   Geolocator geoLocator = Geolocator();
 
@@ -41,29 +33,37 @@ class _DirectionMapState extends State<DirectionMap> {
     target: LatLng(30.0444, 31.2357),
     zoom: initialCameraZoom,
   );
-  double _originLatitude = 31.270084, _originLongitude = 29.991019;
-  double _destLatitude = 31.262038, _destLongitude = 29.984275;
 
   //Markers
   Map<MarkerId, Marker> markers = {};
 
-  Map<PolylineId, Polyline> polylines = {};
-  List<Polyline> tempPolylines = [];
-
-  List<LatLng> polylineCoordinates = [];
+  late CustomLocation clientLocation;
+  late CustomLocation destinationLocation;
 
   @override
   void initState() {
-    _originLatitude = widget.currentLocation.latitude;
-    _originLongitude = widget.currentLocation.longitude;
-    _destLatitude = widget.destinationLocation.latitude;
-    _destLongitude = widget.destinationLocation.longitude;
-    _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
-        BitmapDescriptor.defaultMarker);
+    print("YOu are dumb");
+    clientLocation = widget.bundledLocation.clientLocation!;
+    destinationLocation = widget.bundledLocation.destinationLocation!;
+
+    print(clientLocation.toString());
+    print(destinationLocation.toString());
+
+    // _originLatitude = clientLocation.latitude;
+    // _originLongitude = clientLocation.longitude;
+    // _destLatitude = destinationLocation.latitude;
+    // _destLongitude = destinationLocation.longitude;
+
+    _addMarker(LatLng(clientLocation.latitude, clientLocation.longitude),
+        "origin", BitmapDescriptor.defaultMarker);
 
     /// destination marker
-    _addMarker(LatLng(_destLatitude, _destLongitude), "destination",
+    _addMarker(
+        LatLng(destinationLocation.latitude, destinationLocation.longitude),
+        "destination",
         BitmapDescriptor.defaultMarkerWithHue(90));
+
+    moveCamera(clientLocation);
     super.initState();
   }
 
@@ -71,22 +71,46 @@ class _DirectionMapState extends State<DirectionMap> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-            target: LatLng(_originLatitude, _originLongitude), zoom: 15),
-        myLocationEnabled: true,
-        tiltGesturesEnabled: true,
-        compassEnabled: true,
-        scrollGesturesEnabled: true,
-        zoomGesturesEnabled: true,
-        onMapCreated: (GoogleMapController controller) {
-          _controllerGoogleMap.complete(controller);
-          newGoogleMapController = controller;
-        },
-        markers: Set<Marker>.of(markers.values),
-        polylines: Set<Polyline>.of(polylines.values),
-        // polygons: Set.from(tempPolylines),
-      )),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  moveCamera(clientLocation);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  primary: const Color(0xFF193566),
+                  padding: const EdgeInsets.all(20),
+                ),
+                child: Text("Client")),
+            ElevatedButton(
+                onPressed: () {
+                  moveCamera(destinationLocation);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFF193566),
+                ),
+                child: Text("Destination"))
+          ],
+        ),
+        body: Stack(children: [
+          GoogleMap(
+            initialCameraPosition: const CameraPosition(
+                target: LatLng(31.235203, 29.948837), zoom: 15),
+            myLocationEnabled: true,
+            tiltGesturesEnabled: true,
+            compassEnabled: true,
+            scrollGesturesEnabled: true,
+            zoomGesturesEnabled: true,
+            onMapCreated: (GoogleMapController controller) {
+              _controllerGoogleMap.complete(controller);
+              newGoogleMapController = controller;
+            },
+            markers: Set<Marker>.of(markers.values),
+          ),
+        ]),
+      ),
     );
   }
 
@@ -95,18 +119,15 @@ class _DirectionMapState extends State<DirectionMap> {
     Marker marker =
         Marker(markerId: markerId, icon: descriptor, position: position);
     markers[markerId] = marker;
-    print("?????? ${markerId}");
   }
 
-  _addPolyLine() {
-    PolylineId id = const PolylineId("poly");
-    Polyline polyline = Polyline(
-        polylineId: id,
-        color: Colors.red,
-        points: polylineCoordinates,
-        width: 8);
-    print("!!!!!!!!ID${id}\t${polyline.visible}");
-    polylines[id] = polyline;
-    setState(() {});
+  moveCamera(CustomLocation cus) async {
+    print("gp Tp ${cus}");
+    LatLng latLatPosition = LatLng(cus.latitude, cus.longitude);
+    setState(() {
+      CameraPosition camPos = CameraPosition(target: latLatPosition, zoom: 17);
+      newGoogleMapController
+          .animateCamera(CameraUpdate.newCameraPosition(camPos));
+    });
   }
 }
