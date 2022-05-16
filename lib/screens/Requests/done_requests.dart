@@ -121,11 +121,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
                                                 color: Color(0xFF193566),
                                               ),
                                             ),
-                                            Text("",
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black)),
+                                         
                                           ],
                                         ),
                                       ]),
