@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/constants.dart';
 import 'package:salahly_models/models/report.dart' as Rep;
+import 'package:salahly_models/models/road_side_assistance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class FirebaseCustom extends Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -181,6 +182,8 @@ class FirebaseCustom extends Authentication {
 
     };
     dbRef.child(requestType).child(rsaID).child("report").set(reportDataMap);
+    dbRef.child(requestType).child(rsaID).child("state").set(RSA.stateToString(RSAStates.done));
+    
     return true;
   }
 }

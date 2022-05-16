@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_models/models/report.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import '../../widgets/report/input_textfield.dart';
 import '../../widgets/report/report_textfield.dart';
 import '../../widgets/report/select_button.dart';
 
-class ReportScreen extends StatelessWidget {
+class ReportScreen extends ConsumerWidget {
   static final routeName = "/reportscreen";
 
   ReportScreen({Key? key, required this.rsaId, required this.requestType})
@@ -72,7 +74,7 @@ class ReportScreen extends StatelessWidget {
     maint_description = md;
   }
 
-  reportOnPress(BuildContext context) async {
+  reportOnPress(BuildContext context,WidgetRef ref) async {
     Report report = Report(
         systemName: system_name,
         partID: part_id,
@@ -85,6 +87,10 @@ class ReportScreen extends StatelessWidget {
         // distance:distance,
         maintenanceDescription: maint_description);
     bool check = await fb.report(report, rsaId, requestType);
+    if (check) {
+      ref.watch(ongoingRequestsProvider.notifier).removeRSAById(rsaId);
+      Navigator.of(context).pop();
+    }
     if (requestType != "wsa" && requestType != "rsa" && requestType != "tta") {
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +107,7 @@ class ReportScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -568,7 +574,7 @@ class ReportScreen extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           12)),
                                                   onPressed: () {
-                                                    reportOnPress(context);
+                                                    reportOnPress(context,ref);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text(

@@ -57,7 +57,7 @@
   "car_model" : "موديل السيارة",
   "client_name" : "اسم العميل",
   "settings": "اعدادات",
-  "change_lang": "اختار لغه",
+  "change_lang": "اختار اللغه",
   "added_scheduler": "تم اضافة المهمة بنجاح",
   "add_scheduler": "اضافة مهمة",
   "hours": "ساعات",
@@ -82,5 +82,8 @@
   "Thursday": "الخميس",
   "Friday": "الجمعة",
   "Saturday": "السبت",
-  "Sunday": "الأحَد"
+  "Sunday": "الأحَد",
+  "close" : "غلق",
+  "select_car" : "اختر العربيه",
+  "pending_requests" : "الطلبات المعلقة"
 }

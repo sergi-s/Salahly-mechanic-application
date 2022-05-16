@@ -69,12 +69,14 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
               Icons.arrow_back,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
-             Text(
+            Text(
               "view_time_planner".tr(),
               style: TextStyle(
                 fontSize: 20,
@@ -165,27 +167,37 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                     children: [
                                       if (widget.scheduleTask.startDate != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "start_date".tr()+":",
+                                            firstStr: "start_date".tr() + ":",
                                             secondStr:
                                                 "${widget.scheduleTask.startDate.day}/${widget.scheduleTask.startDate.month}/${widget.scheduleTask.startDate.year}"),
                                       MyTwoEndTextDivided(
-                                          firstStr: "start_time".tr()+":",
+                                          firstStr: "start_time".tr() + ":",
                                           secondStr:
                                               "${(widget.scheduleTask.startDate.hour).floor()}:${widget.scheduleTask.startDate.minute}"),
                                       if (widget.scheduleTask.endDate != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "end_time".tr()+ ":",
+                                            firstStr: "end_time".tr() + ":",
                                             secondStr:
                                                 "${(widget.scheduleTask.endDate?.hour)?.floor()}:${widget.scheduleTask.endDate?.minute}"),
                                       if (widget.scheduleTask.duration != null)
                                         MyTwoEndTextDivided(
-                                            firstStr: "duration".tr()+":",
+                                            firstStr: "duration".tr() + ":",
                                             secondStr:
                                                 "${((widget.scheduleTask.duration)! / 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
+                                      if (widget.scheduleTask.description != "")
+                                      MyTwoEndTextDivided(
+                                          firstStr: "description".tr()+":",
+                                          secondStr:
+                                          "${widget.scheduleTask.description}"),
+                                      if(widget.scheduleTask.requestObject != null && widget.scheduleTask.requestObject!.car != null)
+                                        MyTwoEndTextDivided(
+                                            firstStr: "car_number".tr()+":",
+                                            secondStr:
+                                            "${widget.scheduleTask.requestObject!.car!.noPlate}"),
                                       Row(
                                         children: [
-                                           MyTwoEndTextDivided(
-                                              firstStr: "color".tr()+":",
+                                          MyTwoEndTextDivided(
+                                              firstStr: "color".tr() + ":",
                                               secondStr: ""),
                                           CircleAvatar(
                                             backgroundColor:
@@ -193,18 +205,12 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                           )
                                         ],
                                       ),
-                                      if (widget.scheduleTask.requestObject !=
-                                          null)
-                                        MyTwoEndTextDivided(
-                                            firstStr: "request".tr()+":",
-                                            secondStr:
-                                                "${(widget.scheduleTask.requestObject)}"),
-                                      if (widget.scheduleTask.description !=
-                                          null)
-                                        MyTwoEndTextDivided(
-                                            firstStr: "description".tr()+":",
-                                            secondStr:
-                                                "${widget.scheduleTask.description}"),
+                                      // if (widget.scheduleTask.requestObject !=
+                                      //     null)
+                                      //   MyTwoEndTextDivided(
+                                      //       firstStr: "request".tr() + ":",
+                                      //       secondStr:
+                                      //           "${(widget.scheduleTask.requestObject)}"),
                                     ],
                                   ),
                                 ),
@@ -216,7 +222,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                   children: [
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         RaisedButton(
                                             child: Text(
@@ -242,7 +248,7 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                             }),
                                         RaisedButton(
                                             child: Text(
-                                              "okay".tr(),
+                                              "close".tr(),
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -250,7 +256,9 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
-                                            onPressed: () {}),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            }),
                                       ],
                                     ),
                                   ],

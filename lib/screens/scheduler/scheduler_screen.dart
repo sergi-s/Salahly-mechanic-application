@@ -223,7 +223,7 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
             titleStyle:
                 TextStyle(color: previousWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
-                color: previousWeek, fontWeight: FontWeight.bold, fontSize: 13),
+                color: previousWeek, fontWeight: FontWeight.bold, fontSize: 10),
           ));
         });
       } else if (day.weekEnum == WeekEnum.current) {
@@ -233,7 +233,7 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
             title: DateFormat('EEEE').format(day.date).tr(),
             titleStyle: TextStyle(color: thisWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
-                color: thisWeek, fontWeight: FontWeight.bold, fontSize: 13),
+                color: thisWeek, fontWeight: FontWeight.bold, fontSize: 10),
           ));
         });
       } else {
@@ -243,7 +243,7 @@ class _SchedulerScreenState extends ConsumerState<SchedulerScreen> {
             title: DateFormat('EEEE').format(day.date).tr(),
             titleStyle: TextStyle(color: nextWeek, fontWeight: FontWeight.bold),
             dateStyle: TextStyle(
-                color: nextWeek, fontWeight: FontWeight.bold, fontSize: 13),
+                color: nextWeek, fontWeight: FontWeight.bold, fontSize: 10),
           ));
         });
       }

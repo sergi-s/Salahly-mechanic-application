@@ -10,6 +10,11 @@ PreferredSizeWidget salahlyAppBar({String? title}) {
             fit: BoxFit.contain, scale: 50),
     centerTitle: true,
     backgroundColor: const Color(0xff193566),
+    actions: title != null?[
+      Image.asset('assets/images/logo white.png',
+           scale: 2),
+      ///TODO
+    ]:[],
     // actions: [
     //   Consumer(
     //     builder: (context, ref, child) {

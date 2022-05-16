@@ -55,22 +55,22 @@ Widget salahlyDrawer(BuildContext context) {
         ),
         ListTile(
           title: const Text(
-            "go to ongoing screen",
-            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
-          onTap: () {
-            context.push(ONGOINGVIEW.routeName);
-          },
-        ),
-        ListTile(
-          title: const Text(
-            'Ongoing UI screen',
+            "Ongoing screen",
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ).tr(),
           onTap: () {
             context.push(OnGoingRequests.routeName);
           },
         ),
+        // ListTile(
+        //   title: const Text(
+        //     'Ongoing UI screen',
+        //     style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
+        //   ).tr(),
+        //   onTap: () {
+        //     context.push(OnGoingRequests.routeName);
+        //   },
+        // ),
         ListTile(
           title: const Text(
             'Change language screen',

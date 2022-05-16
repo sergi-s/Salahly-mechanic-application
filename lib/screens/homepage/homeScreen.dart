@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
+import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,8 +33,18 @@ class _HomePageState extends ConsumerState<HomeScreen> {
     super.initState();
   }
 
+  bool isListening = false;
+
   @override
   Widget build(BuildContext context) {
+
+    if(!isListening){
+      listenRequestsFromDatabaseByNotifiers(
+          ref.watch(pendingRequestsProvider.notifier),
+          ref.watch(ongoingRequestsProvider.notifier));
+      isListening = true;
+    }
+
     // allCars(ref);
     //TODO: get all users data and put it in state management
     return Scaffold(
@@ -39,50 +52,53 @@ class _HomePageState extends ConsumerState<HomeScreen> {
       appBar: salahlyAppBar(),
       drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
-        child: Column(
-
-          children: [
-            SizedBox(height:MediaQuery.of(context).size.height*0.02 ),
-            Text(
-              "welcome".tr(),
-              textScaleFactor: 1.4,
-              style: const TextStyle(
-                fontSize: 23,
-                  letterSpacing: 1,
-                  fontWeight: FontWeight.w500, color: Color(0xff193566)),
-            ).tr(),
-            SizedBox(height:MediaQuery.of(context).size.height*0.01 ),
-            CardWidget(
-                fun: () {
-                  context.push(PendingRequests.routeName);
-                },
-                title: 'Pending Requests',
-                subtitle:
-                'Display all pending requests where you can view its data and accept'
-                    ' or reject each request ',
-                image: 'assets/images/clock.png',),
-            SizedBox(height:MediaQuery.of(context).size.height*0.002 ),
-            CardWidget(
-                fun: () {
-                  context.push(OnGoingRequests.routeName);
-                },
-                title: 'Ongoing Requests',
-                subtitle:
-                'Display all requests that are in progress and view each data'
-                    ' Where you can manage each request',
-                image: 'assets/images/recovery.png'),
-            SizedBox(height:MediaQuery.of(context).size.height*0.002 ),
-            CardWidget(
-                fun: () {
-                  context.push(SchedulerScreen.routeName);
-                },
-                title: 'Time Table',
-                subtitle:
-                'Where you can schedule all your tasks and manage'
-                    'also you can manage your weeks',
-                image: 'assets/images/scheduling.png'),
-            // SizedBox(height:MediaQuery.of(context).size.height*0.01 ),
-          ],
+        child: Container(
+          height: MediaQuery.of(context).size.height*0.8,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(height:MediaQuery.of(context).size.height*0.02 ),
+              Text(
+                "welcome".tr(),
+                textScaleFactor: 1.4,
+                style: const TextStyle(
+                  fontSize: 23,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w500, color: Color(0xff193566)),
+              ).tr(),
+              SizedBox(height:MediaQuery.of(context).size.height*0.01 ),
+              CardWidget(
+                  fun: () {
+                    context.push(PendingRequests.routeName);
+                  },
+                  title: 'Pending Requests',
+                  subtitle:
+                  'Display all pending requests where you can view its data and accept'
+                      ' or reject each request ',
+                  image: 'assets/images/clock.png',),
+              SizedBox(height:MediaQuery.of(context).size.height*0.002 ),
+              CardWidget(
+                  fun: () {
+                    context.push(OnGoingRequests.routeName);
+                  },
+                  title: 'Ongoing Requests',
+                  subtitle:
+                  'Display all requests that are in progress and view each data'
+                      ' Where you can manage each request',
+                  image: 'assets/images/recovery.png'),
+              SizedBox(height:MediaQuery.of(context).size.height*0.002 ),
+              CardWidget(
+                  fun: () {
+                    context.push(SchedulerScreen.routeName);
+                  },
+                  title: 'Time Table',
+                  subtitle:
+                  'Where you can schedule all your tasks and manage'
+                      'also you can manage your weeks',
+                  image: 'assets/images/scheduling.png'),
+              // SizedBox(height:MediaQuery.of(context).size.height*0.01 ),
+            ],
+          ),
         ),
       ),
 

@@ -40,7 +40,7 @@ class OnGoingRequests extends ConsumerStatefulWidget {
     return Scaffold(
       appBar: salahlyAppBar(),
       drawer: salahlyDrawer(context),
-      body: SafeArea(
+      /*body: SafeArea(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -104,7 +104,7 @@ class OnGoingRequests extends ConsumerStatefulWidget {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 

@@ -75,7 +75,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Login successful')));
-      context.go(OngoingScreenDummy.routeName);
+      context.go(HomeScreen.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Account isnt Correct !!Please try again')));

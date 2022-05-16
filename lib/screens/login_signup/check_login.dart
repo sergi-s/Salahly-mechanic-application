@@ -22,7 +22,7 @@ class CheckLogin extends ConsumerWidget {
       context.go(LoginSignupScreen.routeName);
     } else {
       // pendingNotifier.listenRequestsFromDatabase();
-      context.go(OngoingScreenDummy.routeName);
+      context.go(HomeScreen.routeName);
       // context.go(OngoingScreenDummy.routeName);
     }
   }

@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/directionMap.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
+import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
+import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -111,54 +113,8 @@ class PendingRequests extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFd1d9e6),
-      appBar: AppBar(
-        title: Text('View Requests'),
-        centerTitle: true,
-        backgroundColor: const Color(0xff193566),
-        flexibleSpace: Image.asset('assets/images/logo white.png',
-            fit: BoxFit.scaleDown, alignment: Alignment.bottomRight, scale: 55),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/wavy shape copy.png'),
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.fill),
-                  color: Colors.transparent),
-              child: Text(''),
-            ),
-            ListTile(
-              title: const Text(
-                'Home Page',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ).tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('OnGoing Requests',
-                      style: TextStyle(fontWeight: FontWeight.bold))
-                  .tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Set availability',
-                      style: TextStyle(fontWeight: FontWeight.bold))
-                  .tr(),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      appBar: salahlyAppBar(title: "pending_requests".tr(),),
+      drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
