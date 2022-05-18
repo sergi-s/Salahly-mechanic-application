@@ -2,8 +2,12 @@ import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-PreferredSizeWidget salahlyAppBar({String? title}) {
+PreferredSizeWidget salahlyAppBar(BuildContext context, {String? title, bool? showBackButton }) {
   return AppBar(
+    leading: showBackButton !=null ? IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () => Navigator.pop(context),
+    ) : null,
     title: title != null
         ? Text(title)
         : Image.asset('assets/images/logo white.png',
