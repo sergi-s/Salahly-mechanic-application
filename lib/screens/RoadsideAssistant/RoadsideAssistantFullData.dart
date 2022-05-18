@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
@@ -41,9 +42,11 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
     print("image = $image");
 
     return Container(
+      height: MediaQuery
+          .of(context)
+          .size.height*0.7,
       alignment: Alignment.center,
-      child: Center(
-      child:Card(
+      child: Card(
       color: Colors.grey[100],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -64,7 +67,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
             ListTile(
               leading:Padding(
                   padding: const EdgeInsets.only(top:6.0,bottom: 6.0,right: 8.0),
-                  child: Icon(CupertinoIcons.car_detailed,color:Color(0xff97a7c3),size: 45)),
+                  child: Icon(CupertinoIcons.car_detailed,color:Color(int.parse(color)),size: 45)),
               title: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,10 +115,10 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                 padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
                 child:Text('Client Requested RSA',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
             ),
+
    ],
           ),
     ),
-      ),
     );
   }
 
@@ -127,7 +130,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
 
-      appBar: salahlyAppBar(),
+      appBar: salahlyAppBar(context, title: 'Request_details'.tr()),
 
       drawer: salahlyDrawer(context),
       body: SizedBox(
@@ -136,9 +139,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
         child: Stack(
           children: [
         Positioned(
-          top:35,
-          left: 25,
-          right: 25,
+
           child:
           Column(
                     children:[

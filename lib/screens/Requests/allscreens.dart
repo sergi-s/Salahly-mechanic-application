@@ -43,7 +43,7 @@ class OngoingScreenDummy extends ConsumerWidget {
         ref.watch(ongoingRequestsProvider.notifier);
     List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
     return Scaffold(
-      appBar: salahlyAppBar(),
+      appBar: salahlyAppBar(context),
       drawer: salahlyDrawer(context),
       body: SafeArea(
         child: Column(

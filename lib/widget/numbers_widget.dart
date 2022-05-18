@@ -1,15 +1,20 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 
-class NumbersWidget extends StatelessWidget {
+class NumbersWidget extends ConsumerWidget {
+  String rating;
+  NumbersWidget({required this.rating});
   @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context,WidgetRef ref) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildButton(context, '4.8', 'Rating'),
+          buildButton(context, rating, 'rating'.tr()),
           buildDivider(),
-          buildButton(context, '35', 'Requests'),
-          buildDivider(),
-          buildButton(context, '2', 'OnGoingRequests'),
+          // buildButton(context, '35', 'Requests'),
+          // buildDivider(),
+          buildButton(context, ref.watch(ongoingRequestsProvider).length.toString(), 'ongoing_requests'.tr()),
         ],
       );
   Widget buildDivider() => Container(
