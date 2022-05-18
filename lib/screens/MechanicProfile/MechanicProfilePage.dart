@@ -1,14 +1,17 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:salahly_mechanic/model/user.dart';
+import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicEditProfilePage.dart';
-import 'package:salahly_mechanic/utils/user_preferences.dart';
-import 'package:salahly_mechanic/widget/appbar_widget.dart';
+import 'package:salahly_mechanic/utils/get_mechanic_provider_data.dart';
 import 'package:salahly_mechanic/widget/numbers_widget.dart';
 import 'package:salahly_mechanic/widget/profile_widget.dart';
 import 'package:salahly_mechanic/themes.dart';
+import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
+import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
+import 'package:salahly_models/models/mechanic.dart';
 
 class MechanicProfilePage extends StatelessWidget {
   static final String title = 'User Profile';
@@ -23,15 +26,15 @@ class MechanicProfilePage extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: Theme.of(context),
           title: title,
-          home: ProfilePage(),
+          home: _ProfilePage(),
         ),
       ),
     );
   }
 }
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class _ProfilePage extends StatefulWidget {
+  const _ProfilePage({Key? key}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -39,21 +42,33 @@ class ProfilePage extends StatefulWidget {
 
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<_ProfilePage> {
+
+  dynamic user = Mechanic(name: "", email: "",phoneNumber: "");
+
+  @override
+  initState() {
+    getMechanicOrProviderData(FirebaseAuth.instance.currentUser!.uid).then((value) => setState(() {
+      user = value;
+    }));
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
 
     return ThemeSwitchingArea(
       child: Builder(
         builder: (context) => Scaffold(
           backgroundColor: const Color(0xFFd1d9e6),
-          appBar: buildAppBar(context),
+          appBar: salahlyAppBar(context,title:   'Profile'),
+          drawer: salahlyDrawer(context),
           body: ListView(
             physics: BouncingScrollPhysics(),
             children: [
               ProfileWidget(
-                imagePath: user.imagePath,
+                imagePath: user.avatar !=null?user.avatar!: '',
                 onClicked: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => MechanicEditProfilePage()),
@@ -63,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 24),
               buildName(user),
               const SizedBox(height: 24),
-              NumbersWidget(),
+              NumbersWidget(rating: user.rating.toString(),),
               const SizedBox(height: 48),
               buildAbout(user),
             ],
@@ -73,26 +88,26 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildName(User user) => Column(
+  Widget buildName(user) => Column(
         children: [
           Text(
-            user.name,
+            user.name!,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color: Color(0xff193566)),
           ).tr(),
           const SizedBox(height: 4),
           Text(
-            user.email,
+            user.email!,
             style: TextStyle(color: Colors.black54,fontSize: 15),
           ).tr(),
           const SizedBox(height: 4),
           Text(
-            user.mobileno,
+            user.phoneNumber!=null?user.phoneNumber.toString():"",
             style: TextStyle(color: Colors.black54,fontSize: 15),
           ).tr()
         ],
       );
 
-  Widget buildAbout(User user) => Container(
+  Widget buildAbout(user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,29 +118,39 @@ class _ProfilePageState extends State<ProfilePage> {
             ).tr(),
             const SizedBox(height: 16),
             Text(
-              user.location,
+              user.loc!=null?user.loc!.address!:"",
               style: TextStyle(fontSize: 16, height: 1.4),
-            ).tr(),
+            ),
             const SizedBox(height: 16),
             Text(
-              'Last Appointement',
+              'Workshop_name',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
             Text(
-              user.lastappointement,
+              user.loc!=null?user.loc!.name!:"",
               style: TextStyle(fontSize: 16, height: 1.4),
-            ).tr(),
+            ),
+            // const SizedBox(height: 16),
+            // Text(
+            //   'Last Appointement',
+            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
+            // ).tr(),
+            // const SizedBox(height: 16),
+            // Text(
+            //   user.lastappointement,
+            //   style: TextStyle(fontSize: 16, height: 1.4),
+            // ).tr(),
             const SizedBox(height: 16),
-            Text(
-              'Last Review',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
-            ).tr(),
-            const SizedBox(height: 16),
-            Text(
-              user.lastreview,
-              style: TextStyle(fontSize: 16, height: 1.4),
-            ).tr(),
+            // Text(
+            //   'Last Review',
+            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
+            // ).tr(),
+            // const SizedBox(height: 16),
+            // Text(
+            //   user.lastreview,
+            //   style: TextStyle(fontSize: 16, height: 1.4),
+            // ).tr(),
           ],
         ),
       );

@@ -34,8 +34,8 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = AssetImage(imagePath);
-
+    // final image = AssetImage(imagePath);
+    final NetworkImage image = NetworkImage(imagePath);
     return Padding(
     padding: const EdgeInsets.only(top:10.0),
       child:ClipOval(
