@@ -3,6 +3,7 @@ import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dar
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests_fulldata.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
 import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
@@ -26,7 +27,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: PendingRequestsScreen.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,
@@ -129,6 +130,9 @@ class Routing {
           GoRoute(
               path: DoneRequestsFullData.routeName,
               builder: (context, state) => DoneRequestsFullData()),
+          GoRoute(
+              path: PendingRequestsScreen.routeName,
+              builder: (context, state) => PendingRequestsScreen()),
         ],
       );
 }

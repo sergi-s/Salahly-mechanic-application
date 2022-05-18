@@ -115,7 +115,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
                 ListTile(
                   leading:Padding(
                       padding: const EdgeInsets.only(top:10.0,bottom: 15.0,right: 10.0),
-                      child: Icon(Icons.report,color:Color(0xff97a7c3),size: 45)),
+                      child: Icon(Icons.article_outlined,color:Color(0xff97a7c3),size: 45)),
                   title: Padding(
                     padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
                     child:Container(
