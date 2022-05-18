@@ -149,186 +149,191 @@ class _RegistrationState extends State<Registration> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFd1d9e6),
-      appBar: AppBar(
-        elevation: 0.0,
         backgroundColor: const Color(0xFFd1d9e6),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Color(0xFF193566),
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: const Color(0xFFd1d9e6),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xFF193566),
+            ),
+            onPressed: () {},
           ),
-          onPressed: () {},
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(""),
+            Text(
+              "Registration".tr(),
+              style: TextStyle(
+                fontSize: 22,
+                letterSpacing: 1,
+                color: Color(0xFF193566),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Image.asset(
+              'assets/images/logo white.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+          ]),
         ),
-        title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(""),
-          Text(
-            "Registration".tr(),
-            style: TextStyle(
-              fontSize: 22,
-              letterSpacing: 1,
-              color: Color(0xFF193566),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Image.asset(
-            'assets/images/logo white.png',
-            fit: BoxFit.contain,
-            height: 32,
-          ),
-        ]),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                // ProfileWidget(
-                //   imagePath: "assets/images/user.png",
-                //   onClicked: () async {
-                //     _SelectPhoto();
-                //   },
-                // ),
-                UserImage(onFilechanged: (imageUrl) {
-                  setState(() {
-                    this.imageUrl = imageUrl;
-                  });
-                }),
-
-          // GoogleMap(
-          //     mapType: MapType.normal,
-          //     myLocationButtonEnabled: true,
-          //     // myLocationEnabled: true,
-          //     zoomGesturesEnabled: true,
-          //     zoomControlsEnabled: false,
-          //     initialCameraPosition: _kGooglePlex,
-          //     onMapCreated: (GoogleMapController controller) {
-          //       _controllerGoogleMap.complete(controller);
-          //       newGoogleMapController = controller;
-          //     },
-          //     markers: Set.from(myMarkers),
-          //     onTap: _handleTap),
-
-
-          // SizedBox(height:180),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-          RounedInput(
-            icon: Icons.face,
-            fn: () {},
-            hint: 'Name',
-          ),
-          RounedInput(
-            icon: Icons.phone,
-            fn: () {},
-            hint: 'Phone',
-          ),
-          MyInput(
-            hint: _selectedDate != null
-                ? DateFormat.yMMMEd().format(_selectedDate!)
-                : 'Birthdate',
-            fn: () {},
-            widget: IconButton(
-              onPressed: () {
-                _datePicker(context);
-              },
-              icon: const Icon(
-                Icons.calendar_today,
-                color: Color(0xFF193566),
-              ),
-            ),
-          ),
-          MyInput(
-            hint: "Address",
-            fn: () {},
-            widget: IconButton(
-              onPressed: () {
-
-              },
-              icon: const Icon(
-                Icons.pin_drop,
-                color: Color(0xFF193566),
-              ),
-            ),
-          ),
-          SelectTextField(
-            hintText: 'User Type',
-            items: ["Mechanic", "Provider"],
-            onChangedfunction: () {},
-          ),
-          if(workType!=null)
-          SelectTextField(
-            hintText: 'WorkShop Type',
-            items: ["Center", "WorkShop"],
-            onChangedfunction: () {},
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  // ProfileWidget(
+                  //   imagePath: "assets/images/user.png",
+                  //   onClicked: () async {
+                  //     _SelectPhoto();
+                  //   },
+                  // ),
+                  UserImage(onFilechanged: (imageUrl) {
+                    setState(() {
+                      this.imageUrl = imageUrl;
+                    });
+                  }),
+
+                  // GoogleMap(
+                  //     mapType: MapType.normal,
+                  //     myLocationButtonEnabled: true,
+                  //     // myLocationEnabled: true,
+                  //     zoomGesturesEnabled: true,
+                  //     zoomControlsEnabled: false,
+                  //     initialCameraPosition: _kGooglePlex,
+                  //     onMapCreated: (GoogleMapController controller) {
+                  //       _controllerGoogleMap.complete(controller);
+                  //       newGoogleMapController = controller;
+                  //     },
+                  //     markers: Set.from(myMarkers),
+                  //     onTap: _handleTap),
+
+                  // SizedBox(height:180),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                  RounedInput(
+                    icon: Icons.face,
+                    fn: () {},
+                    hint: 'Name',
+                  ),
+                  RounedInput(
+                    icon: Icons.phone,
+                    fn: () {},
+                    hint: 'Phone',
+                  ),
+                  RounedInput(
+                    icon: Icons.business_rounded,
+                    fn: () {},
+                    hint: 'Shop Name',
+                  ),
+                  MyInput(
+                    hint: _selectedDate != null
+                        ? DateFormat.yMMMEd().format(_selectedDate!)
+                        : 'Birthdate',
+                    fn: () {},
+                    widget: IconButton(
+                      onPressed: () {
+                        _datePicker(context);
+                      },
+                      icon: const Icon(
+                        Icons.calendar_today,
+                        color: Color(0xFF193566),
+                      ),
+                    ),
+                  ),
+                  MyInput(
+                    hint: "Address",
+                    fn: () {},
+                    widget: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.pin_drop,
+                        color: Color(0xFF193566),
+                      ),
+                    ),
+                  ),
+                  SelectTextField(
+                    hintText: 'User Type',
+                    items: ["Mechanic", "Provider"],
+                    onChangedfunction: () {},
+                  ),
+                  if (workType != null)
+                    SelectTextField(
+                      hintText: 'WorkShop Type',
+                      items: ["Center", "WorkShop"],
+                      onChangedfunction: () {},
+                    ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.15,
+                          ),
+                          Text(
+                            "Gender",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF193566)),
+                          ),
+                        ],
+                      ),
+                      RadioGroup<String>.builder(
+                        direction: Axis.horizontal,
+                        groupValue: _verticalGroupValue,
+                        horizontalAlignment: MainAxisAlignment.spaceAround,
+                        onChanged: (value) => setState(() {
+                          _verticalGroupValue = value as String;
+                        }),
+                        items: _status,
+                        textStyle:
+                            TextStyle(fontSize: 15, color: Color(0xFF193566)),
+                        itemBuilder: (item) => RadioButtonBuilder(
+                          item,
+                        ),
+                      ),
+                    ],
+                  ),
+
                   SizedBox(
-                    width: size.width * 0.15,
+                    height: size.height * 0.05,
                   ),
-                  Text(
-                    "Gender",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF193566)),
+                  SizedBox(
+                    width: size.width * 0.4,
+                    height: size.height * 0.06,
+                    child: RaisedButton(
+                      color: Color(0xFF193566),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Register".tr(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
-                ],
-              ),
-              RadioGroup<String>.builder(
-                direction: Axis.horizontal,
-                groupValue: _verticalGroupValue,
-                horizontalAlignment: MainAxisAlignment.spaceAround,
-                onChanged: (value) => setState(() {
-                  _verticalGroupValue = value as String;
-                }),
-                items: _status,
-                textStyle: TextStyle(fontSize: 15, color: Color(0xFF193566)),
-                itemBuilder: (item) => RadioButtonBuilder(
-                  item,
-                ),
-              ),
-            ],
-          ),
+                  //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
+                  //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
 
-          SizedBox(
-            height: size.height * 0.05,
+                  // RoundedButton(
+                  //   title: "Register",
+                  //   onPressedFunction: () async {
+                  //     registerOnPress(context);
+                  //   },
+                  // )
+                ]),
           ),
-          SizedBox(
-            width: size.width * 0.4,
-            height: size.height * 0.06,
-            child: RaisedButton(
-              color: Color(0xFF193566),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              onPressed: () {},
-              child: Text(
-                "Register".tr(),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
-          //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
-
-          // RoundedButton(
-          //   title: "Register",
-          //   onPressedFunction: () async {
-          //     registerOnPress(context);
-          //   },
-          // )
-        ]),
-      ),
-    ));
+        ));
   }
+
   locatePosition() async {
     currentCustomLoc = await getUserLocation();
     cameraZoom = 19;
@@ -342,7 +347,7 @@ class _RegistrationState extends State<Registration> {
         currentCustomLoc.latitude, currentCustomLoc.longitude);
 
     LatLng latLatPosition =
-    LatLng(currentCustomLoc.latitude, currentCustomLoc.longitude);
+        LatLng(currentCustomLoc.latitude, currentCustomLoc.longitude);
 
     setState(() {
       myMarkers = [];
@@ -354,7 +359,7 @@ class _RegistrationState extends State<Registration> {
     });
 
     CameraPosition camPos =
-    CameraPosition(target: latLatPosition, zoom: cameraZoom);
+        CameraPosition(target: latLatPosition, zoom: cameraZoom);
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(camPos));
   }
@@ -384,7 +389,7 @@ class _RegistrationState extends State<Registration> {
   initialLocation() async {
     List temp = await getApproximateLocation();
     CustomLocation initialPos =
-    CustomLocation(latitude: temp[0], longitude: temp[1]);
+        CustomLocation(latitude: temp[0], longitude: temp[1]);
 
     moveCamera(initialPos);
   }

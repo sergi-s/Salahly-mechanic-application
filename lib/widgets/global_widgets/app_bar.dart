@@ -16,7 +16,7 @@ PreferredSizeWidget salahlyAppBar(BuildContext context, {String? title, bool? sh
     backgroundColor: const Color(0xff193566),
     actions: title != null?[
       Image.asset('assets/images/logo white.png',
-           scale: 2),
+           width:80),
       ///TODO
     ]:[],
     // actions: [
