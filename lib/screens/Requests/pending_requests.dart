@@ -130,9 +130,9 @@ class PendingRequests extends ConsumerWidget {
                     }
                     if (userType == Type.provider &&
                         (estimatedTime == null || estimatedTime == "")) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please Enter estimat')));
-                      const SnackBar(content: Text('Please Enter estimat'));
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(content: Text('Please Enter estimat')));
+                      // const SnackBar(content: Text('Please Enter estimat'));
                       return;
                     }
                     if (await confirm(
@@ -168,6 +168,7 @@ class PendingRequests extends ConsumerWidget {
 
   _getEstimatedTime(context, RSA p) async {
     bool checkEstimated = false;
+    if(controller.text.isNotEmpty)checkEstimated=true;
     await showDialog<String>(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
