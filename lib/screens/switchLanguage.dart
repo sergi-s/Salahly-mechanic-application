@@ -19,7 +19,7 @@ class _SwitchLanguageScreenState extends State<SwitchLanguageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: salahlyAppBar(title: "change_lang".tr()),
+        appBar: salahlyAppBar(context, title: "change_lang".tr()),
         drawer: salahlyDrawer(context),
         body: SafeArea(
           child: Center(

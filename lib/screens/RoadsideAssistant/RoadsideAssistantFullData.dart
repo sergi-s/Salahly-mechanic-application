@@ -127,7 +127,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
 
-      appBar: salahlyAppBar(),
+      appBar: salahlyAppBar(context, title: 'Request_details'.tr()),
 
       drawer: salahlyDrawer(context),
       body: SizedBox(
