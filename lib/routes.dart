@@ -27,7 +27,7 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
+        initialLocation: TestScreenAya.routeName,
         routes: <GoRoute>[
           GoRoute(
             path: HomeScreen.routeName,

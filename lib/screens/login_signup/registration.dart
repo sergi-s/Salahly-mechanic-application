@@ -173,7 +173,7 @@ class _RegistrationState extends State<Registration> {
               ),
             ),
             Image.asset(
-              'assets/images/logo white.png',
+              'assets/images/logodark.png',
               fit: BoxFit.contain,
               height: 32,
             ),
@@ -192,11 +192,90 @@ class _RegistrationState extends State<Registration> {
                   //     _SelectPhoto();
                   //   },
                   // ),
-                  UserImage(onFilechanged: (imageUrl) {
-                    setState(() {
-                      this.imageUrl = imageUrl;
-                    });
-                  }),
+                  Stack(
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 2,
+                              color: Color(0xFF193566),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1),
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                            // image: DecorationImage(
+                            //     fit: BoxFit.cover, image: FileImage(_image!))),
+                          ),
+                          child: CircleAvatar(
+                            backgroundImage:
+                            // (_image != null)
+                            //     ? FileImage(_image!) as ImageProvider
+                            //     :
+                            AssetImage(
+                              // ref.watch(userProvider).avatar ??
+                                "assets/images/user.png"),
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 1, color: Colors.white),
+                              color: Color(0xFF193566)),
+                          child: GestureDetector(
+                            onTap: () {
+                              // chooseImage();
+                              // final snackBar =
+                              //     SnackBar(content: Text('Image uploaded'));
+                              //
+                              // try {
+                              //   uploadImage(context);
+                              //   ScaffoldMessenger.of(context)
+                              //       .showMaterialBanner(MaterialBanner(
+                              //     content:
+                              //         const Text('Image updated Successfully'),
+                              //     actions: [
+                              //       TextButton(
+                              //           onPressed: () {
+                              //             ScaffoldMessenger.of(context)
+                              //                 .hideCurrentMaterialBanner();
+                              //           },
+                              //           child: const Text('Dismiss')),
+                              //     ],
+                              //   ));
+                              //   // ScaffoldMessenger.of(context)
+                              //   //     .showSnackBar(snackBar);
+                              // } catch (e) {}
+                            },
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // UserImage(onFilechanged: (imageUrl) {
+                  //   setState(() {
+                  //     this.imageUrl = imageUrl;
+                  //   });
+                  // }),
 
                   // GoogleMap(
                   //     mapType: MapType.normal,
@@ -319,6 +398,9 @@ class _RegistrationState extends State<Registration> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.04,
                   ),
                   //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
                   //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
