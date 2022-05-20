@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicEditProfilePage.dart';
 import 'package:salahly_mechanic/utils/get_mechanic_provider_data.dart';
@@ -12,6 +13,8 @@ import 'package:salahly_mechanic/themes.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/models/mechanic.dart';
+
+import '../profile/editProfile.dart';
 
 class MechanicProfilePage extends StatelessWidget {
   static final String title = 'User Profile';
@@ -70,9 +73,10 @@ class _ProfilePageState extends State<_ProfilePage> {
               ProfileWidget(
                 imagePath: user.avatar !=null?user.avatar!: '',
                 onClicked: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MechanicEditProfilePage()),
-                  );
+                  context.push(EditProfile.routeName, extra: user);
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (context) => EditProfile(user:user)),
+                  // );
                 },
               ),
               const SizedBox(height: 24),

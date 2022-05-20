@@ -32,14 +32,14 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
     final String carNumber = rsa.car != null ?rsa.car!.noPlate:"Car number";
     final String mobileNumber = rsa.user!.phoneNumber??"Phone number";
     final String carModel = rsa.car != null ?rsa.car!.model!:"Car model";
-    final String color = rsa.car != null ?rsa.car!.color!:"0xFF00FF00";
+    final Color color = rsa.car != null ?rsa.car!.color!:Color(0xFF00FF00);
     final String image =  rsa.user!.avatar??"";
-    print("name = $name");
-    print("carNumber = $carNumber");
-    print("mobileNumber = $mobileNumber");
-    print("carModel = $carModel");
-    print("color = $color");
-    print("image = $image");
+    // print("name = $name");
+    // print("carNumber = $carNumber");
+    // print("mobileNumber = $mobileNumber");
+    // print("carModel = $carModel");
+    // print("color = $color");
+    // print("image = $image");
 
     return Container(
       height: MediaQuery
@@ -67,7 +67,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
             ListTile(
               leading:Padding(
                   padding: const EdgeInsets.only(top:6.0,bottom: 6.0,right: 8.0),
-                  child: Icon(CupertinoIcons.car_detailed,color:Color(int.parse(color)),size: 45)),
+                  child: Icon(CupertinoIcons.car_detailed,color:color,size: 45)),
               title: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,9 +78,9 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
                     child:Text(carModel,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
-                  Padding(
-                    padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
-                    child:Text(color,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
+                  //   child:Text(color,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
                 ],),
             ),
             ListTile(

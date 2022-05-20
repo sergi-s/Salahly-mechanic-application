@@ -1,21 +1,33 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
+import 'package:salahly_mechanic/utils/location/geocoding.dart';
 import 'package:salahly_mechanic/widgets/add_Schedular/select_textfield.dart';
-
-// import '../../classes/provider/user_data.dart';
+import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
+import 'package:salahly_models/abstract_classes/user.dart';
+import 'package:salahly_models/models/location.dart';
+import 'package:path/path.dart' as p;
 import '../../main.dart';
 import '../../widgets/add_Schedular/text_input.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
-  static const String routeName = "/editprofile";
+
+  static const String routeName = "/edit_profile";
+  dynamic user;
+
+  EditProfile({Key? key, required this.user}) : super(key: key);
 
   @override
   _State createState() => _State();
@@ -25,17 +37,59 @@ class _State extends ConsumerState<EditProfile> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
-
+  final TextEditingController shopNameController = TextEditingController();
   final TextEditingController emailyController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   DatabaseReference user = dbRef.child("users");
   File? _image;
+  String _imagePath = '';
   String? phone, address, email, name, data;
   File? url;
   dynamic path;
   String? emaily;
   String? passwordy;
+  Type? type;
+
+  bool changedEmail = false,
+      changedPassword = false,
+      changedPhone = false,
+      changedAddress = false,
+      changedName = false,
+      changedWorkshopType = false,
+      isCenter = false,
+      changedWorkshopName = false;
+
+  CustomLocation? location;
+
+  @override
+  void initState() {
+    getUserType().then((value) => setState(() {
+          type = value;
+        }));
+    nameController.text = widget.user.name != null ? widget.user.name! : "";
+    emailyController.text = widget.user.email != null ? widget.user.email! : "";
+    phoneController.text =
+        widget.user.phoneNumber != null ? widget.user.phoneNumber! : "";
+    shopNameController.text =
+        widget.user.loc != null && widget.user.loc!.name != null
+            ? widget.user.loc!.name!
+            : "";
+    addressController.text =
+        widget.user.loc != null && widget.user.loc!.address != null
+            ? widget.user.loc!.address!
+            : "";
+    isCenter = widget.user.isCenter != null
+        ? widget.user.isCenter!
+            ? true
+            : false
+        : false;
+    _image = widget.user.avatar != null ? File(widget.user.avatar!) : null;
+    _imagePath = widget.user.avatar != null ? widget.user.avatar! : null;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +97,8 @@ class _State extends ConsumerState<EditProfile> {
     // File? stateimage = File(avatary!);
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
-      appBar: AppBar(
+      appBar: salahlyAppBar(context, title: 'edit_profile'.tr())
+      /*AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xFFd1d9e6),
         leading: IconButton(
@@ -71,7 +126,8 @@ class _State extends ConsumerState<EditProfile> {
             height: 32,
           ),
         ]),
-      ),
+      )*/
+      ,
       body: ListView(
         children: [
           SizedBox(
@@ -104,15 +160,22 @@ class _State extends ConsumerState<EditProfile> {
                           // image: DecorationImage(
                           //     fit: BoxFit.cover, image: FileImage(_image!))),
                         ),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              // (_image != null)
-                              //     ? FileImage(_image!) as ImageProvider
-                              //     :
-                              AssetImage(
-                                  // ref.watch(userProvider).avatar ??
-                                  "assets/images/user.png"),
+                        child: CachedNetworkImage(
+                          imageUrl: _imagePath,
+                          width: 128,
+                          height: 128,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+
                         ),
+                        // child: CircleAvatar(
+                        //   backgroundImage: (_image != null)
+                        //       ? FileImage(_image!) as ImageProvider
+                        //       : AssetImage(
+                        //           // ref.watch(userProvider).avatar ??
+                        //           "assets/images/user.png"),
+                        // ),
                       ),
                       onTap: () {},
                     ),
@@ -125,7 +188,7 @@ class _State extends ConsumerState<EditProfile> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(width: 1, color: Colors.white),
-                            color: Color(0xFF193566)),
+                            color: const Color(0xFF193566)),
                         child: GestureDetector(
                           onTap: () {
                             chooseImage();
@@ -185,28 +248,37 @@ class _State extends ConsumerState<EditProfile> {
                 child: Column(
                   children: [
                     MyInputField(
-                      fn: () {},
+                      fn: (value) {
+                        changedName = true;
+                        name = value;
+                      },
                       title: 'Name',
                       controller: nameController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
                     ),
                     MyInputField(
-                      fn: () {},
+                      fn: (value) {
+                        changedEmail = true;
+                      },
                       title: 'Email',
                       controller: emailyController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
                     ),
                     MyInputField(
-                      fn: () {},
+                      fn: (value) {
+                        changedPhone = true;
+                      },
                       title: 'Phone',
                       controller: phoneController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
                     ),
                     MyInputField(
-                      fn: () {},
+                      fn: (value) {
+                        changedAddress = true;
+                      },
                       title: 'Address',
                       controller: addressController,
                       hint: "",
@@ -222,17 +294,27 @@ class _State extends ConsumerState<EditProfile> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
-
-                    SelectRequest(
-                      onChangedfunction: () {},
-                      title: 'Working In',
-                      hintText: '',
-                      items: ["WorkShop", "Center"],
-                    ),
+                    type == Type.mechanic
+                        ? SelectRequest(
+                            onChangedfunction: (value) {
+                              changedWorkshopType = true;
+                              isCenter = value;
+                            },
+                            title: 'Working In',
+                            hintText: widget.user.isCenter != null
+                                ? widget.user.isCenter!
+                                    ? "center".tr()
+                                    : "workShop".tr()
+                                : '',
+                            items: const ["WorkShop", "Center"],
+                          )
+                        : Container(),
                     MyInputField(
-                      fn: () {},
-                      title: 'Shop Name',
-                      controller: emailyController,
+                      fn: (value) {
+                        changedWorkshopName = true;
+                      },
+                      title: 'shop_name'.tr(),
+                      controller: shopNameController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
                     ),
@@ -279,12 +361,12 @@ class _State extends ConsumerState<EditProfile> {
                                           child: Text("Cancel")),
                                       TextButton(
                                           onPressed: () {
+                                            Navigator.of(context).pop();
                                             final snackBar = SnackBar(
                                                 content:
                                                     Text('profile updated'));
                                             updateProfile(context);
-                                            updateAuth();
-                                            Navigator.of(context).pop();
+                                            // updateAuth();
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(snackBar);
                                           },
@@ -344,22 +426,28 @@ class _State extends ConsumerState<EditProfile> {
                     //                         if (validator!.isEmpty) return 'Empty';
                     //                         return null;
                     //                       },
-                    MyInputField(
-                      fn: () {},
+                    MyPasswordInputField(
+                      fn: (a) {},
                       hint: '',
-                      title: 'Password',
-                    controller: passwordController,
-
+                      title: 'old_password'.tr(),
+                      controller: oldPasswordController,
+                    ),
+                    MyPasswordInputField(
+                      fn: (v) {
+                        changedPassword = true;
+                      },
+                      hint: '',
+                      title: 'new_assword'.tr(),
+                      controller: passwordController,
                     ),
                     // SizedBox(
                     //   height: 20,
                     // ),
-                    MyInputField(
-                      fn: () {},
+                    MyPasswordInputField(
+                      fn: (a) {},
                       hint: '',
-                      title: 'Confirm Password',
+                      title: 'confirm_password'.tr(),
                       controller: confirmPassController,
-
                     ),
                     // controller: confirmPassController,
                     // validator: (validator) {
@@ -389,16 +477,27 @@ class _State extends ConsumerState<EditProfile> {
                                       child: Text("Cancel")),
                                   TextButton(
                                       onPressed: () {
+                                        Navigator.of(context).pop();
+                                        final snackBar3 = SnackBar(
+                                            content: Text(
+                                                'old_password_invalid'.tr()));
                                         final snackBar = SnackBar(
-                                            content: Text('Password updated'));
+                                            content:
+                                                Text('password_updated'.tr()));
                                         final snackBar2 = SnackBar(
-                                            content: Text('invalid password'));
-                                        if (passwordController.text ==
+                                            content: Text(
+                                                'invalid_confirmed_password'
+                                                    .tr()));
+                                        if (oldPasswordController.text.length <
+                                            6) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar3);
+                                        } else if (passwordController.text ==
                                                 confirmPassController.text &&
                                             passwordController.text.length >=
                                                 6) {
-                                          updateAuth();
-                                          Navigator.of(context).pop();
+                                          updateAuthPassword();
+                                          // Navigator.of(context).pop();
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(snackBar);
                                         } else {
@@ -439,33 +538,163 @@ class _State extends ConsumerState<EditProfile> {
     );
   }
 
+  Future _SelectPhoto() async {
+    await showModalBottomSheet(context: context, builder: (context) =>
+        BottomSheet(onClosing: () {}, builder: (context) =>
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(leading: Icon(Icons.camera),
+                  title: Text("Camera"),
+                  onTap: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },),
+                ListTile(leading: Icon(Icons.filter),
+                  title: Text("Pick Image"),
+                  onTap: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.of(context).pop();
+                  },)
+              ],
+            )));
+  }
+  final ImagePicker _picker = ImagePicker();
+  Future _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(
+        source: source, imageQuality: 50);
+    if (pickedFile == null) {
+      return;
+    }
+    var file = await ImageCropper().cropImage(sourcePath: pickedFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+    if (file == null) {
+      return;
+    }
+    File file2 = await CompressImage(file.path, 35);
+    await _uploadFile(file2.path);
+  }
+
+  Future CompressImage(String path, int quality) async {
+    final newPath = p.join((await getTemporaryDirectory()).path,
+        '${DateTime.now()}.${p.extension(path)}');
+    final result = await FlutterImageCompress.compressAndGetFile(
+        path,newPath,quality: quality);
+    return result;
+  }
+
+  Future _uploadFile (String path)async{
+
+    final ref= await FirebaseStorage.instance
+        .ref()
+        .child("users")
+        .child("profile_picture")
+        .child(FirebaseAuth.instance.currentUser!.uid);
+    final result =await ref.putFile(File(path));
+    final fileUrl=await result.ref.getDownloadURL();
+    user
+    .child(FirebaseAuth.instance.currentUser!.uid).child('avatar').set(fileUrl);
+    setState((){
+      _image= File(fileUrl);
+      _imagePath = fileUrl;
+      print("Hello "+fileUrl);
+    });
+    // widget.onFilechanged(fileUrl);
+  }
+
   chooseImage() async {
     //open gallery to upload image
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    print("filattoooo" + image!.path);
-    setState(() {
-      _image = File(image.path);
-    });
-    print(_image);
+    // XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+// print("filattoooo" + image!.path);
+    // setState(() {
+    //   _image = File(image.path);
+    // });
+
+    _SelectPhoto();
+    // UserImage(
+    //   onFilechanged: (String imageUrl) {
+    //     print("filattoooo" + imageUrl);
+    //     setState(() {
+    //       _image = File(imageUrl);
+    //     });
+    //     print(_image);
+    //   },
+    // );
+
+    // print(_image);
+  }
+
+  updateAuthEmail() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController passController = TextEditingController();
+        return AlertDialog(
+          title: Text('update_email'.tr()),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('insert_password_to_confirm'),
+                TextField(
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  controller: passController,
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Approve'),
+              onPressed: () {
+                String pass = passController.text;
+                firebaseUser!.reauthenticateWithCredential(
+                    EmailAuthProvider.credential(
+                        email: firebaseUser.email!, password: pass));
+                firebaseUser.updateEmail(emailyController.text);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('email_updated'.tr())));
+                changedEmail = false;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  updateAuthPassword() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    String pass = oldPasswordController.text;
+    firebaseUser!.reauthenticateWithCredential(EmailAuthProvider.credential(
+        email: firebaseUser.email!, password: pass));
+    return await firebaseUser.updatePassword(passwordController.text);
+  }
+
+  updateAuthName() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    return await firebaseUser?.updateDisplayName(nameController.text);
   }
 
   updateAuth() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
     emaily = firebaseUser?.email;
-    // EmailAuthProvider.credential(email: emaily!, password: '');
-
-    // emailyController.text.isNotEmpty
-    //     ? firebaseUser?.updateEmail(emailyController.text)
-    //     : null;
-    //
-    // nameController.text.isNotEmpty
-    //     ? firebaseUser?.updateDisplayName(nameController.text)
-    //     : null;
-    print("b4");
     if (await firebaseUser != null) {
-      firebaseUser?.updateEmail(emailyController.text);
-      firebaseUser?.updateDisplayName(nameController.text);
-      firebaseUser?.updatePassword(passwordController.text);
+      if (changedEmail) firebaseUser?.updateEmail(emailyController.text);
+
+      if (changedName) firebaseUser?.updateDisplayName(nameController.text);
+
+      if (changedPassword)
+        firebaseUser?.updatePassword(passwordController.text);
       // signed in
     } else {}
 
@@ -473,7 +702,6 @@ class _State extends ConsumerState<EditProfile> {
   }
 
   updateProfile(BuildContext context) async {
-    final firebaseUser = FirebaseAuth.instance.currentUser;
     Map<String, dynamic> map = {};
     //
     // map['name'] = nameController.text.isEmpty
@@ -491,41 +719,56 @@ class _State extends ConsumerState<EditProfile> {
     // map['email'] = emailyController.text.isEmpty
     //     ? ref.watch(userProvider).email
     //     : emailyController.text;
+    if (changedName) {
+      print("Hello changed name");
+      map['name'] = nameController.text;
+      await updateAuthName();
+      changedName = false;
+    }
+    if (changedAddress) {
+      map['workshop/latitude'] = location!.latitude;
+      map['workshop/longitude'] = location!.longitude;
+      final address = await searchCoordinateAddressGoogle(
+          lat: location!.latitude, long: location!.longitude);
+      map['workshop/address'] = address;
+      setState(() {
+        addressController.text = address;
+      });
+    }
+    if (changedPhone) {
+      map['phoneNumber'] = phoneController.text;
+      changedPhone = false;
+    }
+    if (changedEmail) {
+      await updateAuthEmail();
+      print("changedEmail: ${changedEmail}");
+      if (!changedEmail) // changed
+        map['email'] = emailyController.text;
+    }
+    if (changedWorkshopType) {
+      map['isCenter'] = isCenter;
+      changedWorkshopType = false;
+    }
+    if (changedWorkshopName) {
+      map['workshop/name'] = shopNameController.text;
+      changedWorkshopName = false;
+    }
+    if (_image != null) {
+      map['image'] = await uploadImage(context);
+      _image = null;
+    }
 
-    user
-        .child("clients")
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .update(map);
-    fetch();
+    user.child(FirebaseAuth.instance.currentUser!.uid).update(map);
+    // fetch();
   }
 
   Future<String> uploadImage(BuildContext context) async {
-    final snackBar = SnackBar(content: Text('Are you talkin\' to me?'));
-
-    // String filepath = basename(file.path);
-    //add image into fireStorage
-    // final storage = await FirebaseStorage.instance.ref()
-    //   ..child("users").child("profile_picture").child(
-    //       FirebaseAuth.instance.currentUser!.uid +
-    //           "_" +
-    //           basename(_image!.path));
-    // print("storage");
-    // dynamic store = await storage.root;
-    // print(store.toString());
     TaskSnapshot taskSnapshot = await FirebaseStorage.instance
         .ref()
         .child("users")
         .child("profile_picture")
         .child(FirebaseAuth.instance.currentUser!.uid)
         .putFile(_image!);
-    // TaskSnapshot snapshot = await FirebaseStorage.instance
-    //     .ref()
-    //     .child("users")
-    //     .child("profile_picture")
-    //     .child(FirebaseAuth.instance.currentUser!.uid +
-    //         "_" +
-    //         basename(_image!.path))
-    //     .writeToFile(_image!);
 
     //get image for current user from fireStorage
     dynamic url = await taskSnapshot.ref.getDownloadURL();
@@ -533,25 +776,17 @@ class _State extends ConsumerState<EditProfile> {
     // ref.watch(userProvider.notifier).assignAvatar(url);
 
     //RTDB
-    user
-        .child("clients")
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .update({'image': url});
-    print("reading");
-    print(url.toString());
-    // print("ahoo");
+    // user
+    //     .child(FirebaseAuth.instance.currentUser!.uid)
+    //     .update({'image': url});
+    // print("reading");
     // print(url.toString());
-
     return url;
   }
 
   fetch() async {
     final firebaseuser = await FirebaseAuth.instance.currentUser;
-    user
-        .child("clients")
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .once()
-        .then((event) {
+    user.child(FirebaseAuth.instance.currentUser!.uid).once().then((event) {
       final dataSnapshot = event.snapshot;
       print("read" + dataSnapshot.value.toString());
       var data = dataSnapshot.value as Map;
