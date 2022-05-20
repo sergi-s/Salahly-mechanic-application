@@ -220,13 +220,21 @@ class _State extends ConsumerState<EditProfile> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
+
                     SelectRequest(
                       onChangedfunction: () {},
                       title: 'Working In',
                       hintText: '',
                       items: ["WorkShop", "Center"],
+                    ),
+                    MyInputField(
+                      fn: () {},
+                      title: 'Shop Name',
+                      controller: emailyController,
+                      hint: "",
+                      // ref.watch(userProvider).email ?? "wait",
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,

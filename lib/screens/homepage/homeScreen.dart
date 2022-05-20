@@ -49,7 +49,7 @@ class _HomePageState extends ConsumerState<HomeScreen> {
     //TODO: get all users data and put it in state management
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
-      appBar: salahlyAppBar(),
+      appBar: salahlyAppBar(context),
       drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
         child: Container(

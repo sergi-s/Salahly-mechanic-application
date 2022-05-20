@@ -115,7 +115,7 @@ class PendingRequests extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFd1d9e6),
-      appBar: salahlyAppBar(title: "pending_requests".tr(),),
+      appBar: salahlyAppBar(context, title: "pending_requests".tr(),),
       drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
         child: Column(

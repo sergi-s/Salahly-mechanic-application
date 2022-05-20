@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/main.dart';
+import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
@@ -35,6 +36,7 @@ Widget salahlyDrawer(BuildContext context) {
             context.push(SchedulerScreen.routeName);
           },
         ),
+
         ListTile(
           title: const Text(
             "Set availability",
@@ -44,6 +46,7 @@ Widget salahlyDrawer(BuildContext context) {
             context.push(Switcher.routeName);
           },
         ),
+
         ListTile(
           title: const Text(
             "PendingRequests screen",
@@ -60,6 +63,15 @@ Widget salahlyDrawer(BuildContext context) {
           ).tr(),
           onTap: () {
             context.push(OnGoingRequests.routeName);
+          },
+        ),
+        ListTile(
+          title: const Text(
+            "View profile",
+            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
+          ).tr(),
+          onTap: () {
+            context.push(MechanicProfilePage.routeName);
           },
         ),
         // ListTile(
