@@ -158,7 +158,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
 
-      appBar: salahlyAppBar(),
+      appBar: salahlyAppBar(context,showBackButton: true),
 
       drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
