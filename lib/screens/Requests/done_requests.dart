@@ -30,7 +30,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color(0xFFd1d9e6),
-          appBar: salahlyAppBar(title: "Done Requests"),
+          appBar: salahlyAppBar(context, title: "Done Requests"),
           drawer: salahlyDrawer(context),
           body: CustomPaint(
             child: Container(
@@ -57,7 +57,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: Colors.grey[100],
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.blueGrey,
                                       blurRadius: 2.0,

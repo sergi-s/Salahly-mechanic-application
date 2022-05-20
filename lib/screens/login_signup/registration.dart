@@ -343,8 +343,8 @@ class _RegistrationState extends State<Registration> {
   //move camera to current position
   moveCamera(CustomLocation cus) async {
     currentCustomLoc = cus;
-    currentCustomLoc.address = await searchCoordinateAddress_google(
-        currentCustomLoc.latitude, currentCustomLoc.longitude);
+    currentCustomLoc.address = await searchCoordinateAddressGoogle(
+      lat:  currentCustomLoc.latitude, long: currentCustomLoc.longitude);
 
     LatLng latLatPosition =
         LatLng(currentCustomLoc.latitude, currentCustomLoc.longitude);
