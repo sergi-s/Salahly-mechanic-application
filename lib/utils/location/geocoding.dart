@@ -1,7 +1,7 @@
 import 'package:salahly_mechanic/utils/constants.dart';
 import 'package:salahly_mechanic/utils/http_request.dart';
 
-Future<String> searchCoordinateAddress(double long, double lat) async {
+Future<String> searchCoordinateAddress({required double long, required double lat}) async {
   String placeAddress = "";
   String geoURL =
       "https://open.mapquestapi.com/geocoding/v1/reverse?key=$geoCodingKey&includeRoadMetadata=true&includeNearestIntersection=true&location=${lat},${long}";
@@ -15,7 +15,7 @@ Future<String> searchCoordinateAddress(double long, double lat) async {
   return placeAddress;
 }
 
-Future<String> searchCoordinateAddress_google(double lat,double long) async {
+Future<String> searchCoordinateAddressGoogle({required double lat, required double long}) async {
   String placeAddress = "";
   String geoURL =
       "https://maps.googleapis.com/maps/api/geocode/json?&key=$googleMapsAPI&latlng=${lat},${long}";

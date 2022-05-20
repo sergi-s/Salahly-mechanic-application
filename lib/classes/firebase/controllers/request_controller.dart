@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/requests_memory_caching.dart';
@@ -18,8 +20,15 @@ loadRequestFromDB(String id, String requestType) async {
       .child("cars")
       .child(dataSnapshot.child("carID").value.toString())
       .get();
+  String colorString =  carSnapshot.child("color").value.toString();
+  if (colorString.contains("(")) {
+    colorString = colorString
+        .substring(colorString.indexOf("(") + 1, colorString.indexOf(")"));
+  }
+  print("CAR STRING IS $colorString");
+  print("CAR ID IS ${dataSnapshot.child("carID").value.toString()}");
   Car car = Car(
-    color: carSnapshot.child("color").value.toString(),
+    color: Color(int.parse(colorString)),
     noPlate: carSnapshot.child("plate").value.toString(),
     model: carSnapshot.child("model").value.toString(),
   );
@@ -29,10 +38,7 @@ loadRequestFromDB(String id, String requestType) async {
       .child(dataSnapshot.child("userID").value.toString())
       .get();
 
-  if (car.color!.contains("(")) {
-    car.color = car.color!
-        .substring(car.color!.indexOf("(") + 1, car.color!.indexOf(")"));
-  }
+
   //custom drop off location
   CustomLocation? dropOffLocation;
   if (RSA.stringToRequestType(requestType.toUpperCase()) == RequestType.TTA) {

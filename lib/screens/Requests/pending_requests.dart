@@ -60,7 +60,7 @@ class PendingRequests extends ConsumerWidget {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: Color((rsa.car != null && rsa.car?.color != null)?int.parse(rsa.car!.color!):0xFF000000),
+                    backgroundColor: (rsa.car != null && rsa.car?.color != null)?rsa.car!.color!:const Color(0xFF000000),
                   ),
                   title: Column(
                     children: <Widget>[

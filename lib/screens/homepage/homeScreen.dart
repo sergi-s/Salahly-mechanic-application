@@ -57,7 +57,9 @@ class _HomePageState extends ConsumerState<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(height:MediaQuery.of(context).size.height*0.02 ),
+              SizedBox(height:
+              MediaQuery.of(context).size.height*0.02
+              ),
               Text(
                 "welcome".tr(),
                 textScaleFactor: 1.4,

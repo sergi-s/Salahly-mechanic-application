@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
 import 'package:salahly_mechanic/main.dart';
-import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
+import 'package:salahly_mechanic/screens/homepage/set_availaibility.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +24,7 @@ class TestScreenFoula extends ConsumerWidget {
             }, child: const Text('Sign out')),
             ElevatedButton(onPressed: (){
 
-              context.push(SetAvalability.routeName);
+              context.push(SetAvailability.routeName);
             }, child: const Text('set availability screen')),
             ElevatedButton(onPressed: () async {
               /*final prefs = await SharedPreferences.getInstance();
