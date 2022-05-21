@@ -29,6 +29,8 @@ final pendingRequestsProvider =
   return PendingRequestsNotifier(ref);
 });
 
+Map<String, RSA> pendingRequestsCache = {};
+
 class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
   PendingRequestsNotifier(this.ref) : super([]);
   final Ref ref;
@@ -75,7 +77,10 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
       return rsaCache[id]!;
     }
     RSA r = loadRequestFromDB(id, "rsa");
-    addRSA(r);
+    if (!pendingRequestsCache.containsKey(r.rsaID!)) {
+      pendingRequestsCache[r.rsaID!] = r;
+      addRSA(r);
+    }
     return r;
   }
 
@@ -146,12 +151,15 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
         }
       });
     } else {
-      removeRSA(rsa);
-      addRSA(rsa);
+      // if (!pendingRequestsCache.containsKey(rsa.rsaID!)) {
+        removeRSA(rsa);
+        // pendingRequestsCache[rsa.rsaID!] = rsa;
+        addRSA(rsa);
+      // }
       return true;
     }
     return false;
   }
 
-  List<RSA> doneRSA = [];
+  static List<RSA> doneRSA = [];
 }

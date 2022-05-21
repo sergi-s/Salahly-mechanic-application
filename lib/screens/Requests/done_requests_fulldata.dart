@@ -8,11 +8,9 @@ import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
 class DoneRequestsFullData extends StatefulWidget {
-  DoneRequestsFullData(
-  // {
-  //   // required this.rsa
-  // }
-  );
+   DoneRequestsFullData({Key? key,required this.doneRequest}) : super(key: key);
+
+  RSA doneRequest;
   static final routeName = "/donerequestsfulldata";
   // RSA rsa;
   @override
@@ -24,7 +22,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
 
   @override
   void initState() {
-    // rsa = widget.rsa;
+    rsa = widget.doneRequest;
     super.initState();
   }
 
