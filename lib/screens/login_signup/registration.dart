@@ -9,8 +9,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
-import 'package:salahly_mechanic/screens/login_signup/text_input.dart';
-import 'package:salahly_mechanic/widgets/login_signup/userImage.dart';
+import 'package:salahly_mechanic/screens/login_signup/map.dart';
+import 'package:salahly_mechanic/widgets/login_signup/text_input.dart';
+import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/client.dart' as Client;
 import 'package:salahly_models/models/location.dart';
 
@@ -38,40 +39,15 @@ class _RegistrationState extends State<Registration> {
   String name = "";
   String phonenumber = "";
   String address = "";
+  Type? _userTypeEnum;
+
   String userType = "";
   String workType = "";
+  bool? isCenter;
   String imageUrl = "";
   String _verticalGroupValue = "";
-
+  String? getlocation;
   List<String> _status = ["Female", "Male"];
-  final Completer<GoogleMapController> _controllerGoogleMap = Completer();
-  late GoogleMapController newGoogleMapController;
-
-  static const double initialCameraZoom = 15;
-  double cameraZoom = 14;
-
-  // Current Location
-  // late Position currentPos;
-  late LatLng currentPos;
-  late CustomLocation currentCustomLoc;
-
-  Geolocator geoLocator = Geolocator();
-
-  //initial Camera position
-  final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(30.0444, 31.2357),
-    zoom: initialCameraZoom,
-  );
-
-  //Markers
-  List<Marker> myMarkers = [];
-
-  @override
-  void initState() {
-    initialLocation();
-    locatePosition();
-    super.initState();
-  }
 
   // String gender = "";
   updateusername(String u) {
@@ -146,7 +122,9 @@ class _RegistrationState extends State<Registration> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
 
     return Scaffold(
         backgroundColor: const Color(0xFFd1d9e6),
@@ -161,7 +139,7 @@ class _RegistrationState extends State<Registration> {
             onPressed: () {},
           ),
           title:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
             Text(
               "Registration".tr(),
@@ -173,7 +151,7 @@ class _RegistrationState extends State<Registration> {
               ),
             ),
             Image.asset(
-              'assets/images/logo white.png',
+              'assets/images/logodark.png',
               fit: BoxFit.contain,
               height: 32,
             ),
@@ -185,35 +163,71 @@ class _RegistrationState extends State<Registration> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                  // ProfileWidget(
-                  //   imagePath: "assets/images/user.png",
-                  //   onClicked: () async {
-                  //     _SelectPhoto();
-                  //   },
-                  // ),
-                  UserImage(onFilechanged: (imageUrl) {
-                    setState(() {
-                      this.imageUrl = imageUrl;
-                    });
-                  }),
-
-                  // GoogleMap(
-                  //     mapType: MapType.normal,
-                  //     myLocationButtonEnabled: true,
-                  //     // myLocationEnabled: true,
-                  //     zoomGesturesEnabled: true,
-                  //     zoomControlsEnabled: false,
-                  //     initialCameraPosition: _kGooglePlex,
-                  //     onMapCreated: (GoogleMapController controller) {
-                  //       _controllerGoogleMap.complete(controller);
-                  //       newGoogleMapController = controller;
-                  //     },
-                  //     markers: Set.from(myMarkers),
-                  //     onTap: _handleTap),
-
+                  SizedBox(height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.01),
+                  Stack(
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 2,
+                              color: Color(0xFF193566),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1),
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                            // image: DecorationImage(
+                            //     fit: BoxFit.cover, image: FileImage(_image!))),
+                          ),
+                          child: CircleAvatar(
+                            backgroundImage:
+                            // (_image != null)
+                            //     ? FileImage(_image!) as ImageProvider
+                            //     :
+                            AssetImage(
+                              // ref.watch(userProvider).avatar ??
+                                "assets/images/user.png"),
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 1, color: Colors.white),
+                              color: Color(0xFF193566)),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   // SizedBox(height:180),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                  SizedBox(height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.03),
                   RounedInput(
                     icon: Icons.face,
                     fn: () {},
@@ -245,10 +259,25 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                   MyInput(
-                    hint: "Address",
+                    hint: getlocation ?? "Address",
                     fn: () {},
                     widget: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Map_Registration(),
+                          ),
+                        ).then((value) {
+                          setState(() {
+                            if (Map_Registration.location != null)
+                              getlocation =
+                                  Map_Registration.location!.address.toString();
+                          });
+                          print("${getlocation}PPPPPPPPPPPP");
+                          print("${Map_Registration.location.toString()}");
+                        });
+                      },
                       icon: const Icon(
                         Icons.pin_drop,
                         color: Color(0xFF193566),
@@ -257,14 +286,32 @@ class _RegistrationState extends State<Registration> {
                   ),
                   SelectTextField(
                     hintText: 'User Type',
-                    items: ["Mechanic", "Provider"],
-                    onChangedfunction: () {},
+                    items: ["mechanic".tr(), "provider".tr()],
+                    onChangedfunction: (String value) {
+                      setState(() {
+                        userType = value;
+                        if (userType == "mechanic".tr()) {
+                          _userTypeEnum = Type.mechanic;
+                        } else {
+                          _userTypeEnum = Type.provider;
+                        }
+                      });
+                    },
                   ),
-                  if (workType != null)
+                  if (_userTypeEnum == Type.mechanic)
                     SelectTextField(
-                      hintText: 'WorkShop Type',
-                      items: ["Center", "WorkShop"],
-                      onChangedfunction: () {},
+                      hintText: 'WorkShop Type'.tr(),
+                      items: ["center".tr(), "workshop".tr()],
+                      onChangedfunction: (value) {
+                        workType = value;
+                        setState(() {
+                          if (workType == "center".tr()) {
+                            isCenter = true;
+                          } else {
+                            isCenter = false;
+                          }
+                        });
+                      },
                     ),
 
                   Column(
@@ -289,15 +336,17 @@ class _RegistrationState extends State<Registration> {
                         direction: Axis.horizontal,
                         groupValue: _verticalGroupValue,
                         horizontalAlignment: MainAxisAlignment.spaceAround,
-                        onChanged: (value) => setState(() {
-                          _verticalGroupValue = value as String;
-                        }),
+                        onChanged: (value) =>
+                            setState(() {
+                              _verticalGroupValue = value as String;
+                            }),
                         items: _status,
                         textStyle:
-                            TextStyle(fontSize: 15, color: Color(0xFF193566)),
-                        itemBuilder: (item) => RadioButtonBuilder(
-                          item,
-                        ),
+                        TextStyle(fontSize: 15, color: Color(0xFF193566)),
+                        itemBuilder: (item) =>
+                            RadioButtonBuilder(
+                              item,
+                            ),
                       ),
                     ],
                   ),
@@ -333,68 +382,7 @@ class _RegistrationState extends State<Registration> {
           ),
         ));
   }
-
-  locatePosition() async {
-    currentCustomLoc = await getUserLocation();
-    cameraZoom = 19;
-    moveCamera(currentCustomLoc);
-  }
-
-  //move camera to current position
-  moveCamera(CustomLocation cus) async {
-    currentCustomLoc = cus;
-    currentCustomLoc.address = await searchCoordinateAddress_google(
-        currentCustomLoc.latitude, currentCustomLoc.longitude);
-
-    LatLng latLatPosition =
-        LatLng(currentCustomLoc.latitude, currentCustomLoc.longitude);
-
-    setState(() {
-      myMarkers = [];
-      myMarkers.add(
-        Marker(
-            markerId: MarkerId(latLatPosition.toString()),
-            position: latLatPosition),
-      );
-    });
-
-    CameraPosition camPos =
-        CameraPosition(target: latLatPosition, zoom: cameraZoom);
-    newGoogleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(camPos));
-  }
-
-  //put a marker on pressed on map
-  _handleTap(LatLng tappedPoint) {
-    setState(() {
-      cameraZoom = 19;
-      moveCamera(CustomLocation(
-          latitude: tappedPoint.latitude, longitude: tappedPoint.longitude));
-      myMarkers = [];
-      myMarkers.add(
-        Marker(
-            draggable: true,
-            markerId: MarkerId(tappedPoint.toString()),
-            position: tappedPoint,
-            onDragEnd: (dragEndPosition) {
-              moveCamera(CustomLocation(
-                  latitude: dragEndPosition.latitude,
-                  longitude: dragEndPosition.longitude));
-            }),
-      );
-    });
-  }
-
-  //get approximate location of user
-  initialLocation() async {
-    List temp = await getApproximateLocation();
-    CustomLocation initialPos =
-        CustomLocation(latitude: temp[0], longitude: temp[1]);
-
-    moveCamera(initialPos);
-  }
 }
-
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
