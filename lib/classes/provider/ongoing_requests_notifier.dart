@@ -23,12 +23,12 @@ class OngoingRequestsNotifier extends StateNotifier<List<RSA>> {
 
   finishRSA(RSA rsa, PendingRequestsNotifier pendingRequestsNotifier){
     RSA? r = removeRSA(rsa);
-      if(r != null) pendingRequestsNotifier.doneRSA.add(r);
+      if(r != null) PendingRequestsNotifier.doneRSA.add(r);
   }
 
   finishRSAById(String rsaID, PendingRequestsNotifier pendingRequestsNotifier){
       RSA? r = removeRSAById(rsaID);
-      if(r != null) pendingRequestsNotifier.doneRSA.add(r);
+      if(r != null) PendingRequestsNotifier.doneRSA.add(r);
   }
 
   RSA? removeRSAById(String rsaID) {

@@ -130,7 +130,7 @@ class Routing {
               builder: (context, state) => DoneRequests()),
           GoRoute(
               path: DoneRequestsFullData.routeName,
-              builder: (context, state) => DoneRequestsFullData()),
+              builder: (context, state) => DoneRequestsFullData(doneRequest: state.extra! as RSA ,)),
           GoRoute(
               path: PendingRequestsScreen.routeName,
               builder: (context, state) => PendingRequestsScreen()),

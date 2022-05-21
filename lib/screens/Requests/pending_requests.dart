@@ -16,13 +16,23 @@ import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
 
-class PendingRequests extends ConsumerWidget {
+class PendingRequests extends ConsumerStatefulWidget {
   static final routeName = "/viewrequests";
 
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _PendingRequestsState();
+  }
+
+}
+
+class _PendingRequestsState extends ConsumerState<PendingRequests> {
   String? estimatedTime;
 
-  TextEditingController controller = TextEditingController();
 
+
+  TextEditingController controller = TextEditingController();
   Widget personDetailCard(
       {required RSA rsa,
       required BuildContext context,
@@ -106,7 +116,7 @@ class PendingRequests extends ConsumerWidget {
     }
   }
 
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
 
     PendingRequestsNotifier pendingNotifier =
     ref.watch(pendingRequestsProvider.notifier);
@@ -116,7 +126,7 @@ class PendingRequests extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Color(0xFFd1d9e6),
       appBar: salahlyAppBar(context, title: "pending_requests".tr(),),
-      drawer: salahlyDrawer(context),
+      // drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -144,7 +154,12 @@ class PendingRequests extends ConsumerWidget {
                       textOK: const Text('Yes').tr(),
                       textCancel: const Text('No').tr(),
                     )) {
-                      _accept(p, pendingNotifier, estimatedTime!);
+                      if(userType == Type.provider) {
+                        _accept(p, pendingNotifier, estimatedTime!);
+                      } else if(userType == Type.mechanic) {
+                        await pendingNotifier.acceptRequest(p);
+                      }
+
                       return print('pressedOK');
                     }
                     estimatedTime = null;
@@ -160,9 +175,13 @@ class PendingRequests extends ConsumerWidget {
 
   void _accept(p, pendingNotifier, String estimatedTime) async {
     if (p.requestType == RequestType.RSA) {
-      _checkingrsaId.add(p.rsaID!);
+      setState(() {
+        _checkingrsaId.add(p.rsaID);
+      });
       await pendingNotifier.acceptRequest(p);
-      _checkingrsaId.remove(p.rsaID!);
+      setState(() {
+        _checkingrsaId.remove(p.rsaID!);
+      });
     } else {
       await pendingNotifier.acceptRequest(p);
     }

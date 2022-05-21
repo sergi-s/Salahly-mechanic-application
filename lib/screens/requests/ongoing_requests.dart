@@ -22,7 +22,7 @@ class OnGoingRequests extends ConsumerStatefulWidget {
     // List<RSA> ongoingRequests = ref.watch(ongoingRequestsProvider);
     return Scaffold(
       appBar: salahlyAppBar(context,title:  "ongoing_requests".tr()),
-      drawer: salahlyDrawer(context),
+      // drawer: salahlyDrawer(context),
       /*body: SafeArea(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,7 +158,7 @@ class _ClientsDataState extends ConsumerState<OnGoingRequests> {
       backgroundColor: const Color(0xFFd1d9e6),
       appBar: salahlyAppBar(context, title: "ongoing_requests".tr()),
 
-      drawer: salahlyDrawer(context),
+      // drawer: salahlyDrawer(context),
 
       body: Center(
         child:SingleChildScrollView(
