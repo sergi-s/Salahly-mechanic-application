@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
@@ -17,6 +18,9 @@ import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/widgets/login_signup/Rounded_password.dart';
 import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
+
+import '../../utils/check_user_account_state.dart';
+import '../inActiveAccountsScreen/pendingAccounts.dart';
 
 class LoginForm extends  ConsumerStatefulWidget {
   var size;
@@ -75,7 +79,23 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Login successful')));
-      context.go(Registration.routeName, extra: email);
+      // context.go(Registration.routeName, extra: email);
+      AccountStates state = await getAccountState();
+      print("AKAODKA");
+      print(state);
+      print(state == AccountStates.PENDING);
+      if(state == AccountStates.NO_DATA){
+        print("No data");
+        context.go(Registration.routeName,extra: FirebaseAuth.instance.currentUser!.email!);
+      }
+      else if(state == AccountStates.PENDING) {
+        print("Pending");
+        context.go(PendingRequestsScreen.routeName);
+      }
+      else{
+        print("Active, homescreen");
+        context.go(HomeScreen.routeName);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Account isnt Correct !!Please try again')));

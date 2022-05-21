@@ -8,9 +8,13 @@ import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFull
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
+import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/test_foula.dart';
+
+import '../../utils/check_user_account_state.dart';
 
 class CheckLogin extends ConsumerWidget {
   const CheckLogin({Key? key}) : super(key: key);
@@ -19,11 +23,24 @@ class CheckLogin extends ConsumerWidget {
   _startChecking(BuildContext context,WidgetRef ref) async {
     PendingRequestsNotifier pendingNotifier = ref.watch(pendingRequestsProvider.notifier);
     if ((await FirebaseAuth.instance.currentUser) == null) {
+
       context.go(LoginSignupScreen.routeName);
     } else {
-      // pendingNotifier.listenRequestsFromDatabase();
+      AccountStates state = await getAccountState();
+      if(state == AccountStates.NO_DATA){
+        context.go(Registration.routeName,extra: FirebaseAuth.instance.currentUser!.email!);
+      }
+      else if(state == AccountStates.PENDING) {
+        context.go(PendingRequestsScreen.routeName);
+      }
+      else{
+
       context.go(HomeScreen.routeName);
-      // context.go(OngoingSc/reenDummy.routeName);
+      }
+      // else if(state == AccountStates.INACTIVE) {
+      //   context.go(InActiveAccountsScreen.routeName);
+      // }
+
     }
   }
 

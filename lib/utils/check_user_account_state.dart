@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/login_signup/after_login_response.dart';
+import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 
 enum AccountStates {
   ACTIVE,
@@ -28,7 +29,7 @@ String stateDescription(AccountStates accountState) {
   }
 }
 
-String stateRedirect(AccountStates accountState){
+String stateRedirect(AccountStates accountState) {
   switch (accountState) {
     case AccountStates.INACTIVE:
       return "";
@@ -39,33 +40,43 @@ String stateRedirect(AccountStates accountState){
     case AccountStates.LOGGED_OUT:
       return "";
     case AccountStates.NO_DATA:
-      return "";
+      return Registration.routeName;
     case AccountStates.PENDING:
       return "";
   }
 }
 
-AccountStates getAccountState() {
+Future<AccountStates> getAccountState() async {
+  AccountStates? k;
   if (FirebaseAuth.instance.currentUser != null) {
-    dbRef
+    await dbRef
         .child('users')
         .child(FirebaseAuth.instance.currentUser!.uid)
         .child('accountState')
-        .get()
-        .then((snapShot) {
-      if (snapShot.value != null) {
-        if (snapShot.value.toString() == 'active') {
+        .once()
+        .then((event) {
+      print("a7eh");
+      print(event.snapshot.value.toString());
+      if (event.snapshot.value.toString() != 'null') {
+        if (event.snapshot.value.toString() == 'active') {
+          k = AccountStates.ACTIVE;
           return AccountStates.ACTIVE;
-        } else if (snapShot.value.toString() == 'banned') {
+        } else if (event.snapshot.value.toString() == 'banned') {
+          k = AccountStates.BANNED;
           return AccountStates.BANNED;
-        } else if (snapShot.value.toString() == 'pending') {
+        } else if (event.snapshot.value.toString() == 'pending') {
+          print("peeeeeeeeeeeeeending");
+          k = AccountStates.PENDING;
           return AccountStates.PENDING;
         }
       } else {
         return AccountStates.NO_DATA;
       }
     });
-    return AccountStates.ACTIVE;
+    if (k == null)
+      return AccountStates.ACTIVE;
+    else
+      return k!;
   } else {
     return AccountStates.LOGGED_OUT;
   }

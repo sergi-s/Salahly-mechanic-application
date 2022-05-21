@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 
 class PendingRequestsScreen extends StatefulWidget {
   static const String routeName = "/pendingrequests";
@@ -42,6 +45,10 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
                 ),
               ),
             ),
+            ElevatedButton(onPressed: (){
+              FirebaseAuth.instance.signOut();
+              context.go(LoginSignupScreen.routeName);
+            }, child: Text('logout'))
           ],
         ),
       ),
