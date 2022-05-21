@@ -1,18 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:salahly_mechanic/abstract_classes/authentication.dart';
-import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
-import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
-import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
-import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
-import 'package:salahly_mechanic/utils/get_user_type.dart';
-import 'package:salahly_models/models/client.dart' as Models;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
+import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/utils/constants.dart';
+import 'package:salahly_mechanic/utils/get_user_type.dart';
+import 'package:salahly_models/models/mechanic.dart';
 import 'package:salahly_models/models/report.dart' as Rep;
 import 'package:salahly_models/models/road_side_assistance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class FirebaseCustom extends Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -24,9 +22,14 @@ class FirebaseCustom extends Authentication {
           email: emm, password: password);
       if (user != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await dbRef.child("users").child(user.user!.uid).get().then((snapshot) async {
-          if(snapshot.value != null) {
-            prefs.setString("userType", snapshot.child("type").value.toString());
+        await dbRef
+            .child("users")
+            .child(user.user!.uid)
+            .get()
+            .then((snapshot) async {
+          if (snapshot.value != null) {
+            prefs.setString(
+                "userType", snapshot.child("type").value.toString());
             userType = await getUserType();
           }
         });
@@ -52,9 +55,7 @@ class FirebaseCustom extends Authentication {
     print('>>> onBackgroundMessage');
 
     if (message.data["request_type"] == "rsa" ||
-        message.data["request_type"] == "wsa") {
-
-    }
+        message.data["request_type"] == "wsa") {}
     if (navigatorKey.currentState != null) {
       print('>>> opened screen');
       navigatorKey.currentState?.pushNamed(PendingRequests.routeName);
@@ -70,12 +71,10 @@ class FirebaseCustom extends Authentication {
     FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
       print("message received");
       print(event.notification!.body);
-
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) async {
       print("message opened");
       print(event.data);
-
     });
 
     // final prefs = await SharedPreferences.getInstance();
@@ -126,25 +125,46 @@ class FirebaseCustom extends Authentication {
     return false;
   }
 
-  Future<bool> registration(Models.Client client) async {
+  Future<bool> registration(Mechanic client) async {
     final User? user = _firebaseAuth.currentUser;
     if (user == null) {
       return false;
     }
     final uid = user.uid;
-    Map userDataMap = {
-      "name": client.name,
-      "email": client.email,
-      // "birthday": client.birthDay,
+
+    Map<String, dynamic> userDataMap = {
+      "name": client.name!,
+      "email": client.email!,
+      "birthday": client.birthDay!.toString(),
       // "sex": client.sex,
       // "avatar": client.avatar,
-      "address": client.address,
-      "phoneNumber": client.phoneNumber,
-      "isCenter": false,
-      "rating": 3.4,
-      "type": "mechanic"
+      // "address": client.address!,
+      "phoneNumber": client.phoneNumber!,
+      "rating": 0,
+      "accountState": "pending",
+      "workshop/longitude": client.loc!.longitude,
+      "workshop/latitude": client.loc!.latitude,
+      "workshop/address": client.loc!.address,
+      "workshop/name": client.loc!.name,
+      // "type": "mechanic"
     };
-    usersRef.child(uid).set(userDataMap);
+    print("AYA");
+    print(userDataMap);
+    if (client is Mechanic) {
+      userDataMap["type"] = "mechanic";
+      userDataMap["isCenter"] = client.isCenter;
+      dbRef
+          .child("mechanicsRegistrationRequests")
+          .child(uid)
+          .set({"request": "pending"});
+    } else {
+      userDataMap["type"] = "provider";
+      dbRef
+          .child("providersRegistrationRequests")
+          .child(uid)
+          .set({"request": "pending"});
+    }
+    usersRef.child(uid).update(userDataMap);
     return true;
   }
 
@@ -167,9 +187,11 @@ class FirebaseCustom extends Authentication {
     } else
       print("Not using emulator");
   }
-  Future<bool> report(Rep.Report report, String rsaID ,String requestType) async {
+
+  Future<bool> report(
+      Rep.Report report, String rsaID, String requestType) async {
     Map reportDataMap = {
-      "carType" :report.carType,
+      "carType": report.carType,
       "actualdistance": report.actualDistance,
       "systemname": report.systemName,
       "maintancecost": report.maintenanceCost,
@@ -179,11 +201,14 @@ class FirebaseCustom extends Authentication {
       "partname": report.partName,
       "partid": report.partID,
       "distance": report.distance,
-
     };
     dbRef.child(requestType).child(rsaID).child("report").set(reportDataMap);
-    dbRef.child(requestType).child(rsaID).child("state").set(RSA.stateToString(RSAStates.done));
-    
+    dbRef
+        .child(requestType)
+        .child(rsaID)
+        .child("state")
+        .set(RSA.stateToString(RSAStates.done));
+
     return true;
   }
 }

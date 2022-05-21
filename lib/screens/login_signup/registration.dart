@@ -1,22 +1,31 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:group_radio_button/group_radio_button.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
+import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/login_signup/map.dart';
 import 'package:salahly_mechanic/widgets/login_signup/text_input.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/client.dart' as Client;
 import 'package:salahly_models/models/location.dart';
+import 'package:salahly_models/models/mechanic.dart';
+import 'package:salahly_models/models/towProvider.dart';
 
-import '../../utils/location/geocoding.dart';
-import '../../utils/location/getuserlocation.dart';
+import '../../main.dart';
 import '../../widgets/login_signup/roundedInput.dart';
 import '../../widgets/report/select_button.dart';
 
@@ -35,12 +44,13 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   FirebaseCustom fb = FirebaseCustom();
+  DatabaseReference user = dbRef.child("users");
   DateTime? _selectedDate;
   String name = "";
   String phonenumber = "";
   String address = "";
   Type? _userTypeEnum;
-
+  String shopname = "";
   String userType = "";
   String workType = "";
   bool? isCenter;
@@ -48,7 +58,10 @@ class _RegistrationState extends State<Registration> {
   String _verticalGroupValue = "";
   String? getlocation;
   List<String> _status = ["Female", "Male"];
-
+  File? _image;
+  String _imagePath = '';
+  File? url;
+CustomLocation? locationObject;
   // String gender = "";
   updateusername(String u) {
     name = u;
@@ -70,6 +83,10 @@ class _RegistrationState extends State<Registration> {
     workType = worktype;
   }
 
+  updateshopname(String sn) {
+    shopname = sn;
+  }
+
   // updateage(String age) {
   registerOnPress(BuildContext context) async {
     // if (!Validator.usernameValidator(username)) {
@@ -88,19 +105,42 @@ class _RegistrationState extends State<Registration> {
     //           content:
     //           Text('Invalid age!! Please try again')));
     // }
+    dynamic mechanic;
+if(userType=="mechanic".tr()){
+  locationObject!.name=shopname;
+      mechanic=Mechanic(
+      name: name,
+      email: widget.emailobj,
+      address: address,
+      phoneNumber: phonenumber,
+      birthDay:_selectedDate,
+      avatar:_imagePath,
+      isCenter: isCenter,
+      loc: locationObject,
+     );
+}else if(userType=="provider"){
+  locationObject!.name=shopname;
+  mechanic=TowProvider(
+  name: name,
+  email: widget.emailobj,
+  address: address,
+  phoneNumber: phonenumber,
+  birthDay:_selectedDate,
+  avatar:_imagePath,
+  loc: locationObject,
+);
+}else{
+  return ScaffoldMessenger.of(context)
+      .showSnackBar(const SnackBar(content: Text('Please Complete your Data!!')));
+}
 
-    Client.Client client = Client.Client(
-        name: name,
-        email: widget.emailobj,
-        address: address,
-        phoneNumber: phonenumber,
-        subscription: Client.SubscriptionTypes.silver);
 
-    bool check = await fb.registration(client);
+
+    bool check = await fb.registration(mechanic);
     if (check) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text(' Sucessfull ')));
-      context.go(OngoingScreenDummy.routeName);
+      context.go(HomeScreen.routeName);
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to Register!!')));
@@ -122,9 +162,7 @@ class _RegistrationState extends State<Registration> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
         backgroundColor: const Color(0xFFd1d9e6),
@@ -139,7 +177,7 @@ class _RegistrationState extends State<Registration> {
             onPressed: () {},
           ),
           title:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
             Text(
               "Registration".tr(),
@@ -163,10 +201,7 @@ class _RegistrationState extends State<Registration> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.01),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   Stack(
                     children: [
                       GestureDetector(
@@ -187,17 +222,27 @@ class _RegistrationState extends State<Registration> {
                               ),
                             ],
                             shape: BoxShape.circle,
-                            // image: DecorationImage(
-                            //     fit: BoxFit.cover, image: FileImage(_image!))),
+                            image: DecorationImage(
+                                fit: BoxFit.cover, image: AssetImage("assets/images/user.png"))
                           ),
-                          child: CircleAvatar(
-                            backgroundImage:
-                            // (_image != null)
-                            //     ? FileImage(_image!) as ImageProvider
-                            //     :
-                            AssetImage(
-                              // ref.watch(userProvider).avatar ??
-                                "assets/images/user.png"),
+                          child: CachedNetworkImage(
+                            imageUrl: _imagePath ,
+                            width: 128,
+                            height: 128,
+                            fit: BoxFit.cover,
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: 130,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
                         ),
                         onTap: () {},
@@ -211,9 +256,11 @@ class _RegistrationState extends State<Registration> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(width: 1, color: Colors.white),
-                              color: Color(0xFF193566)),
+                              color: const Color(0xFF193566)),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              chooseImage();
+                            },
                             child: Icon(
                               Icons.edit,
                               color: Colors.white,
@@ -224,23 +271,24 @@ class _RegistrationState extends State<Registration> {
                     ],
                   ),
                   // SizedBox(height:180),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.03),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   RounedInput(
                     icon: Icons.face,
-                    fn: () {},
+                    fn:
+                    (v){updateusername(v);}
+                    ,
                     hint: 'Name',
                   ),
                   RounedInput(
                     icon: Icons.phone,
-                    fn: () {},
+                    fn:
+                      updatephonenumber
+                    ,
                     hint: 'Phone',
                   ),
                   RounedInput(
                     icon: Icons.business_rounded,
-                    fn: () {},
+                    fn: updateshopname,
                     hint: 'Shop Name',
                   ),
                   MyInput(
@@ -273,6 +321,7 @@ class _RegistrationState extends State<Registration> {
                             if (Map_Registration.location != null)
                               getlocation =
                                   Map_Registration.location!.address.toString();
+                            locationObject= Map_Registration.location!;
                           });
                           print("${getlocation}PPPPPPPPPPPP");
                           print("${Map_Registration.location.toString()}");
@@ -288,6 +337,7 @@ class _RegistrationState extends State<Registration> {
                     hintText: 'User Type',
                     items: ["mechanic".tr(), "provider".tr()],
                     onChangedfunction: (String value) {
+                      updateuserType(value);
                       setState(() {
                         userType = value;
                         if (userType == "mechanic".tr()) {
@@ -304,6 +354,7 @@ class _RegistrationState extends State<Registration> {
                       items: ["center".tr(), "workshop".tr()],
                       onChangedfunction: (value) {
                         workType = value;
+                        updateworkType(value);
                         setState(() {
                           if (workType == "center".tr()) {
                             isCenter = true;
@@ -313,43 +364,43 @@ class _RegistrationState extends State<Registration> {
                         });
                       },
                     ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.15,
-                          ),
-                          Text(
-                            "Gender",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF193566)),
-                          ),
-                        ],
-                      ),
-                      RadioGroup<String>.builder(
-                        direction: Axis.horizontal,
-                        groupValue: _verticalGroupValue,
-                        horizontalAlignment: MainAxisAlignment.spaceAround,
-                        onChanged: (value) =>
-                            setState(() {
-                              _verticalGroupValue = value as String;
-                            }),
-                        items: _status,
-                        textStyle:
-                        TextStyle(fontSize: 15, color: Color(0xFF193566)),
-                        itemBuilder: (item) =>
-                            RadioButtonBuilder(
-                              item,
-                            ),
-                      ),
-                    ],
-                  ),
+                  //In Client App
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       children: [
+                  //         SizedBox(
+                  //           width: size.width * 0.15,
+                  //         ),
+                  //         Text(
+                  //           "Gender",
+                  //           style: TextStyle(
+                  //               fontSize: 20,
+                  //               fontWeight: FontWeight.w600,
+                  //               color: Color(0xFF193566)),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     RadioGroup<String>.builder(
+                  //       direction: Axis.horizontal,
+                  //       groupValue: _verticalGroupValue,
+                  //       horizontalAlignment: MainAxisAlignment.spaceAround,
+                  //       onChanged: (value) =>
+                  //           setState(() {
+                  //             _verticalGroupValue = value as String;
+                  //           }),
+                  //       items: _status,
+                  //       textStyle:
+                  //       TextStyle(fontSize: 15, color: Color(0xFF193566)),
+                  //       itemBuilder: (item) =>
+                  //           RadioButtonBuilder(
+                  //             item,
+                  //           ),
+                  //     ),
+                  //   ],
+                  // ),
 
                   SizedBox(
                     height: size.height * 0.05,
@@ -362,12 +413,15 @@ class _RegistrationState extends State<Registration> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      onPressed: () {},
+                      onPressed: () {registerOnPress(context);},
                       child: Text(
                         "Register".tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.04,
                   ),
                   //Registration_Input(hintText: 'Age', icon: Icons.date_range,fn:updateage),
                   //DatePicker(hintText: "Birthdate", icon:Icons.date_range, fn: updateage),
@@ -383,8 +437,103 @@ class _RegistrationState extends State<Registration> {
         ));
   }
 
+  chooseImage() async {
+    //open gallery to upload image
+    // XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+// print("filattoooo" + image!.path);
+    // setState(() {
+    //   _image = File(image.path);
+    // });
 
+    _SelectPhoto();
+    // UserImage(
+    //   onFilechanged: (String imageUrl) {
+    //     print("filattoooo" + imageUrl);
+    //     setState(() {
+    //       _image = File(imageUrl);
+    //     });
+    //     print(_image);
+    //   },
+    // );
+
+    // print(_image);
+  }
+
+  Future _SelectPhoto() async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => BottomSheet(
+            onClosing: () {},
+            builder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.camera),
+                      title: Text("Camera"),
+                      onTap: () {
+                        _pickImage(ImageSource.camera);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.filter),
+                      title: Text("Pick Image"),
+                      onTap: () {
+                        _pickImage(ImageSource.gallery);
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                )));
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future _pickImage(ImageSource source) async {
+    final pickedFile =
+        await _picker.pickImage(source: source, imageQuality: 50);
+    if (pickedFile == null) {
+      return;
+    }
+    var file = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+    if (file == null) {
+      return;
+    }
+    File file2 = await CompressImage(file.path, 35);
+    await _uploadFile(file2.path);
+  }
+
+  Future CompressImage(String path, int quality) async {
+    final newPath = p.join((await getTemporaryDirectory()).path,
+        '${DateTime.now()}.${p.extension(path)}');
+    final result = await FlutterImageCompress.compressAndGetFile(path, newPath,
+        quality: quality);
+    return result;
+  }
+
+  Future _uploadFile(String path) async {
+    final ref = await FirebaseStorage.instance
+        .ref()
+        .child("users")
+        .child("profile_picture")
+        .child(FirebaseAuth.instance.currentUser!.uid);
+    final result = await ref.putFile(File(path));
+    final fileUrl = await result.ref.getDownloadURL();
+    user
+        .child(FirebaseAuth.instance.currentUser!.uid)
+        .child('avatar')
+        .set(fileUrl);
+    setState(() {
+      _image = File(fileUrl);
+      _imagePath = fileUrl;
+      print("Hello " + fileUrl);
+    });
+    // widget.onFilechanged(fileUrl);
+  }
 }
+
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

@@ -45,8 +45,9 @@ class _State extends ConsumerState<EditProfile> {
   DatabaseReference user = dbRef.child("users");
   File? _image;
   String _imagePath = '';
-  String? phone, address, email, name, data;
   File? url;
+  String? phone, address, email, name, data;
+
   dynamic path;
   String? emaily;
   String? passwordy;
