@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,34 +36,48 @@ class ProfileWidget extends StatelessWidget {
 
   Widget buildImage() {
     // final image = AssetImage(imagePath);
-    final NetworkImage image = NetworkImage(imagePath);
+    // final NetworkImage image = NetworkImage(imagePath);
     return Padding(
     padding: const EdgeInsets.only(top:10.0),
-      child:ClipOval(
-      child: Material(
-        color: Colors.transparent,
-        child:Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
-          child: InkWell(onTap: onClicked),
-        ),
-      ),
-      ),
+      child:
+      CachedNetworkImage(
+        imageUrl: imagePath,
+            width: 128,
+            height: 128,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+
+      )
+      // ClipOval(
+      // child: Material(
+      //   color: Colors.transparent,
+      //   child:Ink.image(
+      //     image: image,
+      //     fit: BoxFit.cover,
+      //     width: 128,
+      //     height: 128,
+      //     child: InkWell(onTap: onClicked),
+      //   ),
+      // ),
+      // ),
     );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
         color: Colors.white,
         all: 3,
-        child: buildCircle(
-          color: color,
-          all: 8,
-          child: Icon(
-            isEdit ? Icons.add_a_photo : Icons.edit,
-            color: Colors.white,
-            size: 20,
+        child: GestureDetector(
+          onTap: onClicked,
+          child: buildCircle(
+            color: color,
+            all: 8,
+            child: Icon(
+
+              isEdit ? Icons.add_a_photo : Icons.edit,
+              color: Colors.white,
+              size: 20,
+            ),
           ),
         ),
       );

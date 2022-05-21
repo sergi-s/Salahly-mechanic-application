@@ -3,8 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
-import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -36,14 +34,15 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
     final String carNumber = rsa.car != null ?rsa.car!.noPlate:"Car number";
     final String mobileNumber = rsa.user!.phoneNumber??"Phone number";
     final String carModel = rsa.car != null ?rsa.car!.model!:"Car model";
-    final String color = rsa.car != null ?rsa.car!.color!:"0xFF00FF00";
+    // final String color = rsa.car != null ?rsa.car!.color!:Color(0xFF00FF00);
+    final Color color = rsa.car != null ?rsa.car!.color! :Colors.lightBlueAccent;
     final String image =  rsa.user!.avatar??"";
-    print("name = $name");
-    print("carNumber = $carNumber");
-    print("mobileNumber = $mobileNumber");
-    print("carModel = $carModel");
-    print("color = $color");
-    print("image = $image");
+    // print("name = $name");
+    // print("carNumber = $carNumber");
+    // print("mobileNumber = $mobileNumber");
+    // print("carModel = $carModel");
+    // print("color = $color");
+    // print("image = $image");
 
     return SingleChildScrollView(
       child: Container(
@@ -73,7 +72,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
                 ListTile(
                   leading:Padding(
                       padding: const EdgeInsets.only(top:6.0,bottom: 6.0,right: 8.0),
-                      child: Icon(CupertinoIcons.car_detailed,color:Color(int.parse(color)),size: 45)),
+                      child: Icon(CupertinoIcons.car_detailed,color:color,size: 45)),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +157,8 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
 
-      appBar: salahlyAppBar(context,title: "View Requests"),
+      appBar: salahlyAppBar(context,title: 'done_requests'.tr()),
+
 
       drawer: salahlyDrawer(context),
       body: SingleChildScrollView(

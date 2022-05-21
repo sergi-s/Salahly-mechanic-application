@@ -57,7 +57,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: Colors.grey[100],
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.blueGrey,
                                       blurRadius: 2.0,

@@ -7,6 +7,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:salahly_mechanic/classes/firebase/controllers/request_controller.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
+import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_mechanic/utils/requests_memory_caching.dart';
@@ -53,8 +54,14 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
         if (!rsaCache.containsKey(rsaID)) {
           RSA r = await loadRequestFromDB(
               rsaID, event.child("type").value.toString());
-          if (event.child("state").value == "pending") {
-              pendingNotifier.addRSA(r);
+          print("${r.state}   ${r.requestType}   ${r.rsaID}");
+          if (event.child("state").value == "pending" &&
+              ((userType == Type.mechanic) ||
+                  (userType == Type.provider && (
+                  r.requestType == 'tta'||
+                      r.state == RSAStates.waitingForProviderResponse)))) {
+            pendingNotifier.addRSA(r);
+            print("Added to pending (first time) for receiver");
             if (!onTopOverlay) {
               onTopOverlay = true;
               showSimpleNotification(
@@ -99,20 +106,142 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
                 slideDismissDirection: DismissDirection.up,
               );
             }
-          } else if ((event.child("state").value == "chosen") ||
-             ( event.child("state").value == "accepted" && event.child('type').value == 'rsa')) {
+          } else if (event.child("state").value == "pending" &&
+              userType == Type.provider) {
+            //start listener for this request when it becomes waitingForProviderResponse
+            print(RSA.requestTypeToString(r.requestType!).toLowerCase());
+            print(rsaID);
+            print(r.state);
+            dbRef
+                .child(RSA.requestTypeToString(r.requestType!).toLowerCase())
+                .child(rsaID)
+                .child('state')
+                .onValue
+                .listen((event) {
+
+              print("EVENT "+ event.snapshot.value.toString());
+              print(RSA.stringToState(event.snapshot.value.toString()) );
+              print(RSA.stringToState(event.snapshot.value.toString()) == RSAStates.waitingForProviderResponse);
+              if (RSA.stringToState(event.snapshot.value.toString()) == RSAStates.waitingForProviderResponse) {
+                pendingNotifier.addRSA(r);
+                if (!onTopOverlay) {
+                  onTopOverlay = true;
+                  showSimpleNotification(
+                    Text("received_a_new_request".tr()),
+                    trailing: Builder(builder: (context) {
+                      return
+                        // TextButton(
+                        //   onPressed: () {
+                        //     onTopOverlay = false;
+                        //     // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+                        //     context.push(PENDINGVIEW.routeName);
+                        //     OverlaySupportEntry.of(context)!.dismiss();
+                        //   },
+                        //   child: Text("go_to_request".tr(),
+                        //       style: const TextStyle(color: Colors.white)));
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.38,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    onTopOverlay = false;
+                                    // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+                                    context.push(PendingRequests.routeName);
+                                    OverlaySupportEntry.of(context)!.dismiss();
+                                  },
+                                  child: Text("go_to_request".tr(),
+                                      style: const TextStyle(color: Colors.white))),
+                              IconButton(
+                                  onPressed: () {
+                                    onTopOverlay = false;
+                                    OverlaySupportEntry.of(context)!.dismiss();
+                                  },
+                                  icon:
+                                  const Icon(Icons.close, color: Colors.white)),
+                            ],
+                          ),
+                        );
+                    }),
+                    background: Colors.green,
+                    autoDismiss: false,
+                    slideDismissDirection: DismissDirection.up,
+                  );
+                }
+              }
+            });
+    
+    
+          } else if (((event.child("state").value == "chosen") ||
+              (event.child("state").value == "accepted" &&
+                  event.child('type').value == 'rsa'))) {
             ongoingRequestsNotifier.addRSA(r);
           } else if (event.child("state").value == "done") {
             //add in shared preferences
             pendingNotifier.doneRSA.add(r);
-          }
-          else if (event.child("state").value == "accepted") { //automatically tests wsa,tta
+          } else if (event.child("state").value == "accepted") {
+            //automatically tests wsa,tta
             //add in shared preferences
             pendingNotifier.addRSA(r);
           }
         } else {
           // Already exists
-          if (event.child("state").value == "chosen") {
+          // If state received as pending but the receiver is provider so it is waiting for provider response
+          if (event.child('state').value == 'pending' &&
+              userType == Type.provider) {
+            print(
+                "Received request that is pending but now provider received it");
+            RSA? rsa = rsaCache[rsaID];
+            if (rsa != null) {
+              pendingNotifier.addRSA(rsa);
+              if (!onTopOverlay) {
+                onTopOverlay = true;
+                showSimpleNotification(
+                  Text("received_a_new_request".tr()),
+                  trailing: Builder(builder: (context) {
+                    return
+                        // TextButton(
+                        //   onPressed: () {
+                        //     onTopOverlay = false;
+                        //     // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+                        //     context.push(PENDINGVIEW.routeName);
+                        //     OverlaySupportEntry.of(context)!.dismiss();
+                        //   },
+                        //   child: Text("go_to_request".tr(),
+                        //       style: const TextStyle(color: Colors.white)));
+                        Container(
+                      width: MediaQuery.of(context).size.width * 0.38,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                onTopOverlay = false;
+                                // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+                                context.push(PendingRequests.routeName);
+                                OverlaySupportEntry.of(context)!.dismiss();
+                              },
+                              child: Text("go_to_request".tr(),
+                                  style: const TextStyle(color: Colors.white))),
+                          IconButton(
+                              onPressed: () {
+                                onTopOverlay = false;
+                                OverlaySupportEntry.of(context)!.dismiss();
+                              },
+                              icon:
+                                  const Icon(Icons.close, color: Colors.white)),
+                        ],
+                      ),
+                    );
+                  }),
+                  background: Colors.green,
+                  autoDismiss: false,
+                  slideDismissDirection: DismissDirection.up,
+                );
+              }
+            }
+          } else if (event.child("state").value == "chosen") {
             RSA? r = pendingNotifier.removeRSAById(rsaID);
             if (r != null) ongoingRequestsNotifier.addRSA(r);
           } else if (event.child("state").value == "not chosen" ||

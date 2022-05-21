@@ -382,6 +382,8 @@ class _RegistrationState extends State<Registration> {
           ),
         ));
   }
+
+
 }
 class HeaderCurvedContainer extends CustomPainter {
   @override

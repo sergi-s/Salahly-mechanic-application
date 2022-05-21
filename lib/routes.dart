@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
@@ -12,7 +13,7 @@ import 'package:salahly_mechanic/screens/RoadsideAssistant/directionMap.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/reportscreen.dart';
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
-import 'package:salahly_mechanic/screens/homepage/testscreen.dart';
+import 'package:salahly_mechanic/screens/homepage/set_availaibility.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
 import 'package:salahly_mechanic/screens/login_signup/check_login.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
@@ -34,8 +35,8 @@ class Routing {
             builder: (context, state) => HomeScreen(),
           ),
           GoRoute(
-            path: SetAvalability.routeName,
-            builder: (context, state) => SetAvalability(),
+            path: SetAvailability.routeName,
+            builder: (context, state) => SetAvailability(),
           ),
           GoRoute(
             path: TestScreenFoula.routeName,
@@ -123,7 +124,7 @@ class Routing {
               )),
           GoRoute(
               path: EditProfile.routeName,
-              builder: (context, state) => EditProfile()),
+              builder: (context, state) => EditProfile(user: state.extra! ,)),
           GoRoute(
               path: DoneRequests.routeName,
               builder: (context, state) => DoneRequests()),

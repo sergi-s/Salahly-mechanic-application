@@ -1,5 +1,7 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -58,7 +60,7 @@ class PendingRequests extends ConsumerWidget {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: Color((rsa.car != null && rsa.car?.color != null)?int.parse(rsa.car!.color!):0xFF000000),
+                    backgroundColor: (rsa.car != null && rsa.car?.color != null)?rsa.car!.color!:const Color(0xFF000000),
                   ),
                   title: Column(
                     children: <Widget>[
@@ -142,7 +144,7 @@ class PendingRequests extends ConsumerWidget {
                       textOK: const Text('Yes').tr(),
                       textCancel: const Text('No').tr(),
                     )) {
-                      _accept(p, pendingNotifier);
+                      _accept(p, pendingNotifier, estimatedTime!);
                       return print('pressedOK');
                     }
                     estimatedTime = null;
@@ -156,7 +158,7 @@ class PendingRequests extends ConsumerWidget {
     );
   }
 
-  void _accept(p, pendingNotifier) async {
+  void _accept(p, pendingNotifier, String estimatedTime) async {
     if (p.requestType == RequestType.RSA) {
       _checkingrsaId.add(p.rsaID!);
       await pendingNotifier.acceptRequest(p);
@@ -164,11 +166,28 @@ class PendingRequests extends ConsumerWidget {
     } else {
       await pendingNotifier.acceptRequest(p);
     }
+    setEstimatedTime(p);
+  }
+
+  setEstimatedTime(RSA rsa) async {
+    var reqVar = "";
+    if (userType == Type.provider) {
+      reqVar = "providersRequests";
+    } else if (userType == Type.mechanic) {
+      reqVar = "mechanicsRequests";
+    }
+    await FirebaseDatabase.instance
+        .ref()
+        .child(reqVar)
+        .child(FirebaseAuth.instance.currentUser!.uid)
+        .child(rsa.rsaID!)
+        .child("estimatedTime")
+        .set(estimatedTime);
   }
 
   _getEstimatedTime(context, RSA p) async {
     bool checkEstimated = false;
-    if(controller.text.isNotEmpty)checkEstimated=true;
+    if (controller.text.isNotEmpty) checkEstimated = true;
     await showDialog<String>(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
