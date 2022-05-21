@@ -48,7 +48,9 @@ Future<CustomLocation> getUserLocation() async {
   });
   Position pos = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high);
+
   String address = await searchCoordinateAddressGoogle(lat:  pos.latitude,long: pos.longitude);
+
   return CustomLocation(longitude: pos.longitude, latitude: pos.latitude,address: address);
 }
 

@@ -75,7 +75,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Login successful')));
-      context.go(HomeScreen.routeName);
+      context.go(Registration.routeName, extra: email);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Account isnt Correct !!Please try again')));
@@ -101,17 +101,17 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           //     fontSize: 24,
           //   ),
           // ),
+          // Image.asset(
+          //   'assets/images/logo ta5arog colored car.png',
+          //   width: 300,
+          // ),
           Image.asset(
-            'assets/images/logo ta5arog colored car.png',
-            width: 300,
-          ),
-          Image.asset(
-            'assets/images/logo ta5arog coloredsalahli.png',
+            'assets/images/logodark.png',
             width: 300,
           ),
 
           //SvgPicture.assets('assets/images/icon.svg'),
-          SizedBox(height: 40),
+          SizedBox(height: 60),
 
           RounedInput(
             icon: Icons.email,
