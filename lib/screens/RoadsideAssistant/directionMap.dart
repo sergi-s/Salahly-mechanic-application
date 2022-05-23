@@ -6,6 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_models/models/location.dart';
 
+import '../../utils/location/getuserlocation.dart';
+
 class RideLocations extends StatefulWidget {
   static const routeName = "/staticLocationOnMap";
 
@@ -109,6 +111,37 @@ class _RideLocationsState extends State<RideLocations> {
             },
             markers: Set<Marker>.of(markers.values),
           ),
+          Positioned(
+              left: 0,
+              right: 0,
+              bottom: 1,
+              child: Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black,
+                            blurRadius: 16,
+                            spreadRadius: 0.5,
+                            offset: Offset(0.7, 0.7))
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 18),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                              ("Distance ${calculateDistance(clientLocation.latitude, clientLocation.longitude, destinationLocation.latitude, destinationLocation.longitude).toStringAsExponential(3)}"),
+                              style: const TextStyle(fontSize: 20)),
+                          const SizedBox(height: 20),
+                        ]),
+                  )))
         ]),
       ),
     );
