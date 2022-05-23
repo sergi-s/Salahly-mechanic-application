@@ -11,7 +11,6 @@ import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart
 import 'package:salahly_mechanic/screens/RoadsideAssistant/directionMap.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
-import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -239,10 +238,13 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                   actions: [
                     ElevatedButton(
                         onPressed: () {
+                          print("test ya rab${p.dropOffLocation}");
                           context.push(RideLocations.routeName,
                               extra: BundledLocation(
-                                  destinationLocation: CustomLocation(
-                                      longitude: 12, latitude: 12),
+                                  destinationLocation: p.dropOffLocation ??
+                                      CustomLocation(
+                                          longitude: 31.205753,
+                                          latitude: 29.924526),
                                   clientLocation: p.location));
                         },
                         style: ElevatedButton.styleFrom(

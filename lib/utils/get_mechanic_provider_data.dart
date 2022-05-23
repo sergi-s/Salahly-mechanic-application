@@ -6,6 +6,14 @@ import 'package:string_validator/string_validator.dart';
 
 Future getMechanicOrProviderData(String id) async {
   DataSnapshot ds = await dbRef.child("users").child(id).get();
+  double? rating;
+  if (ds.child("rating").value != null) {
+    double count =
+    toDouble((ds.child("rating").child("count").value).toString());
+    if (count == 0) count = 1;
+    rating =
+        toDouble((ds.child("rating").child("sum").value).toString()) / count;
+  }
   if (ds.child("type").value.toString() == "mechanic") {
     return Mechanic(
         isCenter: false,
@@ -15,7 +23,7 @@ Future getMechanicOrProviderData(String id) async {
         name: (ds.child("name").value).toString(),
         type: Type.mechanic,
         email: (ds.child("email").value).toString(),
-        rating: double.parse((ds.child("rating").value).toString()),
+        rating: rating,
         address: "address");
   } else {
     return TowProvider(
@@ -26,7 +34,7 @@ Future getMechanicOrProviderData(String id) async {
         type: Type.provider,
         name: (ds.child("name").value).toString(),
         email: (ds.child("email").value).toString(),
-        rating: toDouble((ds.child("rating").value).toString()),
+        rating: rating,
         loc: CustomLocation(
           latitude:
               toDouble(ds.child('workshop').child('latitude').value.toString()),

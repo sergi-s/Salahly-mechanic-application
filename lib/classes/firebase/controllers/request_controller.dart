@@ -15,15 +15,16 @@ loadRequestFromDB(String id, String requestType) async {
   //     double.parse(dataSnapshot.child("latitude").value.toString());
   // double? longitude =
   //     double.parse(dataSnapshot.child("longitude").value.toString());
+  print("->>>>>>>>>>>>>>$requestType");
   RequestType t = RSA.stringToRequestType(requestType.toUpperCase())!;
   DataSnapshot carSnapshot = await dbRef
       .child("cars")
       .child(dataSnapshot.child("carID").value.toString())
       .get();
-  String colorString =  carSnapshot.child("color").value.toString();
+  String colorString = carSnapshot.child("color").value.toString();
   if (colorString.contains("(")) {
-    colorString = colorString
-        .substring(colorString.indexOf("(") + 1, colorString.indexOf(")"));
+    colorString = colorString.substring(
+        colorString.indexOf("(") + 1, colorString.indexOf(")"));
   }
   print("CAR STRING IS $colorString");
   print("CAR ID IS ${dataSnapshot.child("carID").value.toString()}");
@@ -38,10 +39,10 @@ loadRequestFromDB(String id, String requestType) async {
       .child(dataSnapshot.child("userID").value.toString())
       .get();
 
-
   //custom drop off location
   CustomLocation? dropOffLocation;
-  if (RSA.stringToRequestType(requestType.toUpperCase()) == RequestType.TTA) {
+  if (t == RequestType.TTA) {
+    print("THIS IS A TTA AND THE DESTINATION IS");
     if (dataSnapshot.child("destination").value != null) {
       double lat = double.parse(
           (dataSnapshot.child("destination").child("latitude").value)
@@ -50,6 +51,7 @@ loadRequestFromDB(String id, String requestType) async {
           (dataSnapshot.child("destination").child("longitude").value)
               .toString());
       dropOffLocation = CustomLocation(latitude: lat, longitude: lon);
+      print("_!? ${dropOffLocation.toString()}");
     }
   }
 
