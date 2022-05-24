@@ -194,7 +194,7 @@ class ReportScreen extends ConsumerWidget {
                       fn: updateothercost,
                     ),
                     BuildMultipleTextField(
-                      hintText: 'Description'.tr(),
+                      hintText: 'description'.tr(),
                       fn: updatemaintdescription,
                     ),
                     // ignore: deprecated_member_use

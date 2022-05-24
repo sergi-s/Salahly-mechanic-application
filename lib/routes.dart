@@ -4,6 +4,7 @@ import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dar
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests_fulldata.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
 import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
@@ -134,6 +135,10 @@ class Routing {
           GoRoute(
               path: PendingRequestsScreen.routeName,
               builder: (context, state) => PendingRequestsScreen()),
+          GoRoute(
+            path: SemiReportScreen.routeName,
+            builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
+          )
         ],
       );
 }
