@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
-import 'package:salahly_models/models/report.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
-import '../../widgets/report/input_textfield.dart';
-import '../../widgets/report/report_textfield.dart';
-import '../../widgets/report/select_button.dart';
+import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
+import 'package:salahly_mechanic/widgets/report/input_textfield.dart';
+import 'package:salahly_mechanic/widgets/report/report_textfield.dart';
+import 'package:salahly_mechanic/widgets/report/select_button.dart';
+import 'package:salahly_models/models/report.dart';
 
 class ReportScreen extends ConsumerWidget {
   static final routeName = "/reportscreen";
@@ -194,7 +193,7 @@ class ReportScreen extends ConsumerWidget {
                       fn: updateothercost,
                     ),
                     BuildMultipleTextField(
-                      hintText: 'Description'.tr(),
+                      hintText: 'description'.tr(),
                       fn: updatemaintdescription,
                     ),
                     // ignore: deprecated_member_use
