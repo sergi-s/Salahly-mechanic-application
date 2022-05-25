@@ -65,7 +65,6 @@ dependencies:
   localstore: ^1.2.3
   flutter_colorpicker: ^1.0.3
   intl: ^0.17.0
-  dependencies:
   group_radio_button: ^1.2.0
   image_cropper: ^2.0.2
   image_picker: ^0.8.5+3

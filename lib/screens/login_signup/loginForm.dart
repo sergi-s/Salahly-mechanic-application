@@ -75,7 +75,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Login successful')));
-      context.go(Registration.routeName, extra: email);
+      context.go(HomeScreen.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Account isnt Correct !!Please try again')));
@@ -111,7 +111,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ),
 
           //SvgPicture.assets('assets/images/icon.svg'),
-          SizedBox(height: 60),
+          SizedBox(height: 50),
 
           RounedInput(
             icon: Icons.email,
