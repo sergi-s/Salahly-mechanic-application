@@ -53,11 +53,18 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
         DataSnapshot dataSnapshot = event;
         // If it is first time read
         if (!rsaCache.containsKey(rsaID)) {
-          RSA r = await loadRequestFromDB(
+          RSA? rr = await loadRequestFromDB(
               rsaID, event
               .child("type")
               .value
               .toString());
+          RSA r;
+          if(rr == null) {
+            return;
+          }
+          else{
+            r = rr;
+          }
           print("${r.state}   ${r.requestType}   ${r.rsaID}");
           if (event
               .child("state")
@@ -232,6 +239,7 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
             }
           }
         } else {
+          print("Request in cache is being updated");
           // Already exists
           // If state received as pending but the receiver is provider so it is waiting for provider response
           if (event

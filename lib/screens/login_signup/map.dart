@@ -20,6 +20,35 @@ class Map_RegistrationState extends State<Map_Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              await myMapWidgetState.currentState!.locatePosition();
+              Map_Registration.location =
+                  myMapWidgetState.currentState?.currentCustomLoc;
+              print("${Map_Registration.location.toString()}cccccc");
+            },
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF193566),
+            ),
+            child: Icon(Icons.location_on),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Map_Registration.location =
+                  myMapWidgetState.currentState?.currentCustomLoc;
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF193566),
+            ),
+            child: const Text("Confirm"),
+          )
+        ],
+      ),
       body: Stack(
         children: [
           MapWidget(key: myMapWidgetState),

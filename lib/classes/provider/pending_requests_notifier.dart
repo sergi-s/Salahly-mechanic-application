@@ -72,16 +72,20 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
     return el;
   }
 
-  RSA _prepareRSA(String id) {
+  Future<RSA?> _prepareRSA(String id) async {
     if (rsaCache.containsKey(id)) {
       return rsaCache[id]!;
     }
-    RSA r = loadRequestFromDB(id, "rsa");
-    if (!pendingRequestsCache.containsKey(r.rsaID!)) {
-      pendingRequestsCache[r.rsaID!] = r;
-      addRSA(r);
+    RSA? r = await loadRequestFromDB(id, "rsa");
+    if(r != null) {
+      return null;
+    }else{
+      if (!pendingRequestsCache.containsKey(r!.rsaID!)) {
+        pendingRequestsCache[r.rsaID!] = r;
+        addRSA(r);
+      }
+      return r;
     }
-    return r;
   }
 
   changeState() {
