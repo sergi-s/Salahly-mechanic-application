@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/main.dart';
@@ -10,7 +9,6 @@ import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
-import 'package:salahly_mechanic/screens/requests/allscreens.dart';
 import 'package:salahly_mechanic/screens/scheduler/scheduler_screen.dart';
 import 'package:salahly_mechanic/screens/switchLanguage.dart';
 
@@ -66,15 +64,16 @@ Widget salahlyDrawer(BuildContext context) {
             context.push(OnGoingRequests.routeName);
           },
         ),
-        // ListTile(
-        //   title:  Text(
-        //     "done_profile".tr(),
-        //     style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-        //   ).tr(),
-        //   onTap: () {
-        //     context.push(DoneRequests.routeName);
-        //   },
-        // ),
+        ListTile(
+          title: const Text(
+            "done_profile",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Color(0xff193566)),
+          ).tr(),
+          onTap: () {
+            context.push(DoneRequests.routeName);
+          },
+        ),
         ListTile(
           title: const Text(
             "View profile",

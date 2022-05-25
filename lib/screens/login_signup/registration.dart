@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
@@ -15,19 +14,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
-import 'package:salahly_mechanic/screens/Requests/allscreens.dart';
-import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
+import 'package:salahly_mechanic/main.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
 import 'package:salahly_mechanic/screens/login_signup/map.dart';
+import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/widgets/login_signup/text_input.dart';
+import 'package:salahly_mechanic/widgets/report/select_button.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
-import 'package:salahly_models/models/client.dart' as Client;
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/mechanic.dart';
 import 'package:salahly_models/models/towProvider.dart';
-
-import '../../main.dart';
-import '../../widgets/login_signup/roundedInput.dart';
-import '../../widgets/report/select_button.dart';
 
 class Registration extends StatefulWidget {
   static final routeName = "/registrationscreen";
@@ -106,41 +102,39 @@ CustomLocation? locationObject;
     //           Text('Invalid age!! Please try again')));
     // }
     dynamic mechanic;
-if(userType=="mechanic".tr()){
-  locationObject!.name=shopname;
-      mechanic=Mechanic(
-      name: name,
-      email: widget.emailobj,
-      address: address,
-      phoneNumber: phonenumber,
-      birthDay:_selectedDate,
-      avatar:_imagePath,
-      isCenter: isCenter,
-      loc: locationObject,
-     );
-}else if(userType=="provider"){
-  locationObject!.name=shopname;
-  mechanic=TowProvider(
-  name: name,
-  email: widget.emailobj,
-  address: address,
-  phoneNumber: phonenumber,
-  birthDay:_selectedDate,
-  avatar:_imagePath,
-  loc: locationObject,
-);
-}else{
-  return ScaffoldMessenger.of(context)
-      .showSnackBar(const SnackBar(content: Text('Please Complete your Data!!')));
-}
-
-
+    if (userType == "mechanic".tr()) {
+      locationObject!.name = shopname;
+      mechanic = Mechanic(
+        name: name,
+        email: widget.emailobj,
+        address: address,
+        phoneNumber: phonenumber,
+        birthDay: _selectedDate,
+        avatar: _imagePath,
+        isCenter: isCenter,
+        loc: locationObject,
+      );
+    } else if (userType == "provider") {
+      locationObject!.name = shopname;
+      mechanic = TowProvider(
+        name: name,
+        email: widget.emailobj,
+        address: address,
+        phoneNumber: phonenumber,
+        birthDay: _selectedDate,
+        avatar: _imagePath,
+        loc: locationObject,
+      );
+    } else {
+      return ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please Complete your Data!!')));
+    }
 
     bool check = await fb.registration(mechanic);
     if (check) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text(' Sucessfull ')));
-      context.go(HomeScreen.routeName);
+      context.go(PendingRequestsScreen.routeName);
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to Register!!')));

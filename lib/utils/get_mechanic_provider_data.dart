@@ -9,26 +9,40 @@ Future getMechanicOrProviderData(String id) async {
   double? rating;
   if (ds.child("rating").value != null) {
     double count =
-    toDouble((ds.child("rating").child("count").value).toString());
+        toDouble((ds.child("rating").child("count").value).toString());
     if (count == 0) count = 1;
     rating =
         toDouble((ds.child("rating").child("sum").value).toString()) / count;
   }
+  String? address = ds.child('address').value.toString();
+  String? avatar;
+  if (ds.child("avatar").value != null) {
+    avatar = ((ds.child("avatar").value).toString());
+  }
   if (ds.child("type").value.toString() == "mechanic") {
     return Mechanic(
-        isCenter: false,
-        avatar: "",
-        phoneNumber: (ds.child("phoneNumber").value).toString(),
-        id: id,
-        name: (ds.child("name").value).toString(),
-        type: Type.mechanic,
-        email: (ds.child("email").value).toString(),
-        rating: rating,
-        address: "address");
+      isCenter: false,
+      avatar: avatar,
+      phoneNumber: (ds.child("phoneNumber").value).toString(),
+      id: id,
+      name: (ds.child("name").value).toString(),
+      type: Type.mechanic,
+      email: (ds.child("email").value).toString(),
+      rating: rating,
+      address: address,
+      loc: CustomLocation(
+        latitude:
+            toDouble(ds.child('workshop').child('latitude').value.toString()),
+        longitude:
+            toDouble(ds.child('workshop').child('longitude').value.toString()),
+        name: ds.child('workshop').child('name').value.toString(),
+        address: ds.child('workshop').child('address').value.toString(),
+      ),
+    );
   } else {
     return TowProvider(
         isCenter: ((ds.child("isCenter").value).toString()) == "true",
-        avatar: ((ds.child("avatar").value).toString()),
+        avatar: avatar,
         phoneNumber: (ds.child("phoneNumber").value).toString(),
         id: id,
         type: Type.provider,
@@ -38,10 +52,11 @@ Future getMechanicOrProviderData(String id) async {
         loc: CustomLocation(
           latitude:
               toDouble(ds.child('workshop').child('latitude').value.toString()),
-          longitude: toDouble(ds.child('workshop').child('longitude').value.toString()),
+          longitude: toDouble(
+              ds.child('workshop').child('longitude').value.toString()),
           name: ds.child('workshop').child('name').value.toString(),
           address: ds.child('workshop').child('address').value.toString(),
         ),
-        address: "address");
+        address: address);
   }
 }
