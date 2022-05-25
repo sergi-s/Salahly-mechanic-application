@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../classes/firebase/customgeofire.dart';
+import '../../widgets/global_widgets/app_bar.dart';
+import '../../widgets/global_widgets/app_drawer.dart';
 // import 'package:flutter_icons/flutter_icons.dart';
 
 class Switcher extends StatefulWidget {
@@ -59,9 +62,9 @@ class _SwitcherState extends State<Switcher> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Advanced Switch Example'),
-        ),
+        backgroundColor: const Color(0xFFd1d9e6),
+        appBar: salahlyAppBar(context, title: 'set_availability'.tr()),
+        drawer: salahlyDrawer(context),
         body: Container(
           width: double.infinity,
           child: Column(
