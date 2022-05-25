@@ -93,221 +93,218 @@ class _ViewSchedulerTaskState extends State<ViewSchedulerTaskScreen> {
             ),
           ]),
         ),
-        body: Stack(
-          children: [
-            // Container(
-            //   decoration: const BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage("assets/images/mechanic.png"), fit: BoxFit.cover)),
-            // ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 16, left: 16.0, right: 16.0, bottom: 32),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+                top: 16, left: 16.0, right: 16.0, bottom: 32),
+            child: SingleChildScrollView(
+              child: Container(
+                // height: MediaQuery.of(context).size.height *2,
                 child: SingleChildScrollView(
-                  child: Container(
-                    // height: MediaQuery.of(context).size.height *2,
+                  child: Card(
+                    elevation: 6,
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                     child: SingleChildScrollView(
-                      child: Card(
-                        elevation: 6,
-                        clipBehavior: Clip.antiAlias,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: SingleChildScrollView(
-                          child: Container(
-                            // height: MediaQuery.of(context).size.height * 1.98,
-                            color: Colors.blueGrey[50],
-                            child: Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Column(
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment.spaceAround,
-                                    children: [
-                                      SizedBox(
-                                          height: MediaQuery.of(context).size.height *
-                                              0.04),
-                                      const Center(
-                                        child: CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: AssetImage(
-                                              "assets/images/mechanic.png"),
-                                        ),
+                      child: Container(
+                        // height: MediaQuery.of(context).size.height * 1.98,
+                        color: Colors.blueGrey[50],
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: [ Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Column(
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.04),
+                                    const Center(
+                                      child: CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: AssetImage(
+                                            "assets/images/mechanic.png"),
                                       ),
-                                      // SizedBox(
-                                      //     height: MediaQuery.of(context).size.height *
-                                      //         0.05),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 20.0),
-                                        child: Center(
-                                          child:
-                                              _title(" ${widget.scheduleTask.title}"),
-                                        ),
+                                    ),
+                                    // SizedBox(
+                                    //     height: MediaQuery.of(context).size.height *
+                                    //         0.05),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Center(
+                                        child:
+                                            _title(" ${widget.scheduleTask.title}"),
                                       ),
-                                      // SizedBox(
-                                      //     height: MediaQuery.of(context).size.height *
-                                      //         0.08),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(bottom: 8),
-                                      //   child: Center(
-                                      //       child: Text('smallDescription',
-                                      //           style: const TextStyle(
-                                      //               fontSize: 18,
-                                      //               fontWeight: FontWeight.w600))),
-                                      // ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context).size.height *
-                                              0.03),
-                                      DefaultTextStyle(
-                                        style: const TextStyle(
-                                            color: Color(0xFF193566),
-                                            fontWeight: FontWeight.normal,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 18),
-                                        child: Column(
-                                          children: [
-                                            if (widget.scheduleTask.startDate != null)
-                                              MyTwoEndTextDivided(
-                                                  firstStr: "start_date".tr() + ":",
-                                                  secondStr:
-                                                      "${widget.scheduleTask.startDate.day}/${widget.scheduleTask.startDate.month}/${widget.scheduleTask.startDate.year}"),
-                                            MyTwoEndTextDivided(
-                                                firstStr: "start_time".tr() + ":",
-                                                secondStr:
-                                                    "${(widget.scheduleTask.startDate.hour).floor()}:${widget.scheduleTask.startDate.minute}"),
-                                            if (widget.scheduleTask.endDate != null)
-                                              MyTwoEndTextDivided(
-                                                  firstStr: "end_time".tr() + ":",
-                                                  secondStr:
-                                                      "${(widget.scheduleTask.endDate?.hour)?.floor()}:${widget.scheduleTask.endDate?.minute}"),
-                                            if (widget.scheduleTask.duration != null)
-                                              MyTwoEndTextDivided(
-                                                  firstStr: "duration".tr() + ":",
-                                                  secondStr:
-                                                      "${((widget.scheduleTask.duration)! / 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
-                                            // MyTwoEndTextDivided(
-                                            //     firstStr: "description".tr()+":",
-                                            //     secondStr:
-                                            //      "${widget.scheduleTask.description}"),
-                                            if (widget.scheduleTask.requestObject !=
-                                                    null &&
-                                                widget.scheduleTask.requestObject!
-                                                        .car !=
-                                                    null)
-                                              MyTwoEndTextDivided(
-                                                  firstStr: "car_number".tr() + ":",
-                                                  secondStr:
-                                                      "${widget.scheduleTask.requestObject!.car!.noPlate}"),
-                                            Row(
-                                              children: [
-                                                MyTwoEndTextDivided(
-                                                    firstStr: "color".tr() + ":",
-                                                    secondStr: ""),
-                                                CircleAvatar(
-                                                  backgroundColor:
-                                                      widget.scheduleTask.color,
-                                                )
-                                              ],
-                                            ),
-                                            if (widget.scheduleTask.description != "")
-                                              MyTwoEndTextDivided(
-                                                firstStr:
-                                                "description".tr() + ":",
-                                                secondStr: '',
-                                              ),
-                                              Row(
-                                                children: [
-                                                  SizedBox(width: MediaQuery.of(context).size.width*0.3,),
-                                                  Container(
-                                                    width: MediaQuery.of(context)
-                                                            .size
-                                                            .width *
-                                                        0.51,
-                                                    child: ExpandableText(
-                                                      "${widget.scheduleTask.description}",
-                                                      expandText: ' more',
-                                                      collapseText: ' less',
-                                                      maxLines: 2,
-                                                      linkColor: Colors.grey[400],
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            // if (widget.scheduleTask.requestObject !=
-                                            //     null)
-                                            //   MyTwoEndTextDivided(
-                                            //       firstStr: "request".tr() + ":",
-                                            //       secondStr:
-                                            //           "${(widget.scheduleTask.requestObject)}"),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context).size.height *
-                                              0.1),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                    ),
+                                    // SizedBox(
+                                    //     height: MediaQuery.of(context).size.height *
+                                    //         0.08),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(bottom: 8),
+                                    //   child: Center(
+                                    //       child: Text('smallDescription',
+                                    //           style: const TextStyle(
+                                    //               fontSize: 18,
+                                    //               fontWeight: FontWeight.w600))),
+                                    // ),
+                                    SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.03),
+                                    DefaultTextStyle(
+                                      style: const TextStyle(
+                                          color: Color(0xFF193566),
+                                          fontWeight: FontWeight.normal,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 18),
+                                      child: Column(
                                         children: [
+                                          if (widget.scheduleTask.startDate != null)
+                                            MyTwoEndTextDivided(
+                                                firstStr: "start_date".tr() + ":",
+                                                secondStr:
+                                                    "${widget.scheduleTask.startDate.day}/${widget.scheduleTask.startDate.month}/${widget.scheduleTask.startDate.year}"),
+                                          MyTwoEndTextDivided(
+                                              firstStr: "start_time".tr() + ":",
+                                              secondStr:
+                                                  "${(widget.scheduleTask.startDate.hour).floor()}:${widget.scheduleTask.startDate.minute}"),
+                                          if (widget.scheduleTask.endDate != null)
+                                            MyTwoEndTextDivided(
+                                                firstStr: "end_time".tr() + ":",
+                                                secondStr:
+                                                    "${(widget.scheduleTask.endDate?.hour)?.floor()}:${widget.scheduleTask.endDate?.minute}"),
+                                          if (widget.scheduleTask.duration != null)
+                                            MyTwoEndTextDivided(
+                                                firstStr: "duration".tr() + ":",
+                                                secondStr:
+                                                    "${((widget.scheduleTask.duration)! / 60).floor()}:${(widget.scheduleTask.duration)! % 60}"),
+                                          // MyTwoEndTextDivided(
+                                          //     firstStr: "description".tr()+":",
+                                          //     secondStr:
+                                          //
+                                                //      "${widget.scheduleTask.description}"),
+
+                                                if (widget.scheduleTask.requestObject !=
+                                                  null &&
+                                              widget.scheduleTask.requestObject!
+                                                      .car !=
+                                                  null)
+                                            MyTwoEndTextDivided(
+                                                firstStr: "car_number".tr() + ":",
+                                                secondStr:
+                                                    "${widget.scheduleTask.requestObject!.car!.noPlate}"),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              RaisedButton(
-                                                  child: Text(
-                                                    "delete_task".tr(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  color: const Color(0xFF193566),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(12)),
-                                                  onPressed: () async {
-                                                    await Scheduler.deleteTask(
-                                                        widget.scheduleTask);
-                                                    ScaffoldMessenger.of(context)
-                                                        .showSnackBar(SnackBar(
-                                                            content: Text(
-                                                                'deleted_scheduler_task'
-                                                                    .tr())));
-                                                    ViewSchedulerTaskScreen.deleted =
-                                                        true;
-                                                    Navigator.pop(context);
-                                                  }),
-                                              RaisedButton(
-                                                  child: Text(
-                                                    "close".tr(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  color: const Color(0xFF193566),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(12)),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  }),
+                                              MyTwoEndTextDivided(
+                                                  firstStr: "color".tr() + ":",
+                                                  secondStr: ""),
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    widget.scheduleTask.color,
+                                              )
                                             ],
                                           ),
+                                          if (widget.scheduleTask.description != "")
+                                            MyTwoEndTextDivided(
+                                              firstStr:
+                                              "description".tr() + ":",
+                                              secondStr: '',
+                                            ),
+                                            Row(
+                                              children: [
+                                                SizedBox(width: MediaQuery.of(context).size.width*0.3,),
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.51,
+                                                  child: ExpandableText(
+                                                    // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                                                    "${widget.scheduleTask.description}",
+                                                    expandText: ' more',
+                                                    collapseText: ' less',
+                                                    maxLines: 2,
+                                                    linkColor: Colors.grey[400],
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          // if (widget.scheduleTask.requestObject !=
+                                          //     null)
+                                          //   MyTwoEndTextDivided(
+                                          //       firstStr: "request".tr() + ":",
+                                          //       secondStr:
+                                          //           "${(widget.scheduleTask.requestObject)}"),
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.1),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            RaisedButton(
+                                                child: Text(
+                                                  "delete_task".tr(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                color: const Color(0xFF193566),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(12)),
+                                                onPressed: () async {
+                                                  await Scheduler.deleteTask(
+                                                      widget.scheduleTask);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: Text(
+                                                              'deleted_scheduler_task'
+                                                                  .tr())));
+                                                  ViewSchedulerTaskScreen.deleted =
+                                                      true;
+                                                  Navigator.pop(context);
+                                                }),
+                                            RaisedButton(
+                                                child: Text(
+                                                  "close".tr(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                color: const Color(0xFF193566),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(12)),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                }),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                        ]),
                       ),
                     ),
                   ),
                 ),
               ),
-            )
-          ],
+            ),
+          ),
         ));
   }
 }
