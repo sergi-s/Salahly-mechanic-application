@@ -20,7 +20,7 @@ import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 
 import '../../utils/check_user_account_state.dart';
-import '../inActiveAccountsScreen/pendingAccounts.dart';
+import '../inActiveAccountsScreen/pending_accounts.dart';
 
 class LoginForm extends  ConsumerStatefulWidget {
   var size;
@@ -139,7 +139,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             fn: updateEmail,
           ),
           RounedPasswordInput(hint: 'password'.tr(), function: updatePassword),
-          SizedBox(height: 10),
+          SizedBox(height: 50),
           SizedBox(
             width: size.width * 0.4,
             height: 40,

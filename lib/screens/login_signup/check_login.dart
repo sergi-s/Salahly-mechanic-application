@@ -8,7 +8,7 @@ import 'package:salahly_mechanic/screens/RoadsideAssistant/RoadsideAssistantFull
 import 'package:salahly_mechanic/screens/homepage/homeScreen.dart';
 import 'package:salahly_mechanic/screens/homepage/switch.dart';
 import 'package:salahly_mechanic/screens/homepage/testscreenyoyo.dart';
-import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
