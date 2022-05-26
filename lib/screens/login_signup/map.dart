@@ -23,6 +23,7 @@ class Map_RegistrationState extends State<Map_Registration> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
         children: [
           ElevatedButton(
             onPressed: () async {

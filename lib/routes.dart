@@ -3,6 +3,9 @@ import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dar
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests_fulldata.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
@@ -134,6 +137,15 @@ class Routing {
               path: DoneRequestsFullData.routeName,
               builder: (context, state) => DoneRequestsFullData(doneRequest: state.extra! as RSA ,)),
           GoRoute(
+              path: PendingRequestsScreen.routeName,
+              builder: (context, state) => PendingRequestsScreen()),
+          GoRoute(
+            path: SemiReportScreen.routeName,
+            builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
+          ),
+          GoRoute(
+              path: BannedScreen.routeName,
+              builder: (context, state) => BannedScreen()),
               path: PendingAccountsScreen.routeName,
               builder: (context, state) => const PendingAccountsScreen()),
           GoRoute(

@@ -57,9 +57,14 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
         ),
         margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 25),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height:MediaQuery.of(context).size.height*0.02),
+            CircleAvatar(
+              backgroundImage: AssetImage("assets/images/report.png"),
+              radius: MediaQuery.of(context).size.height*0.06,
+            ),SizedBox(height:MediaQuery.of(context).size.height*0.02),
             ListTile(
               leading: Padding(
                   padding: const EdgeInsets.only(
@@ -195,18 +200,27 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
             ),
             Positioned(
               bottom: 50,
-              left: 80,
-              right: 80,
-              child: Column(
+               left: 60,
+              // right: 80,
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: (typeOfUser != null && typeOfUser == Type.mechanic)
                     ? [
-                        ElevatedButton(
+                  // SizedBox(width: MediaQuery.of(context).size.width*0.03,),
+                        RaisedButton(  color: Color(0xFF193566),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             onPressed: () {
                               context.push(SemiReportScreen.routeName,
                                   extra: rsa);
                             },
-                            child: Text('update_fixing_initial_report'.tr())),
-                        ElevatedButton(
+                            child: Text('update_fixing_initial_report'.tr(),style: TextStyle(color: Colors.white))),
+                  SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                  RaisedButton(  color: Color(0xFF193566),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                             onPressed: () {
                               context.pushNamed("ReportScreen", params: {
                                 "requestType": RSA

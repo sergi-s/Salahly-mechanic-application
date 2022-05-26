@@ -24,7 +24,6 @@ import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/mechanic.dart';
 import 'package:salahly_models/models/towProvider.dart';
-
 class Registration extends StatefulWidget {
   static final routeName = "/registrationscreen";
 
