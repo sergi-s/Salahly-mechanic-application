@@ -49,33 +49,35 @@ class Map_RegistrationState extends State<Map_Registration> {
           )
         ],
       ),
-      body: Stack(
+      body:
+      Stack(
         children: [
           MapWidget(key: myMapWidgetState),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Center(
-                child: RaisedButton(
-                    color: const Color(0xFF193566),
-                    child: Text(
-                      "confirm",
-                      style: TextStyle(color: Colors.white),
-                    ).tr(),
-                    elevation: 5,
-                    shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
-                    onPressed: () async {
-                      await myMapWidgetState.currentState!.locatePosition();
-                      Map_Registration.location =
-                          myMapWidgetState.currentState?.currentCustomLoc;
-                      print("${Map_Registration.location.toString()}cccccc");
-                      Navigator.pop(context);
-                    }),
-              ),
-            ],
-          )
-        ],
-      ),
+      ])
+      //     Column(
+      //       mainAxisAlignment: MainAxisAlignment.end,
+      //       children: [
+      //         Center(
+      //           child: RaisedButton(
+      //               color: const Color(0xFF193566),
+      //               child: Text(
+      //                 "confirm",
+      //                 style: TextStyle(color: Colors.white),
+      //               ).tr(),
+      //               elevation: 5,
+      //               shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+      //               onPressed: () async {
+      //                 await myMapWidgetState.currentState!.locatePosition();
+      //                 Map_Registration.location =
+      //                     myMapWidgetState.currentState?.currentCustomLoc;
+      //                 print("${Map_Registration.location.toString()}cccccc");
+      //                 Navigator.pop(context);
+      //               }),
+      //         ),
+      //       ],
+      //     )
+      //   ],
+      // ),
     );
   }
 }
