@@ -125,7 +125,7 @@ class FirebaseCustom extends Authentication {
     return false;
   }
 
-  Future<bool> registration(Mechanic client) async {
+  Future<bool> registration(client) async {
     final User? user = _firebaseAuth.currentUser;
     if (user == null) {
       return false;
@@ -140,7 +140,7 @@ class FirebaseCustom extends Authentication {
       // "avatar": client.avatar,
       // "address": client.address!,
       "phoneNumber": client.phoneNumber!,
-      "rating": 0,
+      // "rating": 0,
       "accountState": "pending",
       "workshop/longitude": client.loc!.longitude,
       "workshop/latitude": client.loc!.latitude,

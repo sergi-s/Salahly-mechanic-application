@@ -68,11 +68,13 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
           print("${r.state}   ${r.requestType}   ${r.rsaID}");
           if (event
               .child("state")
-              .value == "pending" &&
-              ((userType == Type.mechanic) ||
-                  (userType == Type.provider && (
-                      r.requestType == RequestType.TTA ||
-                          r.state == RSAStates.waitingForProviderResponse)))) {
+              .value == "pending"
+              // &&
+              // ((userType == Type.mechanic) ||
+              //     (userType == Type.provider && (
+              //         r.requestType == RequestType.TTA ||
+              //             r.state == RSAStates.waitingForProviderResponse)))
+          ) {
             if (!pendingRequestsCache.containsKey(rsaID)) {
               pendingRequestsCache[rsaID] = r;
               pendingNotifier.addRSA(r);
@@ -100,7 +102,7 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
                       width: MediaQuery
                           .of(context)
                           .size
-                          .width * 0.38,
+                          .width * 0.60,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -330,10 +332,14 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
               .toString() == "cancelled") {
             RSA? r = ongoingRequestsNotifier.removeRSAById(rsaID);
             r ??= pendingNotifier.removeRSAById(rsaID);
-          } else if (rsaCache[rsaID] != null &&
-              rsaCache[rsaID]!.state == RSAStates.done) {
-            PendingRequestsNotifier.doneRSA.add(rsaCache[rsaID]!);
           }
+          // else if ( TODO add to done
+          // rsaCache[rsaID] != null &&
+          //     RSA.stringToState((await dbRef.child(RSA.requestTypeToString(rsaCache[rsaID]!.requestType!).toLowerCase()).child(rsaID)
+          //         .child('state').get()).value!.toString()) == RSAStates.done
+          // ) {
+          //   PendingRequestsNotifier.doneRSA.add(rsaCache[rsaID]!);
+          // }
           // if (dataSnapshot.value.toString() == "done") {
           //   RSA? r = ongoingRequestsNotifier.removeRSAById(rsaID);
           //   if(r != null) pendingNotifier.doneRSA.add(r);
