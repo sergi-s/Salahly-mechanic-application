@@ -229,7 +229,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                                 "rsaId": rsa.rsaID!
                               });
                             },
-                            child: Text('ReportScreen'.tr())),
+                            child: Text('ReportScreen'.tr(),style: TextStyle(color: Colors.white))),
                         // FloatingActionButton.extended(
                         //     onPressed: () {
                         //       context.push(SemiReportScreen.routeName, extra: rsa);

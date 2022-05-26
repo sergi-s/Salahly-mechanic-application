@@ -20,7 +20,9 @@ import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 
 import '../../utils/check_user_account_state.dart';
+import '../inActiveAccountsScreen/banned_accounts.dart';
 import '../inActiveAccountsScreen/pending_accounts.dart';
+import '../inActiveAccountsScreen/rejected_accounts.dart';
 
 class LoginForm extends  ConsumerStatefulWidget {
   var size;
@@ -81,19 +83,23 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           .showSnackBar(const SnackBar(content: Text('Login successful')));
       // context.go(Registration.routeName, extra: email);
       AccountStates state = await getAccountState();
-      print("AKAODKA");
-      print(state);
-      print(state == AccountStates.PENDING);
+      // print("AKAODKA");
+      // print(state);
+      // print(state == AccountStates.PENDING);
       if(state == AccountStates.NO_DATA){
-        print("No data");
         context.go(Registration.routeName,extra: FirebaseAuth.instance.currentUser!.email!);
       }
       else if(state == AccountStates.PENDING) {
-        print("Pending");
         context.go(PendingAccountsScreen.routeName);
       }
+      else if(state == AccountStates.BANNED){
+        context.go(BannedAccountsScreen.routeName);
+      }
+      else if(state == AccountStates.REJECTED){
+        context.go(RejectedAccountsScreen.routeName);
+      }
       else{
-        print("Active, homescreen");
+        print('account state is ${state}');
         context.go(HomeScreen.routeName);
       }
     } else {
