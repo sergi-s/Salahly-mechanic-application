@@ -3,9 +3,6 @@ import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dar
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests_fulldata.dart';
 import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
-import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
-import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
-import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
@@ -33,131 +30,122 @@ import 'screens/switchLanguage.dart';
 
 class Routing {
   get router => GoRouter(
-        initialLocation: CheckLogin.routeName,
-        routes: <GoRoute>[
-          GoRoute(
-            path: HomeScreen.routeName,
-            builder: (context, state) => HomeScreen(),
-          ),
-          GoRoute(
-            path: SetAvailability.routeName,
-            builder: (context, state) => SetAvailability(),
-          ),
-          GoRoute(
-            path: TestScreenFoula.routeName,
-            builder: (context, state) => TestScreenFoula(),
-          ),
-          GoRoute(
-            path: LoginSignupScreen.routeName,
-            builder: (context, state) => LoginSignupScreen(),
-          ),
-          GoRoute(
-            path: Registration.routeName,
-            builder: (context, state) =>
-                Registration(emailobj: state.extra! as String),
-          ),
-          GoRoute(
-            path: CheckLogin.routeName,
-            builder: (context, state) => CheckLogin(),
-          ),
-          GoRoute(
-              path: OngoingScreenDummy.routeName,
-              builder: (context, state) => OngoingScreenDummy()),
-          GoRoute(
-            path: PendingRequests.routeName,
-            builder: (context, state) => PendingRequests(),
-          ),
-          GoRoute(
-            path: OnGoingRequests.routeName,
-            builder: (context, state) => OnGoingRequests(),
-          ),
-          GoRoute(
-            path: RequestFullDataScreen.routeName,
-            builder: (context, state) =>
-                RequestFullDataScreen(rsa: state.extra! as RSA),
-          ),
-          GoRoute(
-            path: MechanicProfilePage.routeName,
-            builder: (context, state) => MechanicProfilePage(),
-          ),
-          GoRoute(
-            path: ONGOINGVIEW.routeName,
-            builder: (context, state) => ONGOINGVIEW(),
-          ),
-          GoRoute(
-            path: PENDINGVIEW.routeName,
-            builder: (context, state) => PENDINGVIEW(),
-          ),
-          GoRoute(
-            path: ReportScreen.routeName + ":requestType&:rsaId",
-            name: 'ReportScreen',
-            builder: (context, state) {
-              return ReportScreen(
-                  rsaId: state.params["rsaId"] as String,
-                  requestType: state.params["requestType"] as String);
-            },
-          ),
-          GoRoute(
-              path: Switcher.routeName,
-              builder: (context, state) => Switcher()),
-          GoRoute(
-              path: TestScreenAya.routeName,
-              builder: (context, state) => TestScreenAya()),
-          GoRoute(
-            path: SchedulerScreen.routeName,
-            builder: (context, state) => SchedulerScreen(),
-          ),
-          GoRoute(
-            path: ViewSchedulerTaskScreen.routeName,
-            builder: (context, state) => ViewSchedulerTaskScreen(
-                scheduleTaskAndFunctionOnDelete:
-                    state.extra! as Map<String, dynamic>),
-          ),
-          GoRoute(
-            path: SwitchLanguageScreen.routeName,
-            builder: (context, state) => SwitchLanguageScreen(),
-          ),
-          GoRoute(
-            path: AddSchedulerTaskScreen.routeName,
-            builder: (context, state) =>
-                AddSchedulerTaskScreen(onAdd: state.extra! as Function),
-          ),
-          GoRoute(
-              path: RideLocations.routeName,
-              builder: (context, state) => RideLocations(
-                  bundledLocation: state.extra as BundledLocation
-              )),
-          GoRoute(
-              path: EditProfile.routeName,
-              builder: (context, state) => EditProfile(user: state.extra! ,)),
-          GoRoute(
-              path: DoneRequests.routeName,
-              builder: (context, state) => const DoneRequests()),
-          GoRoute(
-              path: DoneRequestsFullData.routeName,
-              builder: (context, state) => DoneRequestsFullData(doneRequest: state.extra! as RSA ,)),
-          GoRoute(
-              path: PendingRequestsScreen.routeName,
-              builder: (context, state) => PendingRequestsScreen()),
-          GoRoute(
-            path: SemiReportScreen.routeName,
-            builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
-          ),
-          GoRoute(
-              path: BannedScreen.routeName,
-              builder: (context, state) => BannedScreen()),
-              path: PendingAccountsScreen.routeName,
-              builder: (context, state) => const PendingAccountsScreen()),
-          GoRoute(
-              path: BannedAccountsScreen.routeName,
-              builder: (context, state) => const BannedAccountsScreen()),
-          GoRoute(
-              path: RejectedAccountsScreen.routeName,
-              builder: (context, state) => const RejectedAccountsScreen()),
-          GoRoute(
-            path: SemiReportScreen.routeName,
-            builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
-          )
-        ],
-      );
+    initialLocation: CheckLogin.routeName,
+    routes: <GoRoute>[
+      GoRoute(
+        path: HomeScreen.routeName,
+        builder: (context, state) => HomeScreen(),
+      ),
+      GoRoute(
+        path: SetAvailability.routeName,
+        builder: (context, state) => SetAvailability(),
+      ),
+      GoRoute(
+        path: TestScreenFoula.routeName,
+        builder: (context, state) => TestScreenFoula(),
+      ),
+      GoRoute(
+        path: LoginSignupScreen.routeName,
+        builder: (context, state) => LoginSignupScreen(),
+      ),
+      GoRoute(
+        path: Registration.routeName,
+        builder: (context, state) =>
+            Registration(emailobj: state.extra! as String),
+      ),
+      GoRoute(
+        path: CheckLogin.routeName,
+        builder: (context, state) => CheckLogin(),
+      ),
+      GoRoute(
+          path: OngoingScreenDummy.routeName,
+          builder: (context, state) => OngoingScreenDummy()),
+      GoRoute(
+        path: PendingRequests.routeName,
+        builder: (context, state) => PendingRequests(),
+      ),
+      GoRoute(
+        path: OnGoingRequests.routeName,
+        builder: (context, state) => OnGoingRequests(),
+      ),
+      GoRoute(
+        path: RequestFullDataScreen.routeName,
+        builder: (context, state) =>
+            RequestFullDataScreen(rsa: state.extra! as RSA),
+      ),
+      GoRoute(
+        path: MechanicProfilePage.routeName,
+        builder: (context, state) => MechanicProfilePage(),
+      ),
+      GoRoute(
+        path: ONGOINGVIEW.routeName,
+        builder: (context, state) => ONGOINGVIEW(),
+      ),
+      GoRoute(
+        path: PENDINGVIEW.routeName,
+        builder: (context, state) => PENDINGVIEW(),
+      ),
+      GoRoute(
+        path: ReportScreen.routeName + ":requestType&:rsaId",
+        name: 'ReportScreen',
+        builder: (context, state) {
+          return ReportScreen(
+              rsaId: state.params["rsaId"] as String,
+              requestType: state.params["requestType"] as String);
+        },
+      ),
+      GoRoute(
+          path: Switcher.routeName,
+          builder: (context, state) => Switcher()),
+      GoRoute(
+          path: TestScreenAya.routeName,
+          builder: (context, state) => TestScreenAya()),
+      GoRoute(
+        path: SchedulerScreen.routeName,
+        builder: (context, state) => SchedulerScreen(),
+      ),
+      GoRoute(
+        path: ViewSchedulerTaskScreen.routeName,
+        builder: (context, state) => ViewSchedulerTaskScreen(
+            scheduleTaskAndFunctionOnDelete:
+            state.extra! as Map<String, dynamic>),
+      ),
+      GoRoute(
+        path: SwitchLanguageScreen.routeName,
+        builder: (context, state) => SwitchLanguageScreen(),
+      ),
+      GoRoute(
+        path: AddSchedulerTaskScreen.routeName,
+        builder: (context, state) =>
+            AddSchedulerTaskScreen(onAdd: state.extra! as Function),
+      ),
+      GoRoute(
+          path: RideLocations.routeName,
+          builder: (context, state) => RideLocations(
+              bundledLocation: state.extra as BundledLocation
+          )),
+      GoRoute(
+          path: EditProfile.routeName,
+          builder: (context, state) => EditProfile(user: state.extra! ,)),
+      GoRoute(
+          path: DoneRequests.routeName,
+          builder: (context, state) => const DoneRequests()),
+      GoRoute(
+          path: DoneRequestsFullData.routeName,
+          builder: (context, state) => DoneRequestsFullData(doneRequest: state.extra! as RSA ,)),
+      GoRoute(
+          path: PendingAccountsScreen.routeName,
+          builder: (context, state) => const PendingAccountsScreen()),
+      GoRoute(
+          path: BannedAccountsScreen.routeName,
+          builder: (context, state) => const BannedAccountsScreen()),
+      GoRoute(
+          path: RejectedAccountsScreen.routeName,
+          builder: (context, state) => const RejectedAccountsScreen()),
+      GoRoute(
+          path: SemiReportScreen.routeName,
+          builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
+      )
+    ],
+  );
 }
