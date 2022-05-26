@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_drawer.dart';
 import 'package:salahly_models/models/road_side_assistance.dart';
@@ -27,6 +28,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
   }
 
   Widget personDetailCard(RSA rsa) {
+
 
     final String name = rsa.user!.name??"Client name";
     final String carNumber = rsa.car != null ?rsa.car!.noPlate:"Car number";
@@ -109,7 +111,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
                     padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
                     child:Text('Client Requested RSA',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
                 ),
-                ListTile(
+                (rsa.report != null && rsa.report!.maintenanceDescription != null )?ListTile(
                   leading:Padding(
                       padding: const EdgeInsets.only(top:10.0,bottom: 15.0,right: 10.0),
                       child: Icon(Icons.article_outlined,color:Color(0xff97a7c3),size: 45)),
@@ -118,27 +120,28 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
                     child:Container(
                       child: Row(
                         children:<Widget> [
-                          Expanded(child: Text('Client Requested RSA Client Client Requested RSA Client Client Requested RSA ClientClient Requested RSA ClientClient Requested RSA ClientClient Requested RSA ClientClient Requested RSA ClientClient Requested RSA ClientClient Requested RSA Client Requested RSA Client Requested RSA Client Requested RSA',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.normal,fontSize:15),textAlign: TextAlign.left).tr()),
+                          Expanded(child: Text(rsa.report!.maintenanceDescription!,textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.normal,fontSize:15),textAlign: TextAlign.left).tr()),
                         ],
                       ),
                     ),),
-                ),
+                ):Container(),
                 SizedBox(height:MediaQuery.of(context).size.height*0.02),
-                RatingBar.builder(
-                  initialRating: 0,
-                  minRating: 0,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
-                  },
-                ),
+                // RatingBar.builder(
+                //   ignoreGestures: true,
+                //   initialRating: 2,
+                //   minRating: 0,
+                //   direction: Axis.horizontal,
+                //   allowHalfRating: true,
+                //   itemCount: 5,
+                //   itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+                //   itemBuilder: (context, _) => Icon(
+                //     Icons.star,
+                //     color: Colors.amber,
+                //   ),
+                //   onRatingUpdate: (rating) {
+                //     print(rating);
+                //   },
+                // ),
               ],
             ),
           ),

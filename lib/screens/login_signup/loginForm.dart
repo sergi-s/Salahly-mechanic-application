@@ -90,7 +90,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       }
       else if(state == AccountStates.PENDING) {
         print("Pending");
-        context.go(PendingRequestsScreen.routeName);
+        context.go(PendingAccountsScreen.routeName);
       }
       else{
         print("Active, homescreen");

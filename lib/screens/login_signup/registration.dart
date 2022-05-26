@@ -15,7 +15,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:salahly_mechanic/classes/firebase/firebase.dart';
 import 'package:salahly_mechanic/main.dart';
-// import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pendingAccounts.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
 import 'package:salahly_mechanic/screens/login_signup/map.dart';
 import 'package:salahly_mechanic/widgets/login_signup/roundedInput.dart';
 import 'package:salahly_mechanic/widgets/login_signup/text_input.dart';
@@ -24,9 +24,6 @@ import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
 import 'package:salahly_models/models/mechanic.dart';
 import 'package:salahly_models/models/towProvider.dart';
-
-import '../inActiveAccountsScreen/pending_accounts.dart';
-
 class Registration extends StatefulWidget {
   static final routeName = "/registrationscreen";
 
@@ -116,7 +113,7 @@ CustomLocation? locationObject;
         isCenter: isCenter,
         loc: locationObject,
       );
-    } else if (userType == "provider") {
+    } else if (userType == "provider".tr()) {
       locationObject!.name = shopname;
       mechanic = TowProvider(
         name: name,
@@ -136,7 +133,7 @@ CustomLocation? locationObject;
     if (check) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text(' Sucessfull ')));
-      context.go(PendingRequestsScreen.routeName);
+      context.go(PendingAccountsScreen.routeName);
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to Register!!')));
@@ -146,9 +143,9 @@ CustomLocation? locationObject;
   _datePicker(BuildContext context) async {
     DateTime? _pickerDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(const Duration(days: 365)));
+        initialDate: DateTime(DateTime.now().year - 16),
+        firstDate:  DateTime(DateTime.now().year - 100),
+        lastDate: DateTime(DateTime.now().year - 16));
     if (_pickerDate != null) {
       setState(() {
         _selectedDate = _pickerDate;

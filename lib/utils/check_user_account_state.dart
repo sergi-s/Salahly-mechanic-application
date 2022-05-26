@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/screens/login_signup/after_login_response.dart';
 import 'package:salahly_mechanic/screens/login_signup/registration.dart';
+import 'package:salahly_mechanic/themes.dart';
 
 enum AccountStates {
   ACTIVE,
@@ -10,6 +11,7 @@ enum AccountStates {
   BANNED,
   LOGGED_OUT,
   NO_DATA,
+  REJECTED
 }
 
 String stateDescription(AccountStates accountState) {
@@ -26,6 +28,8 @@ String stateDescription(AccountStates accountState) {
       return "Your account has no data, please register your data";
     case AccountStates.PENDING:
       return "Your registration request is pending, please wait until it is approved";
+    case AccountStates.REJECTED:
+      return "Your registration was rejected";
   }
 }
 
@@ -43,6 +47,9 @@ String stateRedirect(AccountStates accountState) {
       return Registration.routeName;
     case AccountStates.PENDING:
       return "";
+
+    case AccountStates.REJECTED:
+      return "";
   }
 }
 
@@ -55,9 +62,10 @@ Future<AccountStates> getAccountState() async {
         .child('accountState')
         .once()
         .then((event) {
-      print("a7eh");
-      print(event.snapshot.value.toString());
-      if (event.snapshot.value.toString() != 'null') {
+      // print("a7eh");
+      // print(event.snapshot.value.toString());
+      // print('check: ${event.snapshot.value != null}');
+      if (event.snapshot.value != null) {
         if (event.snapshot.value.toString() == 'active') {
           k = AccountStates.ACTIVE;
           return AccountStates.ACTIVE;
@@ -69,8 +77,13 @@ Future<AccountStates> getAccountState() async {
           k = AccountStates.PENDING;
           return AccountStates.PENDING;
         }
+        else if(event.snapshot.value.toString() == 'rejected'){
+          k = AccountStates.REJECTED;
+          return AccountStates.REJECTED;
+        }
       } else {
-        return AccountStates.NO_DATA;
+        k = AccountStates.NO_DATA;
+        return k;
       }
     });
     if (k == null)

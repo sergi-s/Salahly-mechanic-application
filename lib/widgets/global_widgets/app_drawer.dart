@@ -64,16 +64,17 @@ Widget salahlyDrawer(BuildContext context) {
             context.push(OnGoingRequests.routeName);
           },
         ),
-        ListTile(
-          title: const Text(
-            "done_profile",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: Color(0xff193566)),
-          ).tr(),
-          onTap: () {
-            context.push(DoneRequests.routeName);
-          },
-        ),
+
+        // ListTile(
+        //   title: const Text(
+        //     "done_profile",
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.bold, color: Color(0xff193566)),
+        //   ).tr(),
+        //   onTap: () {
+        //     context.push(DoneRequests.routeName);
+        //   },
+        // ),
         ListTile(
           title: const Text(
             "View profile",

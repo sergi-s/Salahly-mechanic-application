@@ -6,15 +6,15 @@ import 'package:go_router/go_router.dart';
 
 import '../login_signup/signupscreen.dart';
 
-class BannedAccountsScreen extends StatefulWidget {
-  static const String routeName = "/bannedrequests";
-  const BannedAccountsScreen({Key? key}) : super(key: key);
+class RejectedAccountsScreen extends StatefulWidget {
+  static const String routeName = "/rejectedrequests";
+  const RejectedAccountsScreen({Key? key}) : super(key: key);
 
   @override
-  State<BannedAccountsScreen> createState() => _BannedAccountsScreen();
+  State<RejectedAccountsScreen> createState() => _RejectedAccountsScreen();
 }
 
-class _BannedAccountsScreen extends State<BannedAccountsScreen> {
+class _RejectedAccountsScreen extends State<RejectedAccountsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +39,7 @@ class _BannedAccountsScreen extends State<BannedAccountsScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width*0.8,
                 child: Text(
-                  "Your Account has been Banned",
+                  "Your Account has been rejected",
                   style: TextStyle(
                     fontSize: 18,
                     // letterSpacing: 1,

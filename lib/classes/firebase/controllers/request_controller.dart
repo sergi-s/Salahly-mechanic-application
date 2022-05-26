@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
+import 'package:salahly_mechanic/utils/location/geocoding.dart';
 import 'package:salahly_mechanic/utils/requests_memory_caching.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/car.dart';
@@ -84,6 +85,10 @@ Future<RSA?> loadRequestFromDB(String id, String requestType) async {
     }
   }
 
+  double lat = double.parse(dataSnapshot.child("latitude").value.toString());
+  double lng = double.parse(dataSnapshot.child("longitude").value.toString());
+  String locationName = (await searchCoordinateAddressGoogle(lat: lat, long: lng)).toString();
+
   RSA rsa = RSA(
     user: _user,
     // MUST
@@ -97,9 +102,9 @@ Future<RSA?> loadRequestFromDB(String id, String requestType) async {
     // MUST
     location: CustomLocation(
       // MUST
-      name: "Location",
-      latitude: double.parse(dataSnapshot.child("latitude").value.toString()),
-      longitude: double.parse(dataSnapshot.child("longitude").value.toString()),
+      name: locationName,
+      latitude: lat,
+      longitude: lng,
       // name: dataSnapshot.child("address").value.toString(),
     ),
     // report: Report()

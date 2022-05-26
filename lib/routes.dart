@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/MechanicProfile/MechanicProfilePage.dart';
 import 'package:salahly_mechanic/screens/Requests/done_requests.dart';
@@ -7,6 +6,10 @@ import 'package:salahly_mechanic/screens/Requests/ongoing_requests.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
 import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
 import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
+import 'package:salahly_mechanic/screens/RoadsideAssistant/semi_report_screen.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/banned_accounts.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/pending_accounts.dart';
+import 'package:salahly_mechanic/screens/inActiveAccountsScreen/rejected_accounts.dart';
 import 'package:salahly_mechanic/screens/profile/editProfile.dart';
 import 'package:salahly_mechanic/screens/Requests/pending_requests.dart';
 import 'package:salahly_mechanic/screens/requests/allscreens.dart';
@@ -129,7 +132,7 @@ class Routing {
               builder: (context, state) => EditProfile(user: state.extra! ,)),
           GoRoute(
               path: DoneRequests.routeName,
-              builder: (context, state) => DoneRequests()),
+              builder: (context, state) => const DoneRequests()),
           GoRoute(
               path: DoneRequestsFullData.routeName,
               builder: (context, state) => DoneRequestsFullData(doneRequest: state.extra! as RSA ,)),
@@ -143,6 +146,18 @@ class Routing {
           GoRoute(
               path: BannedScreen.routeName,
               builder: (context, state) => BannedScreen()),
+              path: PendingAccountsScreen.routeName,
+              builder: (context, state) => const PendingAccountsScreen()),
+          GoRoute(
+              path: BannedAccountsScreen.routeName,
+              builder: (context, state) => const BannedAccountsScreen()),
+          GoRoute(
+              path: RejectedAccountsScreen.routeName,
+              builder: (context, state) => const RejectedAccountsScreen()),
+          GoRoute(
+            path: SemiReportScreen.routeName,
+            builder: (context, state) => SemiReportScreen(rsa: state.extra! as RSA,)
+          )
         ],
       );
 }

@@ -42,13 +42,26 @@ class ProfileWidget extends StatelessWidget {
       child:
       CachedNetworkImage(
         imageUrl: imagePath,
-            width: 128,
-            height: 128,
+        width: 128,
+        height: 128,
         fit: BoxFit.cover,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-
+        imageBuilder: (context, imageProvider) => Container(
+          width: 130,
+          height: 130,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+                image: imageProvider, fit: BoxFit.cover),
+          ),
+        ),
+        placeholder: (context, url) =>
+            CircularProgressIndicator(),
+        errorWidget: (context, url, error) =>
+            Icon(Icons.error),
       )
+
+
+      );
       // ClipOval(
       // child: Material(
       //   color: Colors.transparent,
@@ -61,7 +74,6 @@ class ProfileWidget extends StatelessWidget {
       //   ),
       // ),
       // ),
-    );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(

@@ -167,14 +167,25 @@ class _State extends ConsumerState<EditProfile> {
                           // image: DecorationImage(
                           //     fit: BoxFit.cover, image: FileImage(_image!))),
                         ),
-                        child: CachedNetworkImage(
+                        child:
+                        CachedNetworkImage(
                           imageUrl: _imagePath,
                           width: 128,
                           height: 128,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 130,
+                            height: 130,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
                         ),
                         // child: CircleAvatar(
                         //   backgroundImage: (_image != null)

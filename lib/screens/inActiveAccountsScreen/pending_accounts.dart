@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salahly_mechanic/screens/login_signup/signupscreen.dart';
 
-class PendingRequestsScreen extends StatefulWidget {
+class PendingAccountsScreen extends StatefulWidget {
   static const String routeName = "/pendingrequests";
-  const PendingRequestsScreen({Key? key}) : super(key: key);
+  const PendingAccountsScreen({Key? key}) : super(key: key);
 
   @override
-  State<PendingRequestsScreen> createState() => _PendingRequestsScreenState();
+  State<PendingAccountsScreen> createState() => _PendingAccountsScreenState();
 }
 
-class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
+class _PendingAccountsScreenState extends State<PendingAccountsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +36,7 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
             SizedBox(height: MediaQuery.of(context).size.height*0.03,),
             SizedBox(
               width: MediaQuery.of(context).size.width*0.8,
-              child: Text(
+              child: const Text(
                 "Your registration request is pending, please wait until it is approved",
                 style: TextStyle(
                   fontSize: 18,
@@ -46,6 +46,7 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
                 ),
               ),
             ),
+// <<<<<<< updatersa
             SizedBox(height: MediaQuery.of(context).size.height*0.04,),
             RaisedButton(
                 color: Color(0xFF193566),
@@ -61,6 +62,13 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
               // context.go(LoginSignupScreen.routeName);
             },
             ) ],
+// =======
+//             ElevatedButton(onPressed: (){
+//               FirebaseAuth.instance.signOut();
+//               context.go(LoginSignupScreen.routeName);
+//             }, child: Text('logout'.tr()))
+//           ],
+// >>>>>>> main
         ),
       ),
     );

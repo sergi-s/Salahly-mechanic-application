@@ -114,8 +114,7 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
         .child(reqVar)
         .child(FirebaseAuth.instance.currentUser!.uid)
         .child(rsa.rsaID!)
-        .child("state")
-        .set("rejected");
+        .update({"state":"rejected"});
     removeRSA(rsa);
   }
 
@@ -150,7 +149,7 @@ class PendingRequestsNotifier extends StateNotifier<List<RSA>> {
           ref.watch(ongoingRequestsProvider.notifier).addRSA(rsa);
           return true;
         } else {
-          removeRSAById(rsa.rsaID!);
+          // removeRSAById(rsa.rsaID!);
           return false;
         }
       });

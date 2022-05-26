@@ -68,7 +68,7 @@ class _ProfilePageState extends State<_ProfilePage> {
           appBar: salahlyAppBar(context,title:   'Profile'),
           drawer: salahlyDrawer(context),
           body: ListView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             children: [
               ProfileWidget(
                 imagePath: user.avatar !=null?user.avatar!: '',
