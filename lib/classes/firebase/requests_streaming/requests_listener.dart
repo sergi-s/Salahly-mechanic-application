@@ -69,11 +69,11 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
           if (event
               .child("state")
               .value == "pending"
-              // &&
-              // ((userType == Type.mechanic) ||
-              //     (userType == Type.provider && (
-              //         r.requestType == RequestType.TTA ||
-              //             r.state == RSAStates.waitingForProviderResponse)))
+          // &&
+          // ((userType == Type.mechanic) ||
+          //     (userType == Type.provider && (
+          //         r.requestType == RequestType.TTA ||
+          //             r.state == RSAStates.waitingForProviderResponse)))
           ) {
             if (!pendingRequestsCache.containsKey(rsaID)) {
               pendingRequestsCache[rsaID] = r;
@@ -131,79 +131,81 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
                 slideDismissDirection: DismissDirection.up,
               );
             }
-          } else if (event
-              .child("state")
-              .value == "pending" &&
-              userType == Type.provider) {
-            //start listener for this request when it becomes waitingForProviderResponse
-            print(RSA.requestTypeToString(r.requestType!).toLowerCase());
-            print(rsaID);
-            print(r.state);
-            dbRef
-                .child(RSA.requestTypeToString(r.requestType!).toLowerCase())
-                .child(rsaID)
-                .child('state')
-                .onValue
-                .listen((event) {
-              print("EVENT " + event.snapshot.value.toString());
-              print(RSA.stringToState(event.snapshot.value.toString()));
-              print(RSA.stringToState(event.snapshot.value.toString()) ==
-                  RSAStates.waitingForProviderResponse);
-              if (RSA.stringToState(event.snapshot.value.toString()) ==
-                  RSAStates.waitingForProviderResponse) {
-                pendingNotifier.addRSA(r);
-                if (!onTopOverlay) {
-                  onTopOverlay = true;
-                  showSimpleNotification(
-                    Text("received_a_new_request".tr()),
-                    trailing: Builder(builder: (context) {
-                      return
-                        // TextButton(
-                        //   onPressed: () {
-                        //     onTopOverlay = false;
-                        //     // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
-                        //     context.push(PENDINGVIEW.routeName);
-                        //     OverlaySupportEntry.of(context)!.dismiss();
-                        //   },
-                        //   child: Text("go_to_request".tr(),
-                        //       style: const TextStyle(color: Colors.white)));
-                        Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.38,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                  onPressed: () {
-                                    onTopOverlay = false;
-                                    // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
-                                    context.push(PendingRequests.routeName);
-                                    OverlaySupportEntry.of(context)!.dismiss();
-                                  },
-                                  child: Text("go_to_request".tr(),
-                                      style: const TextStyle(
-                                          color: Colors.white))),
-                              IconButton(
-                                  onPressed: () {
-                                    onTopOverlay = false;
-                                    OverlaySupportEntry.of(context)!.dismiss();
-                                  },
-                                  icon:
-                                  const Icon(Icons.close, color: Colors.white)),
-                            ],
-                          ),
-                        );
-                    }),
-                    background: Colors.green,
-                    autoDismiss: false,
-                    slideDismissDirection: DismissDirection.up,
-                  );
-                }
-              }
-            });
-          } else if (((event
+          }
+          // else if (event
+          //     .child("state")
+          //     .value == "pending" &&
+          //     userType == Type.provider) {
+          //   //start listener for this request when it becomes waitingForProviderResponse
+          //   print(RSA.requestTypeToString(r.requestType!).toLowerCase());
+          //   print(rsaID);
+          //   print(r.state);
+          //   dbRef
+          //       .child(RSA.requestTypeToString(r.requestType!).toLowerCase())
+          //       .child(rsaID)
+          //       .child('state')
+          //       .onValue
+          //       .listen((event) {
+          //     print("EVENT " + event.snapshot.value.toString());
+          //     print(RSA.stringToState(event.snapshot.value.toString()));
+          //     print(RSA.stringToState(event.snapshot.value.toString()) ==
+          //         RSAStates.waitingForProviderResponse);
+          //     if (RSA.stringToState(event.snapshot.value.toString()) ==
+          //         RSAStates.waitingForProviderResponse) {
+          //       pendingNotifier.addRSA(r);
+          //       if (!onTopOverlay) {
+          //         onTopOverlay = true;
+          //         showSimpleNotification(
+          //           Text("received_a_new_request".tr()),
+          //           trailing: Builder(builder: (context) {
+          //             return
+          //               // TextButton(
+          //               //   onPressed: () {
+          //               //     onTopOverlay = false;
+          //               //     // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+          //               //     context.push(PENDINGVIEW.routeName);
+          //               //     OverlaySupportEntry.of(context)!.dismiss();
+          //               //   },
+          //               //   child: Text("go_to_request".tr(),
+          //               //       style: const TextStyle(color: Colors.white)));
+          //               Container(
+          //                 width: MediaQuery
+          //                     .of(context)
+          //                     .size
+          //                     .width * 0.38,
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.end,
+          //                   children: [
+          //                     TextButton(
+          //                         onPressed: () {
+          //                           onTopOverlay = false;
+          //                           // navigatorKey.currentState!.pushNamed(TestScreenFoula.routeName);
+          //                           context.push(PendingRequests.routeName);
+          //                           OverlaySupportEntry.of(context)!.dismiss();
+          //                         },
+          //                         child: Text("go_to_request".tr(),
+          //                             style: const TextStyle(
+          //                                 color: Colors.white))),
+          //                     IconButton(
+          //                         onPressed: () {
+          //                           onTopOverlay = false;
+          //                           OverlaySupportEntry.of(context)!.dismiss();
+          //                         },
+          //                         icon:
+          //                         const Icon(Icons.close, color: Colors.white)),
+          //                   ],
+          //                 ),
+          //               );
+          //           }),
+          //           background: Colors.green,
+          //           autoDismiss: false,
+          //           slideDismissDirection: DismissDirection.up,
+          //         );
+          //       }
+          //     }
+          //   });
+          // }
+          else if (((event
               .child("state")
               .value == "chosen") ||
               (event
@@ -225,9 +227,9 @@ listenRequestsFromDatabaseByNotifiers(PendingRequestsNotifier pendingNotifier,
             if (!pendingRequestsCache.containsKey(rsaID)) {
               if(userType == Type.mechanic){
                 RSA rsa = r.copyWith(state: RSAStates.mechanicConfirmed);
-              rsaCache[r.rsaID!] = rsa;
-              pendingRequestsCache[rsaID] = rsa;
-              pendingNotifier.addRSA(rsa);
+                rsaCache[r.rsaID!] = rsa;
+                pendingRequestsCache[rsaID] = rsa;
+                pendingNotifier.addRSA(rsa);
               }else{
                 RSA rsa = r.copyWith(state: RSAStates.providerConfirmed);
                 rsaCache[r.rsaID!] = rsa;
