@@ -79,5 +79,6 @@
   "Saturday": "Saturday",
   "Sunday": "Sunday",
   "close": "Close",
-  "select_car" : "Select Car"
+  "select_car" : "Select Car",
+  "update_fixing_initial_report": "Initial Report"
 }

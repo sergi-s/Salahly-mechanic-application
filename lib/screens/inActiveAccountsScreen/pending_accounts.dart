@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +20,15 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
       backgroundColor: const Color(0xFFd1d9e6),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: MediaQuery.of(context).size.height*0.18,),
             // SizedBox(height: MediaQuery.of(context).size.height*0.3,),
             Container(
                 height: MediaQuery.of(context).size.height*0.28,
                 width: MediaQuery.of(context).size.width*0.47,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/sand-clock.png"),
+                      image: AssetImage("assets/images/pending.gif"),
                       fit: BoxFit.cover),
                 ),
                // Foreground widget here
@@ -45,11 +46,21 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: (){
-              FirebaseAuth.instance.signOut();
-              context.go(LoginSignupScreen.routeName);
-            }, child: Text('logout'))
-          ],
+            SizedBox(height: MediaQuery.of(context).size.height*0.04,),
+            RaisedButton(
+                color: Color(0xFF193566),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ), child: Text(
+              "logout".tr(),
+              style: TextStyle(color: Colors.white),
+            ),
+                onPressed: (){
+
+              // FirebaseAuth.instance.signOut();
+              // context.go(LoginSignupScreen.routeName);
+            },
+            ) ],
         ),
       ),
     );

@@ -11,19 +11,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:salahly_mechanic/utils/get_user_type.dart';
-import 'package:salahly_mechanic/utils/location/geocoding.dart';
 import 'package:salahly_mechanic/widgets/add_Schedular/select_textfield.dart';
 import 'package:salahly_mechanic/widgets/global_widgets/app_bar.dart';
 import 'package:salahly_models/abstract_classes/user.dart';
 import 'package:salahly_models/models/location.dart';
-import 'package:path/path.dart' as p;
+
 import '../../main.dart';
 import '../../widgets/add_Schedular/text_input.dart';
+import '../login_signup/map.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
-
   static const String routeName = "/edit_profile";
   dynamic user;
 
@@ -36,6 +36,7 @@ class EditProfile extends ConsumerStatefulWidget {
 class _State extends ConsumerState<EditProfile> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController rootAddressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
@@ -60,9 +61,12 @@ class _State extends ConsumerState<EditProfile> {
       changedName = false,
       changedWorkshopType = false,
       isCenter = false,
-      changedWorkshopName = false;
+      changedRootAddress = false,
+      changedWorkshopName = false,
+      changedAvatar = false;
 
   CustomLocation? location;
+  String? getLocation;
 
   @override
   void initState() {
@@ -81,6 +85,8 @@ class _State extends ConsumerState<EditProfile> {
         widget.user.loc != null && widget.user.loc!.address != null
             ? widget.user.loc!.address!
             : "";
+    rootAddressController.text =
+        widget.user.address != null ? widget.user.address! : "";
     isCenter = widget.user.isCenter != null
         ? widget.user.isCenter!
             ? true
@@ -234,8 +240,8 @@ class _State extends ConsumerState<EditProfile> {
             width: MediaQuery.of(context).size.width * 0.6,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xFFd3dae4),
-                boxShadow: [
+                color: const Color(0xFFd3dae4),
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.blueGrey,
                     blurRadius: 2.0,
@@ -278,14 +284,43 @@ class _State extends ConsumerState<EditProfile> {
                     ),
                     MyInputField(
                       fn: (value) {
+                        changedRootAddress = true;
+                      },
+                      title: 'Written Address',
+                      controller: rootAddressController,
+                      hint: "",
+                    ),
+                    MyInputField(
+                      fn: (value) {
                         changedAddress = true;
                       },
-                      title: 'Address',
+                      title: "Address",
                       controller: addressController,
-                      hint: "",
+                      hint: addressController.text,
                       // ref.watch(userProvider).email ?? "wait",
                       widget: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Map_Registration(),
+                            ),
+                          ).then((value) {
+                            print(
+                                "the getLocation 2${Map_Registration.location!.address}");
+                            setState(() {
+                              if (Map_Registration.location != null) {
+                                getLocation =
+                                    Map_Registration.location!.address;
+                                location = Map_Registration.location!;
+                                addressController.text =
+                                    getLocation ?? addressController.text;
+                                print("the getLocation $getLocation");
+                                changedAddress = true;
+                              }
+                            });
+                          });
+                        },
                         icon: const Icon(
                           Icons.pin_drop,
                           color: Color(0xFF193566),
@@ -585,21 +620,23 @@ class _State extends ConsumerState<EditProfile> {
   }
 
   Future _uploadFile (String path)async{
-
-    final ref= await FirebaseStorage.instance
+    final ref = await FirebaseStorage.instance
         .ref()
         .child("users")
         .child("profile_picture")
         .child(FirebaseAuth.instance.currentUser!.uid);
-    final result =await ref.putFile(File(path));
-    final fileUrl=await result.ref.getDownloadURL();
+    final result = await ref.putFile(File(path));
+    final fileUrl = await result.ref.getDownloadURL();
     user
-    .child(FirebaseAuth.instance.currentUser!.uid).child('avatar').set(fileUrl);
-    setState((){
-      _image= File(fileUrl);
+        .child(FirebaseAuth.instance.currentUser!.uid)
+        .child('avatar')
+        .set(fileUrl);
+    setState(() {
+      _image = File(fileUrl);
       _imagePath = fileUrl;
-      print("Hello "+fileUrl);
+      print("Hello " + fileUrl);
     });
+    changedAvatar = true;
     // widget.onFilechanged(fileUrl);
   }
 
@@ -676,8 +713,9 @@ class _State extends ConsumerState<EditProfile> {
   updateAuthPassword() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
     String pass = oldPasswordController.text;
-    firebaseUser!.reauthenticateWithCredential(EmailAuthProvider.credential(
-        email: firebaseUser.email!, password: pass));
+    await firebaseUser!.reauthenticateWithCredential(
+        EmailAuthProvider.credential(
+            email: firebaseUser.email!, password: pass));
     return await firebaseUser.updatePassword(passwordController.text);
   }
 
@@ -729,16 +767,21 @@ class _State extends ConsumerState<EditProfile> {
     if (changedAddress) {
       map['workshop/latitude'] = location!.latitude;
       map['workshop/longitude'] = location!.longitude;
-      final address = await searchCoordinateAddressGoogle(
-          lat: location!.latitude, long: location!.longitude);
+      // final address = await searchCoordinateAddressGoogle(
+      //     lat: location!.latitude, long: location!.longitude);
+      final address = location!.address;
       map['workshop/address'] = address;
-      setState(() {
-        addressController.text = address;
-      });
+      // setState(() {
+      //   addressController.text = address;
+      // });
     }
     if (changedPhone) {
       map['phoneNumber'] = phoneController.text;
       changedPhone = false;
+    }
+    if (changedRootAddress) {
+      map['address'] = rootAddressController.text;
+      changedRootAddress = false;
     }
     if (changedEmail) {
       await updateAuthEmail();
@@ -754,10 +797,13 @@ class _State extends ConsumerState<EditProfile> {
       map['workshop/name'] = shopNameController.text;
       changedWorkshopName = false;
     }
-    if (_image != null) {
-      map['image'] = await uploadImage(context);
-      _image = null;
-    }
+    // if (_image != null && changedAvatar) {
+    //   map['image'] = await uploadImage(context);
+    //   _image = null;
+    //   changedAvatar = false;
+    // }
+    // }
+    print(map);
 
     user.child(FirebaseAuth.instance.currentUser!.uid).update(map);
     // fetch();
