@@ -58,8 +58,8 @@ class _PendingAccountsScreenState extends State<PendingAccountsScreen> {
             ),
                 onPressed: (){
 
-              // FirebaseAuth.instance.signOut();
-              // context.go(LoginSignupScreen.routeName);
+              FirebaseAuth.instance.signOut();
+              context.go(LoginSignupScreen.routeName);
             },
             ) ],
 // =======

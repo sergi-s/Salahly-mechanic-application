@@ -94,8 +94,8 @@ Widget salahlyDrawer(BuildContext context) {
         //   },
         // ),
         ListTile(
-          title: const Text(
-            'change_language_screen',
+          title:  Text(
+            'change_language_screen'.tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ),
           onTap: () {
