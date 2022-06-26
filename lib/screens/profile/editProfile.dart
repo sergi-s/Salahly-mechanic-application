@@ -270,7 +270,7 @@ class _State extends ConsumerState<EditProfile> {
                         changedName = true;
                         name = value;
                       },
-                      title: 'Name',
+                      title: 'name'.tr(),
                       controller: nameController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
@@ -279,7 +279,7 @@ class _State extends ConsumerState<EditProfile> {
                       fn: (value) {
                         changedEmail = true;
                       },
-                      title: 'Email',
+                      title: 'email'.tr(),
                       controller: emailyController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
@@ -288,7 +288,7 @@ class _State extends ConsumerState<EditProfile> {
                       fn: (value) {
                         changedPhone = true;
                       },
-                      title: 'Phone',
+                      title: 'phone'.tr(),
                       controller: phoneController,
                       hint: "",
                       // ref.watch(userProvider).email ?? "wait",
@@ -297,7 +297,7 @@ class _State extends ConsumerState<EditProfile> {
                       fn: (value) {
                         changedRootAddress = true;
                       },
-                      title: 'Written Address',
+                      title: 'written_address'.tr(),
                       controller: rootAddressController,
                       hint: "",
                     ),
@@ -305,7 +305,7 @@ class _State extends ConsumerState<EditProfile> {
                       fn: (value) {
                         changedAddress = true;
                       },
-                      title: "Address",
+                      title: "address".tr(),
                       controller: addressController,
                       hint: addressController.text,
                       // ref.watch(userProvider).email ?? "wait",
@@ -317,8 +317,7 @@ class _State extends ConsumerState<EditProfile> {
                               builder: (context) => Map_Registration(),
                             ),
                           ).then((value) {
-                            print(
-                                "the getLocation 2${Map_Registration.location!.address}");
+                            // print("the getLocation 2${Map_Registration.location!.address}");
                             setState(() {
                               if (Map_Registration.location != null) {
                                 getLocation =
@@ -326,7 +325,7 @@ class _State extends ConsumerState<EditProfile> {
                                 location = Map_Registration.location!;
                                 addressController.text =
                                     getLocation ?? addressController.text;
-                                print("the getLocation $getLocation");
+                                // print("the getLocation $getLocation");
                                 changedAddress = true;
                               }
                             });
@@ -347,7 +346,7 @@ class _State extends ConsumerState<EditProfile> {
                               changedWorkshopType = true;
                               isCenter = value;
                             },
-                            title: 'Working In',
+                            title: 'working_in'.tr(),
                             hintText: widget.user.isCenter != null
                                 ? widget.user.isCenter!
                                     ? "center".tr()
@@ -383,7 +382,7 @@ class _State extends ConsumerState<EditProfile> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            "Cancel",
+                            "cancel".tr(),
                             style: TextStyle(
                                 fontSize: 14,
                                 letterSpacing: 2.2,
@@ -398,26 +397,26 @@ class _State extends ConsumerState<EditProfile> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content: Text(
-                                        "are you sure u want to update profile?"),
-                                    title: Text("Confirmation"),
+                                        "sure_update_profile".tr()),
+                                    title: Text("confirmation".tr()),
                                     actions: [
                                       TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text("Cancel")),
+                                          child: Text("cancel".tr())),
                                       TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                             final snackBar = SnackBar(
                                                 content:
-                                                    Text('profile updated'));
+                                                    Text('profile_updated'.tr()));
                                             updateProfile(context);
                                             // updateAuth();
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(snackBar);
                                           },
-                                          child: Text("Confirm")),
+                                          child: Text("confirm".tr())),
                                     ],
                                   );
                                 });
@@ -427,7 +426,7 @@ class _State extends ConsumerState<EditProfile> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
-                            "Save",
+                            "save".tr(),
                             style: TextStyle(
                                 fontSize: 14,
                                 letterSpacing: 2.2,
@@ -484,7 +483,7 @@ class _State extends ConsumerState<EditProfile> {
                         changedPassword = true;
                       },
                       hint: '',
-                      title: 'new_assword'.tr(),
+                      title: 'new_password'.tr(),
                       controller: passwordController,
                     ),
                     // SizedBox(
@@ -514,14 +513,14 @@ class _State extends ConsumerState<EditProfile> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 content: Text(
-                                    "are you sure u want to update password?"),
-                                title: Text("Warning"),
+                                    "sure_to_update_password".tr()),
+                                title: Text("warning".tr()),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text("Cancel")),
+                                      child: Text("cancel".tr())),
                                   TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -552,7 +551,7 @@ class _State extends ConsumerState<EditProfile> {
                                               .showSnackBar(snackBar2);
                                         }
                                       },
-                                      child: Text("Confirm")),
+                                      child: Text("confirm".tr())),
                                 ],
                               );
                             });
@@ -562,7 +561,7 @@ class _State extends ConsumerState<EditProfile> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: Text(
-                        "update password",
+                        "update_password".tr(),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.2,
@@ -592,13 +591,13 @@ class _State extends ConsumerState<EditProfile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(leading: Icon(Icons.camera),
-                  title: Text("Camera"),
+                  title: Text("camera".tr()),
                   onTap: () {
                     _pickImage(ImageSource.camera);
                     Navigator.of(context).pop();
                   },),
                 ListTile(leading: Icon(Icons.filter),
-                  title: Text("Pick Image"),
+                  title: Text("pick_image".tr()),
                   onTap: () {
                     _pickImage(ImageSource.gallery);
                     Navigator.of(context).pop();
@@ -645,7 +644,7 @@ class _State extends ConsumerState<EditProfile> {
     setState(() {
       _image = File(fileUrl);
       _imagePath = fileUrl;
-      print("Hello " + fileUrl);
+      // print("Hello " + fileUrl);
     });
     changedAvatar = true;
     // widget.onFilechanged(fileUrl);
@@ -684,7 +683,7 @@ class _State extends ConsumerState<EditProfile> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('insert_password_to_confirm'),
+                Text('insert_password_to_confirm'.tr()),
                 TextField(
                   obscureText: true,
                   enableSuggestions: false,
@@ -696,13 +695,13 @@ class _State extends ConsumerState<EditProfile> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child:  Text('cancel'.tr()),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Approve'),
+              child:  Text('approve'.tr()),
               onPressed: () {
                 String pass = passController.text;
                 firebaseUser!.reauthenticateWithCredential(
@@ -748,7 +747,7 @@ class _State extends ConsumerState<EditProfile> {
       // signed in
     } else {}
 
-    print("updated");
+    // print("updated");
   }
 
   updateProfile(BuildContext context) async {
@@ -770,7 +769,7 @@ class _State extends ConsumerState<EditProfile> {
     //     ? ref.watch(userProvider).email
     //     : emailyController.text;
     if (changedName) {
-      print("Hello changed name");
+      // print("Hello changed name");
       map['name'] = nameController.text;
       await updateAuthName();
       changedName = false;
@@ -796,7 +795,7 @@ class _State extends ConsumerState<EditProfile> {
     }
     if (changedEmail) {
       await updateAuthEmail();
-      print("changedEmail: ${changedEmail}");
+      // print("changedEmail: ${changedEmail}");
       if (!changedEmail) // changed
         map['email'] = emailyController.text;
     }
@@ -846,7 +845,7 @@ class _State extends ConsumerState<EditProfile> {
     final firebaseuser = await FirebaseAuth.instance.currentUser;
     user.child(FirebaseAuth.instance.currentUser!.uid).once().then((event) {
       final dataSnapshot = event.snapshot;
-      print("read" + dataSnapshot.value.toString());
+      // print("read" + dataSnapshot.value.toString());
       var data = dataSnapshot.value as Map;
       setState(() {
         if (data != null) {
@@ -863,10 +862,10 @@ class _State extends ConsumerState<EditProfile> {
         }
       });
     });
-    print("here");
-    print(path);
-    print(firebaseuser!.email);
-    print(firebaseuser.displayName);
+    // print("here");
+    // print(path);
+    // print(firebaseuser!.email);
+    // print(firebaseuser.displayName);
   }
 }
 

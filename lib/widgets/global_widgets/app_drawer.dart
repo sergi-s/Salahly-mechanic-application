@@ -27,39 +27,39 @@ Widget salahlyDrawer(BuildContext context) {
           child: Text(''),
         ),
         ListTile(
-          title: const Text(
-            "Scheduler screen",
+          title:  Text(
+            "scheduler_screen".tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () {
             context.push(SchedulerScreen.routeName);
           },
         ),
 
         ListTile(
-          title: const Text(
-            "Set availability",
+          title:  Text(
+            "set_availability".tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () {
             context.push(Switcher.routeName);
           },
         ),
 
         ListTile(
-          title: const Text(
-            "PendingRequests screen",
+          title:  Text(
+            "pending_requests_screen".tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () {
             context.push(PendingRequests.routeName);
           },
         ),
         ListTile(
-          title: const Text(
-            "Ongoing screen",
+          title:  Text(
+            "ongoing_screen".tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () {
             context.push(OnGoingRequests.routeName);
           },
@@ -76,10 +76,10 @@ Widget salahlyDrawer(BuildContext context) {
         //   },
         // ),
         ListTile(
-          title: const Text(
-            "View profile",
+          title:  Text(
+            "view_profile".tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () {
             context.push(MechanicProfilePage.routeName);
           },
@@ -95,7 +95,7 @@ Widget salahlyDrawer(BuildContext context) {
         // ),
         ListTile(
           title: const Text(
-            'Change language screen',
+            'change_language_screen',
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
           ),
           onTap: () {
@@ -103,24 +103,24 @@ Widget salahlyDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: const Text(
-            'Log out',
+          title:  Text(
+            'logout'.tr(),
             style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xff193566)),
-          ).tr(),
+          ),
           onTap: () async {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     content: Text(
-                        "Are you sure you want to log out?"),
-                    title: Text("Warning"),
+                        "sure_to_log_out".tr()),
+                    title: Text("warning".tr()),
                     actions: [
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text("Cancel")),
+                          child: Text("cancel".tr())),
                       TextButton(
                           onPressed: () async{
 
@@ -128,7 +128,7 @@ Widget salahlyDrawer(BuildContext context) {
                             await FirebaseAuth.instance.signOut();
                             context.go(LoginSignupScreen.routeName);
                           },
-                          child: Text("confirm")),
+                          child: Text("confirm".tr())),
 
                     ],
                   );

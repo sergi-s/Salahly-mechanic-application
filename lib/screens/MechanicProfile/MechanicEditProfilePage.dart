@@ -45,25 +45,25 @@ class _MechanicEditProfilePageState extends State<MechanicEditProfilePage> {
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
-                  label: 'Full Name',
+                  label: 'full_name'.tr(),
                   text: user.name != null ? user.name! : '',
                   onChanged: (name) {},
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
-                  label: 'Email',
+                  label: 'email'.tr(),
                   text: user.email != null ? user.email! : '',
                   onChanged: (email) {},
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
-                  label: 'Location',
+                  label: 'location'.tr(),
                   text: user.loc != null ? user.loc!.name! : '',
                   onChanged: (location) {},
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
-                  label: 'Password',
+                  label: 'Password'.tr(),
                   text: '',
                   onChanged: (password) {},
                 ),
@@ -77,6 +77,6 @@ class _MechanicEditProfilePageState extends State<MechanicEditProfilePage> {
 }
 
 Widget buildUpgradeButton() => ButtonWidget(
-      text: 'Save Edit'.tr(),
+      text: 'save_edit'.tr(),
       onClicked: () {},
     );

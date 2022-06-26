@@ -65,7 +65,7 @@ class _ProfilePageState extends State<_ProfilePage> {
       child: Builder(
         builder: (context) => Scaffold(
           backgroundColor: const Color(0xFFd1d9e6),
-          appBar: salahlyAppBar(context,title:   'Profile'),
+          appBar: salahlyAppBar(context,title:   'profile'.tr()),
           drawer: salahlyDrawer(context),
           body: ListView(
             physics: const BouncingScrollPhysics(),
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<_ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Location',
+              'location'.tr(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<_ProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Workshop_name',
+              'workshop_name'.tr(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),

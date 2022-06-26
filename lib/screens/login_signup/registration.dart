@@ -126,17 +126,17 @@ CustomLocation? locationObject;
       );
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please Complete your Data!!')));
+           SnackBar(content: Text('complete_your_data'.tr())));
     }
 
     bool check = await fb.registration(mechanic);
     if (check) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text(' Sucessfull ')));
+          .showSnackBar( SnackBar(content: Text('sucessfull'.tr())));
       context.go(PendingAccountsScreen.routeName);
     } else {
       return ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Failed to Register!!')));
+          .showSnackBar( SnackBar(content: Text('failed_to_register'.tr())));
     }
   }
 
@@ -173,7 +173,7 @@ CustomLocation? locationObject;
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
             Text(
-              "Registration".tr(),
+              "registration".tr(),
               style: TextStyle(
                 fontSize: 22,
                 letterSpacing: 1,
@@ -270,24 +270,24 @@ CustomLocation? locationObject;
                     fn:
                     (v){updateusername(v);}
                     ,
-                    hint: 'Name',
+                    hint: 'name'.tr(),
                   ),
                   RounedInput(
                     icon: Icons.phone,
                     fn:
                       updatephonenumber
                     ,
-                    hint: 'Phone',
+                    hint: 'phone'.tr(),
                   ),
                   RounedInput(
                     icon: Icons.business_rounded,
                     fn: updateshopname,
-                    hint: 'Shop Name',
+                    hint: 'shop_name'.tr(),
                   ),
                   MyInput(
                     hint: _selectedDate != null
                         ? DateFormat.yMMMEd().format(_selectedDate!)
-                        : 'Birthdate',
+                        : 'birthdate'.tr(),
                     fn: () {},
                     widget: IconButton(
                       onPressed: () {
@@ -300,7 +300,7 @@ CustomLocation? locationObject;
                     ),
                   ),
                   MyInput(
-                    hint: getlocation ?? "Address",
+                    hint: getlocation ?? "address".tr(),
                     fn: () {},
                     widget: IconButton(
                       onPressed: () {
@@ -327,7 +327,7 @@ CustomLocation? locationObject;
                     ),
                   ),
                   SelectTextField(
-                    hintText: 'User Type',
+                    hintText: 'user_type'.tr(),
                     items: ["mechanic".tr(), "provider".tr()],
                     onChangedfunction: (String value) {
                       updateuserType(value);
@@ -343,7 +343,7 @@ CustomLocation? locationObject;
                   ),
                   if (_userTypeEnum == Type.mechanic)
                     SelectTextField(
-                      hintText: 'WorkShop Type'.tr(),
+                      hintText: 'workshop_type'.tr(),
                       items: ["center".tr(), "workshop".tr()],
                       onChangedfunction: (value) {
                         workType = value;
@@ -408,7 +408,7 @@ CustomLocation? locationObject;
                       ),
                       onPressed: () {registerOnPress(context);},
                       child: Text(
-                        "Register".tr(),
+                        "register".tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -462,7 +462,7 @@ CustomLocation? locationObject;
                   children: [
                     ListTile(
                       leading: Icon(Icons.camera),
-                      title: Text("Camera"),
+                      title: Text("camera".tr()),
                       onTap: () {
                         _pickImage(ImageSource.camera);
                         Navigator.of(context).pop();
@@ -470,7 +470,7 @@ CustomLocation? locationObject;
                     ),
                     ListTile(
                       leading: Icon(Icons.filter),
-                      title: Text("Pick Image"),
+                      title: Text("pick_image".tr()),
                       onTap: () {
                         _pickImage(ImageSource.gallery);
                         Navigator.of(context).pop();

@@ -5,8 +5,6 @@ import 'package:time_planner/time_planner.dart';
 
 class Scheduler {
   static final _db = Localstore.instance;
-
-  // static var items = <String, ScheduleTask>{};
   static List<ScheduleTask>? tasks;
 
   static Future<List<ScheduleTask>?> getTasks() async {
@@ -14,11 +12,8 @@ class Scheduler {
     return tasks;
   }
 
-  // StreamSubscription<Map<String, dynamic>>? _subscription;
-
   static Future addTask(ScheduleTask scheduleTask) async {
     if (tasks == null) await getTasks();
-    print("From inside Scheduler addtask with id ${scheduleTask.id}");
     tasks!.add(scheduleTask);
     _db
         .collection('todos')

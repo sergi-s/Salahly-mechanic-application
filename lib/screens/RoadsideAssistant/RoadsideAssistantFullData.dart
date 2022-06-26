@@ -34,10 +34,10 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
   }
 
   Widget personDetailCard(RSA rsa) {
-    final String name = rsa.user!.name ?? "Client name";
-    final String carNumber = rsa.car != null ? rsa.car!.noPlate : "Car number";
-    final String mobileNumber = rsa.user!.phoneNumber ?? "Phone number";
-    final String carModel = rsa.car != null ? rsa.car!.model! : "Car model";
+    final String name = rsa.user!.name ?? "client_name".tr();
+    final String carNumber = rsa.car != null ? rsa.car!.noPlate : "car_number".tr();
+    final String mobileNumber = rsa.user!.phoneNumber ?? "phone_number".tr();
+    final String carModel = rsa.car != null ? rsa.car!.model! : "car_model".tr();
     final Color color = rsa.car != null ? rsa.car!.color! : Color(0xFF00FF00);
     final String image = rsa.user!.avatar ?? "";
     // print("name = $name");
@@ -168,7 +168,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                       color: Color(0xff97a7c3), size: 45)),
               title: Padding(
                 padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
-                child: Text('Client Requested RSA',
+                child: Text('client_requested_rsa'.tr(),
                         textScaleFactor: 1.1,
                         style: const TextStyle(
                             color: Color(0xff193566),
@@ -188,7 +188,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xFFd1d9e6),
-      appBar: salahlyAppBar(context, title: 'Request_details'.tr()),
+      appBar: salahlyAppBar(context, title: 'request_details'.tr()),
       drawer: salahlyDrawer(context),
       body: SizedBox(
         height: size.height,
@@ -229,7 +229,7 @@ class _RequestFullDataScreenState extends State<RequestFullDataScreen> {
                                 "rsaId": rsa.rsaID!
                               });
                             },
-                            child: Text('ReportScreen'.tr(),style: TextStyle(color: Colors.white))),
+                            child: Text('report_screen'.tr(),style: TextStyle(color: Colors.white))),
                         // FloatingActionButton.extended(
                         //     onPressed: () {
                         //       context.push(SemiReportScreen.routeName, extra: rsa);

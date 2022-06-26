@@ -35,7 +35,6 @@ class _SignUpFormState extends State<SignUpForm> {
 
   updateEmail(String e) {
     email = e;
-    print("ana ana ana moza" + "  " + email);
   }
 
   updatepassword(String pass) {
@@ -58,19 +57,16 @@ class _SignUpFormState extends State<SignUpForm> {
     //           content: Text('Invalid Password!! Please try again')));
     // }
     if (confirmpassword != password) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Invalid Confirmation!! Please try again')));
+      return ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+          content: Text('password_doesnt_match'.tr())));
     }
-    print("SAAAAAAAAAAAAAAAAAAAAAAAD");
-    print(email + "  " + password);
     bool check = await fb.signup(email, password);
-    print(email + "  " + password);
     if (check) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account is Created Sucessfully ')));
+           SnackBar(content: Text('account_created'.tr())));
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account is Already Used!!')));
+           SnackBar(content: Text('email_used'.tr())));
     }
     context.go(Registration.routeName, extra: email);
   }
@@ -131,7 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 signupFunction(context);
               },
               child: Text(
-                "Signup".tr(),
+                "signup".tr(),
                 style: TextStyle(color: Color(0xFF193566)),
               ),
             ),

@@ -80,7 +80,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ref.watch(pendingRequestsProvider.notifier),
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Login successful')));
+          .showSnackBar( SnackBar(content: Text('login_successful'.tr())));
       // context.go(Registration.routeName, extra: email);
       AccountStates state = await getAccountState();
       // print("AKAODKA");
@@ -103,8 +103,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         context.go(HomeScreen.routeName);
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Account isnt Correct !!Please try again')));
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+          content: Text('incorrect_account'.tr())));
     }
   }
 
@@ -141,7 +141,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
           RounedInput(
             icon: Icons.email,
-            hint: 'Email'.tr(),
+            hint: 'email'.tr(),
             fn: updateEmail,
           ),
           RounedPasswordInput(hint: 'password'.tr(), function: updatePassword),
@@ -158,7 +158,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 loginFunction(context, ref);
               },
               child: Text(
-                "Login".tr(),
+                "login".tr(),
                 style: TextStyle(color: Colors.white),
               ),
             ),

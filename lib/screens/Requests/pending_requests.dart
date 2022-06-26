@@ -105,10 +105,10 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
   List<String> _checkingrsaId = [];
   _trailing(RSA rsa,Function onConfirmRequest,Function onRefuseRequest) {
     if((rsa.state == RSAStates.providerConfirmed || rsa.state == RSAStates.mechanicConfirmed) && rsa.requestType != RequestType.RSA){
-      return Text("Pending",style: TextStyle(color: Colors.red,fontSize: 18),);
+      return Text("pending".tr(),style: TextStyle(color: Colors.red,fontSize: 18),);
     }
     else if(_checkingrsaId.contains(rsa.rsaID)){
-      return Text("Checking",style: TextStyle(color: Colors.blueAccent,fontSize: 18),);
+      return Text("checking",style: TextStyle(color: Colors.blueAccent,fontSize: 18),);
     }
     else {
       return actionsRow(onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest);
@@ -148,10 +148,10 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                     }
                     if (await confirm(
                       context,
-                      title: const Text('Confirm').tr(),
-                      content: Text('Would you like to Accept Request?'.tr()),
-                      textOK: const Text('Yes').tr(),
-                      textCancel: const Text('No').tr(),
+                      title: const Text('confirm').tr(),
+                      content: Text('would_you_accept_request'.tr()),
+                      textOK: const Text('yes').tr(),
+                      textCancel: const Text('no').tr(),
                     )) {
                       if(userType == Type.provider) {
                         _accept(p, pendingNotifier, estimatedTime!);
@@ -211,7 +211,7 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
         builder: (BuildContext context) => StatefulBuilder(
               builder: (context, setState) {
                 return AlertDialog(
-                  title: Text("Where To"),
+                  title: Text("where_to".tr()),
                   content: Container(
                     // height: MediaQuery.of(context).size.height / 0.6,
                     height:50,
@@ -224,8 +224,8 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                           : Container(),
                       TextField(
                         controller: controller,
-                        decoration: const InputDecoration(
-                            hintText: "Enter estimated Time"),
+                        decoration:  InputDecoration(
+                            hintText: "enter_estimated_time".tr()),
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           setState(() {
@@ -238,7 +238,7 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                   actions: [
                     ElevatedButton(
                         onPressed: () {
-                          print("test ya rab${p.dropOffLocation}");
+                          // print("test ya rab${p.dropOffLocation}");
                           context.push(RideLocations.routeName,
                               extra: BundledLocation(
                                   destinationLocation: p.dropOffLocation ??
@@ -251,14 +251,14 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                           primary: const Color(0xFF193566),
                           padding: const EdgeInsets.all(10),
                         ),
-                        child: const Text("Destinations").tr()),
+                        child:  Text("Destinations".tr())),
                     ElevatedButton(
                       onPressed: checkEstimated
                           ? () {
                               onClick(context);
                             }
                           : null,
-                      child: Text("Confirm"),
+                      child: Text("confirm".tr()),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF193566),
                         padding: const EdgeInsets.all(10),
@@ -291,12 +291,12 @@ class actionsRow extends StatelessWidget {
           onPressed: () async {
             if (await confirm(
               context,
-              title: const Text('Confirm').tr(),
+              title:  Text('confirm'.tr()),
               content:
-                  const Text('Would you like to Refuse Request?')
+                   Text('would_you_refuse_request'.tr())
                       .tr(),
-              textOK: const Text('Yes').tr(),
-              textCancel: const Text('No').tr(),
+              textOK:  Text('yes'.tr()),
+              textCancel:  Text('no'.tr()),
             )) {
               onRefuseRequest();
               return print('pressedOK');

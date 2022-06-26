@@ -39,7 +39,7 @@ class _BannedAccountsScreen extends State<BannedAccountsScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width*0.8,
                 child: Text(
-                  "Your Account has been Banned",
+                  "your_account_is_banned".tr(),
                   style: TextStyle(
                     fontSize: 18,
                     // letterSpacing: 1,
