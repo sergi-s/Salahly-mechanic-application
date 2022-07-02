@@ -163,18 +163,21 @@ CustomLocation? locationObject;
           elevation: 0.0,
           backgroundColor: const Color(0xFFd1d9e6),
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Color(0xFF193566),
             ),
-            onPressed: () {},
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(""),
             Text(
               "registration".tr(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 22,
                 letterSpacing: 1,
                 color: Color(0xFF193566),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/new_requests_listener.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
@@ -39,7 +40,7 @@ class _HomePageState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
 
     if(!isListening){
-      listenRequestsFromDatabaseByNotifiers(
+      listenRequestsFromDatabaseByNotifiersNEW(
           ref.watch(pendingRequestsProvider.notifier),
           ref.watch(ongoingRequestsProvider.notifier));
       isListening = true;

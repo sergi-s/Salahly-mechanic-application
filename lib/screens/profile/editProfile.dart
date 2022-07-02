@@ -92,8 +92,8 @@ class _State extends ConsumerState<EditProfile> {
             ? true
             : false
         : false;
-    _image = widget.user.avatar != null ? File(widget.user.avatar!) : null;
-    _imagePath = widget.user.avatar != null ? widget.user.avatar! : null;
+    _image = widget.user.avatar != null ? File(widget.user.avatar!) : File('https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg');
+    _imagePath = widget.user.avatar != null ? widget.user.avatar! : 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg';
 
     super.initState();
   }

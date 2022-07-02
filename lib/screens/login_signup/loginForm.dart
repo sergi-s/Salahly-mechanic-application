@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/new_requests_listener.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
@@ -74,9 +75,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     //       const SnackBar(
     //           content: Text('Invalid Password!! Please try again')));
     // }
+    email = email.trim();
+    
     bool check = await fb.login(email, password);
     if (check) {
-      listenRequestsFromDatabaseByNotifiers(
+      listenRequestsFromDatabaseByNotifiersNEW(
           ref.watch(pendingRequestsProvider.notifier),
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)

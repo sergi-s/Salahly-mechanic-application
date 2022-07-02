@@ -130,18 +130,19 @@ class _RideLocationsState extends State<RideLocations> {
                             spreadRadius: 0.5,
                             offset: Offset(0.7, 0.7))
                       ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 18),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                              ("Distance ${calculateDistance(clientLocation.latitude, clientLocation.longitude, destinationLocation.latitude, destinationLocation.longitude).toStringAsExponential(3)}"),
-                              style: const TextStyle(fontSize: 20)),
-                          const SizedBox(height: 20),
-                        ]),
-                  )))
+                  // child: Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //       horizontal: 24, vertical: 18),
+                  //   child: 
+                  //   Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         // Text(("Distance ${calculateDistance(clientLocation.latitude, clientLocation.longitude, destinationLocation.latitude, destinationLocation.longitude).toStringAsExponential(3)}"),
+                  //         //     style: const TextStyle(fontSize: 20)),
+                  //         const SizedBox(height: 20),
+                  //       ]),
+                  // ),
+                  ))
         ]),
       ),
     );

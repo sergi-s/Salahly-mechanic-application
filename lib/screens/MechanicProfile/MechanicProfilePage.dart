@@ -71,7 +71,7 @@ class _ProfilePageState extends State<_ProfilePage> {
             physics: const BouncingScrollPhysics(),
             children: [
               ProfileWidget(
-                imagePath: user.avatar !=null?user.avatar!: 'https://aui.atlassian.com/aui/8.8/docs/avatars.html',
+                imagePath: user.avatar !=null?user.avatar!: 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg',
                 onClicked: () {
                   context.push(EditProfile.routeName, extra: user);
                   // Navigator.of(context).push(
@@ -82,7 +82,7 @@ class _ProfilePageState extends State<_ProfilePage> {
               const SizedBox(height: 24),
               buildName(user),
               const SizedBox(height: 24),
-              NumbersWidget(rating: user.rating.toString(),),
+              NumbersWidget(rating: user.rating!=null? user.rating.toStringAsFixed(2):"0",),
               const SizedBox(height: 48),
               buildAbout(user),
             ],

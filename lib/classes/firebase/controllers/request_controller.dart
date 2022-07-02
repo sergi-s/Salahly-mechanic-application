@@ -25,18 +25,21 @@ Future<RSA?> loadRequestFromDB(String id, String requestType) async {
         .child("cars")
         .child(dataSnapshot.child("carID").value.toString())
         .get();
+        if(carSnapshot.value != null) {
+
     String colorString = carSnapshot.child("color").value.toString();
     if (colorString.contains("(")) {
       colorString = colorString.substring(
           colorString.indexOf("(") + 1, colorString.indexOf(")"));
     }
-    print("CAR STRING IS $colorString");
-    print("CAR ID IS ${dataSnapshot.child("carID").value.toString()}");
+    // print("CAR STRING IS $colorString");
+    // print("CAR ID IS ${dataSnapshot.child("carID").value.toString()}");
     car = Car(
       color: Color(int.parse(colorString)),
       noPlate: carSnapshot.child("plate").value.toString(),
       model: carSnapshot.child("model").value.toString(),
     );
+        }
   } else {
     return null;
   }
