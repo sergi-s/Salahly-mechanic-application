@@ -107,7 +107,7 @@ listenRequestsFromDatabaseByNotifiersNEW(PendingRequestsNotifier pendingNotifier
                       //   child: Text("go_to_request".tr(),
                       //       style: const TextStyle(color: Colors.white)));
                       Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -259,7 +259,7 @@ listenRequestsFromDatabaseByNotifiersNEW(PendingRequestsNotifier pendingNotifier
                   Text("received_a_new_request".tr()),
                   trailing: Builder(builder: (context) {
                     return Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.2,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
