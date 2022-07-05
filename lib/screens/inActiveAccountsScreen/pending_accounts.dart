@@ -36,8 +36,8 @@ class _PendingAccountsScreenState extends State<PendingAccountsScreen> {
             SizedBox(height: MediaQuery.of(context).size.height*0.03,),
             SizedBox(
               width: MediaQuery.of(context).size.width*0.8,
-              child: const Text(
-                "Your registration request is pending, please wait until it is approved",
+              child:  Text(
+                "registration_pending_description".tr(),
                 style: TextStyle(
                   fontSize: 18,
                   // letterSpacing: 1,
@@ -58,8 +58,8 @@ class _PendingAccountsScreenState extends State<PendingAccountsScreen> {
             ),
                 onPressed: (){
 
-              // FirebaseAuth.instance.signOut();
-              // context.go(LoginSignupScreen.routeName);
+              FirebaseAuth.instance.signOut();
+              context.go(LoginSignupScreen.routeName);
             },
             ) ],
 // =======

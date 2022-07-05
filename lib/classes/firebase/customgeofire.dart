@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
-import 'package:salahly_mechanic/utils/location/getuserlocation.dart';
 import 'package:salahly_mechanic/main.dart';
 import 'package:salahly_models/models/location.dart';
 
@@ -19,9 +18,12 @@ class NearbyLocations {
           .value as double;
       double latitude = (await workshopLocaiton.child("latitude").get())
           .value as double;
-     loc_1 = CustomLocation(longitude: longitude, latitude: latitude);
+     loc_1 = CustomLocation(longitude: longitude, latitude: latitude, name: FirebaseAuth.instance.currentUser!.uid);
     }else{
     loc_1 = CustomLocation(latitude: 31.2677568, longitude: 29.996346, name: FirebaseAuth.instance.currentUser!.uid);
+    }
+    if(loc_1.name == null){
+      return false;
     }
     //31.207545, 29.919915
     return await _addLocToDB(loc_1);

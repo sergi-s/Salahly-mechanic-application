@@ -65,13 +65,13 @@ class _ProfilePageState extends State<_ProfilePage> {
       child: Builder(
         builder: (context) => Scaffold(
           backgroundColor: const Color(0xFFd1d9e6),
-          appBar: salahlyAppBar(context,title:   'Profile'),
+          appBar: salahlyAppBar(context,title:   'profile'.tr()),
           drawer: salahlyDrawer(context),
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
               ProfileWidget(
-                imagePath: user.avatar !=null?user.avatar!: '',
+                imagePath: user.avatar !=null?user.avatar!: 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg',
                 onClicked: () {
                   context.push(EditProfile.routeName, extra: user);
                   // Navigator.of(context).push(
@@ -82,7 +82,7 @@ class _ProfilePageState extends State<_ProfilePage> {
               const SizedBox(height: 24),
               buildName(user),
               const SizedBox(height: 24),
-              NumbersWidget(rating: user.rating.toString(),),
+              NumbersWidget(rating: user.rating!=null? user.rating.toStringAsFixed(2):"0",),
               const SizedBox(height: 48),
               buildAbout(user),
             ],
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<_ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Location',
+              'location'.tr(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<_ProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Workshop_name',
+              'workshop_name'.tr(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff193566)),
             ).tr(),
             const SizedBox(height: 16),

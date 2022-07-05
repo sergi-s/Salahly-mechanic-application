@@ -70,10 +70,9 @@ class MapWidgetState extends State<MapWidget> {
   locatePosition() async {
     currentCustomLoc = await getUserLocation();
     cameraZoom = 19;
-    print(
-        "::lat:${currentCustomLoc.latitude} - long:${currentCustomLoc.longitude}");
-    print("::address: ${currentCustomLoc.address}");
-    print("::::insied map");
+    // print("::lat:${currentCustomLoc.latitude} - long:${currentCustomLoc.longitude}");
+    // print("::address: ${currentCustomLoc.address}");
+    // print("::::insied map");
 
     moveCamera(currentCustomLoc);
   }

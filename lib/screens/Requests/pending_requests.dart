@@ -18,18 +18,14 @@ import 'package:salahly_models/models/road_side_assistance.dart';
 class PendingRequests extends ConsumerStatefulWidget {
   static final routeName = "/viewrequests";
 
-
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return _PendingRequestsState();
   }
-
 }
 
 class _PendingRequestsState extends ConsumerState<PendingRequests> {
   String? estimatedTime;
-
-
 
   TextEditingController controller = TextEditingController();
   Widget personDetailCard(
@@ -69,7 +65,9 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: (rsa.car != null && rsa.car?.color != null)?rsa.car!.color!:const Color(0xFF000000),
+                    backgroundColor: (rsa.car != null && rsa.car?.color != null)
+                        ? rsa.car!.color!
+                        : const Color(0xFF000000),
                   ),
                   title: Column(
                     children: <Widget>[
@@ -82,12 +80,14 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                          (rsa.car != null && rsa.car?.model != null)?rsa.car!.model!:"",
+                        (rsa.car != null && rsa.car?.model != null)
+                            ? rsa.car!.model!
+                            : "",
                         style: const TextStyle(
                             color: Colors.black45, fontSize: 18),
                       ),
                       Text(
-                        (rsa.car != null)?rsa.car!.noPlate:"",
+                        (rsa.car != null) ? rsa.car!.noPlate : "",
                         style: const TextStyle(
                             color: Colors.black45, fontSize: 18),
                       ),
@@ -102,29 +102,39 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
       ),
     );
   }
+
   List<String> _checkingrsaId = [];
-  _trailing(RSA rsa,Function onConfirmRequest,Function onRefuseRequest) {
-    if((rsa.state == RSAStates.providerConfirmed || rsa.state == RSAStates.mechanicConfirmed) && rsa.requestType != RequestType.RSA){
-      return Text("Pending",style: TextStyle(color: Colors.red,fontSize: 18),);
-    }
-    else if(_checkingrsaId.contains(rsa.rsaID)){
-      return Text("Checking",style: TextStyle(color: Colors.blueAccent,fontSize: 18),);
-    }
-    else {
-      return actionsRow(onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest);
+  _trailing(RSA rsa, Function onConfirmRequest, Function onRefuseRequest) {
+    if ((rsa.state == RSAStates.providerConfirmed ||
+            rsa.state == RSAStates.mechanicConfirmed) &&
+        rsa.requestType != RequestType.RSA) {
+      return Text(
+        "pending".tr(),
+        style: TextStyle(color: Colors.red, fontSize: 18),
+      );
+    } else if (_checkingrsaId.contains(rsa.rsaID)) {
+      return Text(
+        "checking",
+        style: TextStyle(color: Colors.blueAccent, fontSize: 18),
+      );
+    } else {
+      return actionsRow(
+          onConfirmRequest: onConfirmRequest, onRefuseRequest: onRefuseRequest);
     }
   }
 
   Widget build(BuildContext context) {
-
     PendingRequestsNotifier pendingNotifier =
-    ref.watch(pendingRequestsProvider.notifier);
+        ref.watch(pendingRequestsProvider.notifier);
     List<RSA> pendingRequests = ref.watch(pendingRequestsProvider);
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFd1d9e6),
-      appBar: salahlyAppBar(context, title: "pending_requests".tr(),),
+      appBar: salahlyAppBar(
+        context,
+        title: "pending_requests".tr(),
+      ),
       // drawer: salahlyDrawer(context),
       body: SingleChildScrollView(
         child: Column(
@@ -148,14 +158,14 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                     }
                     if (await confirm(
                       context,
-                      title: const Text('Confirm').tr(),
-                      content: Text('Would you like to Accept Request?'.tr()),
-                      textOK: const Text('Yes').tr(),
-                      textCancel: const Text('No').tr(),
+                      title: const Text('confirm').tr(),
+                      content: Text('would_you_accept_request'.tr()),
+                      textOK: const Text('yes').tr(),
+                      textCancel: const Text('no').tr(),
                     )) {
-                      if(userType == Type.provider) {
+                      if (userType == Type.provider) {
                         _accept(p, pendingNotifier, estimatedTime!);
-                      } else if(userType == Type.mechanic) {
+                      } else if (userType == Type.mechanic) {
                         await pendingNotifier.acceptRequest(p);
                       }
 
@@ -203,6 +213,17 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
         .set(estimatedTime);
   }
 
+  _myDropOffLocationFunction(RSA p) {
+    if(p.requestType == null) return;
+    if(p.requestType == RequestType.TTA){
+    return p.dropOffLocation ?? CustomLocation(longitude: 31.205753, latitude: 29.924526);
+    }else if(p.mechanic != null && p.mechanic!.loc != null ) {
+      return p.mechanic!.loc;
+    }else {
+       return CustomLocation(longitude: 31.205753, latitude: 29.924526);
+    }
+  }
+
   _getEstimatedTime(context, RSA p) async {
     bool checkEstimated = false;
     if (controller.text.isNotEmpty) checkEstimated = true;
@@ -211,10 +232,10 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
         builder: (BuildContext context) => StatefulBuilder(
               builder: (context, setState) {
                 return AlertDialog(
-                  title: Text("Where To"),
+                  title: Text("where_to".tr()),
                   content: Container(
                     // height: MediaQuery.of(context).size.height / 0.6,
-                    height:50,
+                    height: 0.30 * MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.height,
                     child: ListView(children: [
                       (p.mechanic != null &&
@@ -224,8 +245,8 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                           : Container(),
                       TextField(
                         controller: controller,
-                        decoration: const InputDecoration(
-                            hintText: "Enter estimated Time"),
+                        decoration: InputDecoration(
+                            hintText: "enter_estimated_time".tr()),
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           setState(() {
@@ -238,27 +259,25 @@ class _PendingRequestsState extends ConsumerState<PendingRequests> {
                   actions: [
                     ElevatedButton(
                         onPressed: () {
-                          print("test ya rab${p.dropOffLocation}");
+                          // print("test ya rab${p.dropOffLocation}");
                           context.push(RideLocations.routeName,
                               extra: BundledLocation(
-                                  destinationLocation: p.dropOffLocation ??
-                                      CustomLocation(
-                                          longitude: 31.205753,
-                                          latitude: 29.924526),
+                                  destinationLocation:
+                                      _myDropOffLocationFunction(p),
                                   clientLocation: p.location));
                         },
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF193566),
                           padding: const EdgeInsets.all(10),
                         ),
-                        child: const Text("Destinations").tr()),
+                        child: Text("Destinations".tr())),
                     ElevatedButton(
                       onPressed: checkEstimated
                           ? () {
                               onClick(context);
                             }
                           : null,
-                      child: Text("Confirm"),
+                      child: Text("confirm".tr()),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF193566),
                         padding: const EdgeInsets.all(10),
@@ -291,12 +310,10 @@ class actionsRow extends StatelessWidget {
           onPressed: () async {
             if (await confirm(
               context,
-              title: const Text('Confirm').tr(),
-              content:
-                  const Text('Would you like to Refuse Request?')
-                      .tr(),
-              textOK: const Text('Yes').tr(),
-              textCancel: const Text('No').tr(),
+              title: Text('confirm'.tr()),
+              content: Text('would_you_refuse_request'.tr()).tr(),
+              textOK: Text('yes'.tr()),
+              textCancel: Text('no'.tr()),
             )) {
               onRefuseRequest();
               return print('pressedOK');

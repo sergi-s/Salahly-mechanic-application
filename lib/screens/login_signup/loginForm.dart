@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salahly_mechanic/classes/firebase/requests_streaming/new_requests_listener.dart';
 import 'package:salahly_mechanic/classes/firebase/requests_streaming/requests_listener.dart';
 import 'package:salahly_mechanic/classes/provider/ongoing_requests_notifier.dart';
 import 'package:salahly_mechanic/classes/provider/pending_requests_notifier.dart';
@@ -74,13 +75,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     //       const SnackBar(
     //           content: Text('Invalid Password!! Please try again')));
     // }
+    email = email.trim();
+    
     bool check = await fb.login(email, password);
     if (check) {
-      listenRequestsFromDatabaseByNotifiers(
+      listenRequestsFromDatabaseByNotifiersNEW(
           ref.watch(pendingRequestsProvider.notifier),
           ref.watch(ongoingRequestsProvider.notifier));
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Login successful')));
+          .showSnackBar( SnackBar(content: Text('login_successful'.tr())));
       // context.go(Registration.routeName, extra: email);
       AccountStates state = await getAccountState();
       // print("AKAODKA");
@@ -103,8 +106,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         context.go(HomeScreen.routeName);
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Account isnt Correct !!Please try again')));
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+          content: Text('incorrect_account'.tr())));
     }
   }
 
@@ -141,7 +144,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
           RounedInput(
             icon: Icons.email,
-            hint: 'Email'.tr(),
+            hint: 'email'.tr(),
             fn: updateEmail,
           ),
           RounedPasswordInput(hint: 'password'.tr(), function: updatePassword),
@@ -158,7 +161,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 loginFunction(context, ref);
               },
               child: Text(
-                "Login".tr(),
+                "login".tr(),
                 style: TextStyle(color: Colors.white),
               ),
             ),

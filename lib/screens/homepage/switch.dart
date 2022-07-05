@@ -19,7 +19,7 @@ class Switcher extends StatefulWidget {
 NearbyLocations as = NearbyLocations();
 
 class _SwitcherState extends State<Switcher> {
-  late final _controller;
+  dynamic _controller = null;
   bool isAvailable = false;
 
   @override
@@ -34,11 +34,11 @@ class _SwitcherState extends State<Switcher> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (_controller.value) {
           // boolean = true
-          print("isAvailable: true");
+          // print("isAvailable: true");
           await NearbyLocations.setAvailabilityOn();
           prefs.setBool("isAvailable", true);
         } else {
-          print("isAvailable: false");
+          // print("isAvailable: false");
           await NearbyLocations.setAvailabilityOff();
           prefs.setBool("isAvailable", false);
         }
@@ -75,12 +75,12 @@ class _SwitcherState extends State<Switcher> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  AdvancedSwitch(
+                  _controller != null? AdvancedSwitch(
                     controller: _controller,
                     width: 80,
                     activeChild: Text('ON'),
                     inactiveChild: Text('OFF'),
-                  ),
+                  ):Container(),
                 ],
               ),
               // _buildLabel('XXS/XS Switch'),

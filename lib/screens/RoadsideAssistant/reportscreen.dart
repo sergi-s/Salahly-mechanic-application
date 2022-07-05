@@ -97,11 +97,11 @@ class ReportScreen extends ConsumerWidget {
     } else if (check) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('data_saved_successfully'.tr())));
-      const SnackBar(content: Text('Data Saved Successfully'));
+       SnackBar(content: Text('data_saved_successfully'.tr()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('failed_to_save'.tr())));
-      const SnackBar(content: Text('Failed To Save'));
+       SnackBar(content: Text('failed_to_save'.tr()));
     }
   }
 
@@ -125,7 +125,7 @@ class ReportScreen extends ConsumerWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(""),
           Text(
-            "Report".tr(),
+            "report".tr(),
             style: TextStyle(
               fontSize: 25,
               letterSpacing: 1.5,
@@ -157,39 +157,39 @@ class ReportScreen extends ConsumerWidget {
                       width: 20,
                     ),
                     SelectTextField(
-                        hintText: 'Select Car Type'.tr(),
-                        items: ['Automatic'.tr(), 'Manual'.tr()],
+                        hintText: 'select_car_type'.tr(),
+                        items: ['automatic'.tr(), 'manual'.tr()],
                         onChangedfunction: updatetype),
 
                     InputTextField(
-                        hintText: 'System Name'.tr(), fn: updatesystemname),
+                        hintText: 'system_name'.tr(), fn: updatesystemname),
                     InputTextField(
-                      hintText: 'Part Id'.tr(),
+                      hintText: 'part_id'.tr(),
                       fn: updatepartid,
                     ),
                     InputTextField(
-                      hintText: 'Part Name'.tr(),
+                      hintText: 'part_name'.tr(),
                       fn: updatepartname,
                     ),
                     InputTextField(
-                      hintText: 'Actual Distance'.tr(),
+                      hintText: 'actual_distance'.tr(),
                       fn: updateactualdistance,
                     ),
                     InputTextField(
-                      hintText: 'Distance'.tr(),
+                      hintText: 'distance'.tr(),
                       fn: updatedistance,
                     ),
                     InputTextField(
-                      hintText: 'Part Cost'.tr(),
+                      hintText: 'part_cost'.tr(),
                       fn: updatepartcost,
                     ),
                     InputTextField(
-                      hintText: 'Maintance Cost'.tr(),
+                      hintText: 'maintance_cost'.tr(),
                       fn: updatemaintcost,
                     ),
 
                     InputTextField(
-                      hintText: 'Other Cost'.tr(),
+                      hintText: 'other_cost'.tr(),
                       fn: updateothercost,
                     ),
                     BuildMultipleTextField(
@@ -199,7 +199,7 @@ class ReportScreen extends ConsumerWidget {
                     // ignore: deprecated_member_use
                     RaisedButton(
                       child: Text(
-                        "Submit".tr(),
+                        "submit".tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                       color: Color(0xFF193566),
@@ -210,7 +210,7 @@ class ReportScreen extends ConsumerWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text('please_add_fields'.tr())));
-                          const SnackBar(content: Text('Please Add Fields'));
+                           SnackBar(content: Text('please_add_fields'.tr()));
                         } else {
                           showDialog(
                             context: context,
@@ -234,7 +234,7 @@ class ReportScreen extends ConsumerWidget {
                                       SizedBox(height: 20),
                                       Center(
                                         child: Text(
-                                          "Report".tr(),
+                                          "report".tr(),
                                           style: TextStyle(
                                               decoration:
                                               TextDecoration.underline,
@@ -255,7 +255,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Car Type :".tr(),
+                                                "car_type".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -283,7 +283,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "System Name:".tr(),
+                                                "system_name".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -311,7 +311,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Part Id :".tr(),
+                                                "part_id".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -339,7 +339,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Part Name :".tr(),
+                                                "part_name".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -367,7 +367,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Actual Distance :".tr(),
+                                                "actual_distance".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -395,7 +395,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Distance :".tr(),
+                                                "distance".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -423,7 +423,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Part Cost :".tr(),
+                                                "part_cost".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -451,7 +451,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Maintance Cost :".tr(),
+                                                "maintance_cost".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -479,7 +479,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Other Cost :".tr(),
+                                                "other_cost".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -507,7 +507,7 @@ class ReportScreen extends ConsumerWidget {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Description :".tr(),
+                                                "description".tr(),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
@@ -558,7 +558,7 @@ class ReportScreen extends ConsumerWidget {
                                                     Navigator.of(context).pop();
                                                   },
                                                   child: Text(
-                                                    "Cancel".tr(),
+                                                    "cancel".tr(),
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
@@ -577,7 +577,7 @@ class ReportScreen extends ConsumerWidget {
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text(
-                                                    "Confirm".tr(),
+                                                    "confirm".tr(),
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),

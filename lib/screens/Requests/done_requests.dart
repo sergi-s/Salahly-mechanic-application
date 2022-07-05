@@ -35,11 +35,11 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
   // final String carModel=rsa.car!.model!;
   @override
   Widget build(BuildContext context) {
-    print("doneRequestsList.length: ${doneRequestsList.length}");
+    // print("doneRequestsList.length: ${doneRequestsList.length}");
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color(0xFFd1d9e6),
-          appBar: salahlyAppBar(context,title: "Done Requests"),
+          appBar: salahlyAppBar(context,title: "done_requests".tr()),
           // drawer: salahlyDrawer(context),
           body: CustomPaint(
             child: Container(
@@ -116,7 +116,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
                                           Row(
                                             children: [
                                               Text(
-                                                "Car_number".tr()+' : '+doneRequestsList[index].car!.noPlate,
+                                                "car_number".tr()+' : '+doneRequestsList[index].car!.noPlate,
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
@@ -128,7 +128,7 @@ class _OngoingRequestsState extends ConsumerState<DoneRequests> {
                                           Row(
                                             children: [
                                               Text(
-                                                "Request_type".tr()+' : '+RSA.requestTypeToString(doneRequestsList[index].requestType!),
+                                                "request_type".tr()+' : '+RSA.requestTypeToString(doneRequestsList[index].requestType!),
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,

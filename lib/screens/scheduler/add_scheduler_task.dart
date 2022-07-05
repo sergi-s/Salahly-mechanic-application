@@ -68,7 +68,7 @@ class _AddSchedulerTaskScreenState
     await Scheduler.addTask(ScheduleTask(
       startDate: DateTime.now()
           .add(Duration(days: rnd.nextInt(12) - 5, hours: rnd.nextInt(12) - 5)),
-      title: "title " + (++totalTasks).toString(),
+      title: "title".tr() + (++totalTasks).toString(),
       color: Colors.greenAccent,
       id: totalTasks,
       duration: 120,
@@ -108,7 +108,7 @@ class _AddSchedulerTaskScreenState
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('added_scheduler'.tr())));
-    print("title ${task.title}");
+    // print("title ${task.title}");
     AddSchedulerTaskScreen.newTask = task;
     Navigator.pop(context);
 

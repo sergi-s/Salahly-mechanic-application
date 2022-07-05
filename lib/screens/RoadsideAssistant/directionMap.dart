@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import "package:flutter/material.dart";
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -44,12 +45,11 @@ class _RideLocationsState extends State<RideLocations> {
 
   @override
   void initState() {
-    print("YOu are dumb");
     clientLocation = widget.bundledLocation.clientLocation!;
     destinationLocation = widget.bundledLocation.destinationLocation!;
 
-    print(clientLocation.toString());
-    print(destinationLocation.toString());
+    // print(clientLocation.toString());
+    // print(destinationLocation.toString());
 
     // _originLatitude = clientLocation.latitude;
     // _originLongitude = clientLocation.longitude;
@@ -85,7 +85,7 @@ class _RideLocationsState extends State<RideLocations> {
                   primary: const Color(0xFF193566),
                   padding: const EdgeInsets.all(20),
                 ),
-                child: Text("Client")),
+                child: Text("client".tr())),
             ElevatedButton(
                 onPressed: () {
                   moveCamera(destinationLocation);
@@ -93,7 +93,7 @@ class _RideLocationsState extends State<RideLocations> {
                 style: ElevatedButton.styleFrom(
                   primary: const Color(0xFF193566),
                 ),
-                child: Text("Destination"))
+                child: Text("destination".tr()))
           ],
         ),
         body: Stack(children: [
@@ -130,18 +130,19 @@ class _RideLocationsState extends State<RideLocations> {
                             spreadRadius: 0.5,
                             offset: Offset(0.7, 0.7))
                       ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 18),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                              ("Distance ${calculateDistance(clientLocation.latitude, clientLocation.longitude, destinationLocation.latitude, destinationLocation.longitude).toStringAsExponential(3)}"),
-                              style: const TextStyle(fontSize: 20)),
-                          const SizedBox(height: 20),
-                        ]),
-                  )))
+                  // child: Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //       horizontal: 24, vertical: 18),
+                  //   child: 
+                  //   Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         // Text(("Distance ${calculateDistance(clientLocation.latitude, clientLocation.longitude, destinationLocation.latitude, destinationLocation.longitude).toStringAsExponential(3)}"),
+                  //         //     style: const TextStyle(fontSize: 20)),
+                  //         const SizedBox(height: 20),
+                  //       ]),
+                  // ),
+                  ))
         ]),
       ),
     );
@@ -155,7 +156,7 @@ class _RideLocationsState extends State<RideLocations> {
   }
 
   moveCamera(CustomLocation cus) async {
-    print("gp Tp ${cus}");
+    // print("gp Tp ${cus}");
     LatLng latLatPosition = LatLng(cus.latitude, cus.longitude);
     setState(() {
       CameraPosition camPos = CameraPosition(target: latLatPosition, zoom: 17);

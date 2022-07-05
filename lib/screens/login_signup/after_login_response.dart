@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,7 @@ class InActiveAccountsScreen extends StatelessWidget {
             await dbRef.child("FCMTokens").child(FirebaseAuth.instance.currentUser!.uid).remove();
             await FirebaseAuth.instance.signOut();
             context.go(LoginSignupScreen.routeName);
-          }, child: Text('Logout'),),
+          }, child: Text('logout'.tr()),),
         ],
       ),
     );

@@ -39,7 +39,7 @@ class _RejectedAccountsScreen extends State<RejectedAccountsScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width*0.8,
                 child: Text(
-                  "Your Account has been rejected",
+                  "your_account_is_rejected".tr(),
                   style: TextStyle(
                     fontSize: 18,
                     // letterSpacing: 1,

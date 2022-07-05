@@ -30,10 +30,10 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
   Widget personDetailCard(RSA rsa) {
 
 
-    final String name = rsa.user!.name??"Client name";
-    final String carNumber = rsa.car != null ?rsa.car!.noPlate:"Car number";
-    final String mobileNumber = rsa.user!.phoneNumber??"Phone number";
-    final String carModel = rsa.car != null ?rsa.car!.model!:"Car model";
+    final String name = rsa.user!.name??"client_name".tr();
+    final String carNumber = rsa.car != null ?rsa.car!.noPlate:"car_number".tr();
+    final String mobileNumber = rsa.user!.phoneNumber??"phone_number".tr();
+    final String carModel = rsa.car != null ?rsa.car!.model!:"car_model".tr();
     // final String color = rsa.car != null ?rsa.car!.color!:Color(0xFF00FF00);
     final Color color = rsa.car != null ?rsa.car!.color! :Colors.lightBlueAccent;
     final String image =  rsa.user!.avatar??"";
@@ -109,7 +109,7 @@ class _DoneRequestsFullDataState extends State<DoneRequestsFullData> {
                       child: Icon(CupertinoIcons.car_fill,color:Color(0xff97a7c3),size: 45)),
                   title: Padding(
                     padding: const EdgeInsets.only(top:6.0,bottom: 6.0),
-                    child:Text('Client Requested RSA',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
+                    child:Text('client_requested_rsa',textScaleFactor: 1.1, style: const TextStyle(color: Color(0xff193566), fontWeight: FontWeight.bold),textAlign: TextAlign.left).tr(),),
                 ),
                 (rsa.report != null && rsa.report!.maintenanceDescription != null )?ListTile(
                   leading:Padding(

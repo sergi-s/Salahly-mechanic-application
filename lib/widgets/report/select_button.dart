@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:salahly_mechanic/widgets/report/Input_container.dart';
 
@@ -16,7 +17,7 @@ class SelectTextField extends StatefulWidget {
 
 class _SelectTextFieldState extends State<SelectTextField> {
   // final items = widget.items;
-  String selectedValue ='Car Type';
+  String selectedValue ='car_type'.tr();
 
  // late get hintText ;
 
